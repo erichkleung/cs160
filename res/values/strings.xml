@@ -4,5 +4,11 @@
     <string name="app_name">Try Dish</string>
     <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
+    <string name="title_activity_home_screen">HomeScreen</string>
+    <string name="title_activity_review_home">ReviewHome</string>
+    <string name="title_activity_settings">Settings</string>
+    <string name="find">Find</string>
+    <string name="review">Review</string>
+    <string name="settings">Settings</string>
 
 </resources>
