@@ -15,5 +15,6 @@
     <string name="title_activity_post_login_home">PostLoginHome</string>
     <string name="title_activity_signup_home">SignupHome</string>
     <string name="title_activity_sign_up_allergies">SignUpAllergies</string>
+    <string name="title_activity_view_dish">ViewDish</string>
 
 </resources>
