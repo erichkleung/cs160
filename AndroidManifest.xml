@@ -10,12 +10,13 @@
 
     <application
         android:allowBackup="true"
+        android:debuggable="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme"
         android:debuggable="true" >
         <activity
-            android:name="com.trydish.main.MainActivity"
+            android:name="com.trydish.main.LoginHome"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -34,6 +35,18 @@
         <activity
             android:name="com.trydish.main.Settings"
             android:label="@string/title_activity_settings" >
+        </activity>
+        <activity
+            android:name="com.trydish.main.PostLoginHome"
+            android:label="@string/title_activity_post_login_home" >
+        </activity>
+        <activity
+            android:name="com.trydish.main.SignupHome"
+            android:label="@string/title_activity_signup_home" >
+        </activity>
+        <activity
+            android:name="com.trydish.main.SignupAllergies"
+            android:label="@string/title_activity_sign_up_allergies" >
         </activity>
     </application>
 

@@ -1,0 +1,49 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SignupHome" >
+    
+    <RelativeLayout
+        android:id="@+id/layout_group_signup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true" >
+
+        <EditText
+            android:id="@+id/signup_username"
+            android:layout_width="400dp"
+            android:layout_height="50dp"
+            android:layout_centerHorizontal="true"
+            android:hint="Username" />
+
+        <EditText
+            android:id="@+id/signup_password"
+            android:layout_width="400dp"
+            android:layout_height="50dp"
+            android:layout_below="@+id/signup_username"
+            android:layout_centerHorizontal="true"
+            android:hint="Password"
+            android:inputType="textPassword" />
+        
+		<EditText
+            android:id="@+id/signup_password_confirm"
+            android:layout_width="400dp"
+            android:layout_height="50dp"
+            android:layout_below="@+id/signup_password"
+            android:layout_centerHorizontal="true"
+            android:hint="Confirm Password"
+            android:inputType="textPassword" />
+
+        <Button
+            android:id="@+id/signup_button"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/signup_password_confirm"
+            android:layout_centerHorizontal="true"
+            android:text="Next"
+            android:textSize="15sp"
+            android:onClick="signupNext" />
+
+	</RelativeLayout>
+</RelativeLayout>

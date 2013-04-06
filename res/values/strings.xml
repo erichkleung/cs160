@@ -12,6 +12,8 @@
     <string name="settings">Settings</string>
     <string name="search">Search</string>
     <string name="location">My Location</string>
-    <string name="from">from</string>
+    <string name="title_activity_post_login_home">PostLoginHome</string>
+    <string name="title_activity_signup_home">SignupHome</string>
+    <string name="title_activity_sign_up_allergies">SignUpAllergies</string>
 
 </resources>
