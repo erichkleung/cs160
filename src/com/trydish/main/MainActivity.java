@@ -16,9 +16,7 @@ public class MainActivity extends Activity {
 		actionBar.setDisplayShowTitleEnabled(false);
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
-		Tab tab = actionBar.newTab()
-				.setText(R.string.find)
-				.setTabListener(new TabListener<com.trydish.find.FindHome>(
+		Tab tab = actionBar.newTab().setText(R.string.find).setTabListener(new TabListener<com.trydish.find.FindHome>(
 						this, "find", com.trydish.find.FindHome.class));
 		actionBar.addTab(tab);
 

@@ -5,7 +5,9 @@ import com.trydish.main.R;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -27,9 +29,9 @@ import android.widget.TableLayout;
 import android.widget.Toast;
 
 public class FindHome extends Fragment implements OnClickListener {
-	
+
 	//Implements OnClickListener so that we don't have to define onClick methods in the LoginHome
-	
+
 	//Keep track of what distance user has selected from drop down menu. Saving now b/c likely later passed to other function 
 	private String searchDistance = "1 mile";
 	private static Context context;
@@ -39,7 +41,7 @@ public class FindHome extends Fragment implements OnClickListener {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.activity_find_home,
 				container, false);
-	
+
 		myView = view;
 		context = view.getContext();
 		//Note we have to call findViewById on the view b/c we are not in an Activity
@@ -47,10 +49,10 @@ public class FindHome extends Fragment implements OnClickListener {
 		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(view.getContext(), R.array.distance_array, android.R.layout.simple_spinner_item);
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		distanceSpinner.setAdapter(adapter);
-		
+
 		//Create a new OnItemSelectedListener for the Spinner using anonymous class to define necessary methods
 		OnItemSelectedListener listener = new OnItemSelectedListener() {
-			
+
 			//comment
 			public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
 				String itemSelected = (String) parent.getItemAtPosition(pos);
@@ -58,50 +60,56 @@ public class FindHome extends Fragment implements OnClickListener {
 				Log.d("FindHome", searchDistance);
 				//note that when this tab is selected, this method is executed
 			}
-			
+
 			//comment
 			public void onNothingSelected(AdapterView<?> parent) {
-				
+
 			}
 		};
 		//Set the spinners listener
 		distanceSpinner.setOnItemSelectedListener(listener);
-		
+
 		//Grab the buttons and set their onClickListeners to be this Fragment
 		ImageButton ib = (ImageButton) view.findViewById(R.id.search);
 		Button b = (Button) view.findViewById(R.id.my_location);
 		ib.setOnClickListener(this);
 		b.setOnClickListener(this);
-		
-		GridView gridview = (GridView) view.findViewById(R.id.food_images);
-	    gridview.setAdapter(new ImageAdapter(view.getContext()));
 
-	    gridview.setOnItemClickListener(new OnItemClickListener() {
-	        public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-	            Toast.makeText(context, "" + position, Toast.LENGTH_SHORT).show();
-	        }
-	    });
-		
-	    getActivity().getWindow().setSoftInputMode(
-	    	      WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-	    
+		GridView gridview = (GridView) view.findViewById(R.id.food_images);
+		gridview.setAdapter(new ImageAdapter(view.getContext()));
+
+		gridview.setOnItemClickListener(new OnItemClickListener() {
+			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+				Fragment view_dish = new ViewDish();
+				FragmentTransaction trans = getFragmentManager().beginTransaction();
+
+				trans.replace(((ViewGroup) myView.getParent()).getId(), view_dish);
+				trans.addToBackStack(null);
+				trans.commit();
+
+			}
+		});
+
+		getActivity().getWindow().setSoftInputMode(
+				WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
 		return view;
 
 	}
-	
+
 	//Called when search icon is clicked
 	public void searchClicked(View v) {
 		//EditText et = (EditText) myView.findViewById(R.id.search_box);
 		//et.setLayoutParams(new TableLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, 1f));
 		Log.d("Find Home", "search clicked");
 	}
-	
+
 	//Called when the My Location button is clicked to change location
 	public void myLocationClicked(View v) {
 		Log.d("Find Home", "location clicked");
 	}
 
-	
+
 	//Decides which method to call based on which button is clicked. Again, this is needed because by default buttons 
 	//onClickListener is not the Fragment
 	@Override
@@ -111,12 +119,12 @@ public class FindHome extends Fragment implements OnClickListener {
 		case R.id.search:
 			searchClicked(arg0);
 			break;
-		//my location button clicked
+			//my location button clicked
 		case R.id.my_location:
 			myLocationClicked(arg0);
 			break;
 		}
-		
+
 	}
 
 }
