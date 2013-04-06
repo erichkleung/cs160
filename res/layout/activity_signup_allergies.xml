@@ -5,10 +5,54 @@
     tools:context=".SignUpAllergies" >
 
     <LinearLayout
-        android:id="@+id/left_check_boxes"
-        android:layout_alignParentLeft="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
+        android:id="@+id/allergies_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+        
+        <LinearLayout
+            android:id="@+id/left_check_boxes"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:orientation="vertical" >
+
+            <CheckBox
+                android:id="@+id/allergy_dairy_checkbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Dairy" />
+
+            <CheckBox
+                android:id="@+id/allergy_eggs_checkbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Eggs" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/right_check_boxes"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_toRightOf="@+id/left_check_boxes"
+            android:orientation="vertical" >
+
+            <CheckBox
+                android:id="@+id/allergy_dairy_checkbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Dairy" />
+
+            <CheckBox
+                android:id="@+id/allergy_eggs_checkbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Eggs" />
+        </LinearLayout>
+
     </LinearLayout>
 
 </RelativeLayout>
