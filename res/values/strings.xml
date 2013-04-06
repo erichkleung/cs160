@@ -15,5 +15,19 @@
     <string name="title_activity_post_login_home">PostLoginHome</string>
     <string name="title_activity_signup_home">SignupHome</string>
     <string name="title_activity_sign_up_allergies">SignUpAllergies</string>
+    <string name="dairy">Dairy</string>
+    <string name="eggs">Eggs</string>
+    <string name="fish">Fish</string>
+    <string name="peanuts">Peanuts</string>
+    <string name="treenuts">Tree Nuts</string>
+    <string name="sesame">Sesame</string>
+    <string name="shellfish">Shellfish</string>
+    <string name="soy">Soy</string>
+    <string name="wheat">Wheat</string>
+    <string name="gluten">Gluten</string>
+    <string name="signup_allergies_title">Allergies</string>
+    <string name="allergies_warning">Please carefully and accurately enter your allergy information.  We use this to tag and filter dishes for you.</string>
+    <string name="important_allergies">Important!</string>
+    <string name="ok">OK</string>
 
 </resources>
