@@ -15,6 +15,7 @@ import android.view.ViewGroup.LayoutParams;
 import android.view.WindowManager;
 import android.widget.AdapterView.OnItemClickListener;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
@@ -24,7 +25,9 @@ import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TableLayout;
+import android.widget.TextView;
 import android.widget.Toast;
+import android.view.KeyEvent;
 
 public class FindHome extends Fragment implements OnClickListener {
 	
@@ -82,9 +85,26 @@ public class FindHome extends Fragment implements OnClickListener {
 	        }
 	    });
 		
+	    //Hide keyboard
 	    getActivity().getWindow().setSoftInputMode(
 	    	      WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 	    
+	    //define the behavior of the "DONE" key on the keyboard
+	    /*
+	    EditText et = (EditText) myView.findViewById(R.id.search_box);
+	    et.setOnEditorActionListener(new EditText.OnEditorActionListener() {
+	        @Override
+	        public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+	            if (actionId == EditorInfo.IME_ACTION_DONE){
+	                    //Do your stuff here
+	            		Log.d("FindHome","DONE pressed");
+	            		donePressed();
+	            		return true;
+	                } else {
+	                	return false;
+	                }
+	            } }); 
+	    */
 		return view;
 
 	}
@@ -93,6 +113,7 @@ public class FindHome extends Fragment implements OnClickListener {
 	public void searchClicked(View v) {
 		//EditText et = (EditText) myView.findViewById(R.id.search_box);
 		//et.setLayoutParams(new TableLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, 1f));
+		//hideSoftKeyboard(myView);
 		Log.d("Find Home", "search clicked");
 	}
 	
@@ -117,6 +138,10 @@ public class FindHome extends Fragment implements OnClickListener {
 			break;
 		}
 		
+	}
+	
+	public void donePressed() {
+		searchClicked(myView);
 	}
 
 }
