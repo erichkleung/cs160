@@ -79,6 +79,7 @@ public class FindHome extends Fragment implements OnClickListener {
 		b.setOnClickListener(this);
 
 		GridView gridview = (GridView) view.findViewById(R.id.food_images);
+		gridview.setAdapter(new ImageAdapter(view.getContext()));
 
 		gridview.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
@@ -92,13 +93,13 @@ public class FindHome extends Fragment implements OnClickListener {
 			}
 		});
 
-		
-	    //Hide keyboard
-	    getActivity().getWindow().setSoftInputMode(
-	    	      WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-	    
-	    //define the behavior of the "DONE" key on the keyboard
-	    /*
+
+		//Hide keyboard
+		getActivity().getWindow().setSoftInputMode(
+				WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
+		//define the behavior of the "DONE" key on the keyboard
+		/*
 	    EditText et = (EditText) myView.findViewById(R.id.search_box);
 	    et.setOnEditorActionListener(new EditText.OnEditorActionListener() {
 	        @Override
@@ -112,7 +113,7 @@ public class FindHome extends Fragment implements OnClickListener {
 	                	return false;
 	                }
 	            } }); 
-	    */
+		 */
 		return view;
 
 	}
@@ -147,7 +148,7 @@ public class FindHome extends Fragment implements OnClickListener {
 		}
 
 	}
-	
+
 	public void donePressed() {
 		searchClicked(myView);
 	}
