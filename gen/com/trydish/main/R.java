@@ -42,6 +42,7 @@ public final class R {
     public static final class string {
         public static final int app_name=0x7f050000;
         public static final int find=0x7f050006;
+        public static final int from=0x7f05000b;
         public static final int hello_world=0x7f050001;
         public static final int location=0x7f05000a;
         public static final int menu_settings=0x7f050002;
