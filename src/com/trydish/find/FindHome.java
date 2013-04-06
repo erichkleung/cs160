@@ -11,15 +11,18 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView.OnItemClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.Spinner;
+import android.widget.TableLayout;
 import android.widget.Toast;
 
 public class FindHome extends Fragment implements OnClickListener {
@@ -29,12 +32,14 @@ public class FindHome extends Fragment implements OnClickListener {
 	//Keep track of what distance user has selected from drop down menu. Saving now b/c likely later passed to other funtion 
 	private String searchDistance = "1 Mile";
 	private static Context context;
+	private View myView;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.activity_find_home,
 				container, false);
-		
+	
+		myView = view;
 		context = view.getContext();
 		//Note we have to call findViewById on the view b/c we are not in an Activity
 		Spinner distanceSpinner = (Spinner) view.findViewById(R.id.distance_spinner);
@@ -82,6 +87,8 @@ public class FindHome extends Fragment implements OnClickListener {
 	
 	//Called when search icon is clicked
 	public void searchClicked(View v) {
+		//EditText et = (EditText) myView.findViewById(R.id.search_box);
+		//et.setLayoutParams(new TableLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, 1f));
 		Log.d("Find Home", "search clicked");
 	}
 	
