@@ -40,7 +40,7 @@
     	<TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/from"
+            android:text="from"
             android:layout_marginLeft="70dp"
             android:layout_weight="1"
              />
@@ -70,6 +70,7 @@
     	android:stretchMode="columnWidth"
     	android:gravity="center"
 		/>
+=======
 
 
 </LinearLayout>
