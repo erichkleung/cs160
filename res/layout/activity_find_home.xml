@@ -19,9 +19,16 @@
             android:src="@drawable/search_160"
             android:contentDescription="search icon"
             android:layout_weight="1"
-            android:background="@android:color/transparent"
+            android:background="#B3B3B3"
             android:onClick="searchClicked" 
              />
+        
+        <EditText
+            android:id="@+id/search_box"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="0"
+            />
         
     	<Spinner
     		android:id="@+id/distance_spinner"
@@ -33,7 +40,7 @@
     	<TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/from"
+            android:text="from"
             android:layout_marginLeft="70dp"
             android:layout_weight="1"
              />
@@ -44,7 +51,7 @@
             android:layout_height="wrap_content"
             android:text="@string/location"
             android:layout_weight="1"
-            android:background="@android:color/transparent" 
+            android:background="#B3B3B3" 
             android:onClick="myLocationClicked"
             
              />
@@ -56,13 +63,14 @@
     	android:id="@+id/food_images"
     	android:layout_width="fill_parent" 
     	android:layout_height="fill_parent"
-    	android:columnWidth="90dp"
+    	android:columnWidth="300dp"
     	android:numColumns="3"
     	android:verticalSpacing="10dp"
     	android:horizontalSpacing="10dp"
     	android:stretchMode="columnWidth"
     	android:gravity="center"
 		/>
+=======
 
 
 </LinearLayout>
