@@ -54,6 +54,11 @@
             android:label="@string/title_activity_sign_up_allergies"
             android:screenOrientation="portrait" >
         </activity>
+        <activity
+            android:name="com.trydish.find.ViewDish"
+            android:label="@string/title_activity_view_dish"
+            android:screenOrientation="portrait" >
+        </activity>
     </application>
 
 </manifest>
