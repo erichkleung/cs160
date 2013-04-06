@@ -6,16 +6,16 @@ import android.app.ActionBar.Tab;
 import android.os.Bundle;
 
 public class MainActivity extends Activity {
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-				
+
 		ActionBar actionBar = getActionBar();
 		actionBar.setDisplayShowHomeEnabled(false);
 		actionBar.setDisplayShowTitleEnabled(false);
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-		
+
 		Tab tab = actionBar.newTab()
 				.setText(R.string.find)
 				.setTabListener(new TabListener<com.trydish.find.FindHome>(

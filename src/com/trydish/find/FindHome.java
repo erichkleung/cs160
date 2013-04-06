@@ -26,8 +26,8 @@ public class FindHome extends Fragment implements OnClickListener {
 	
 	//Implements OnClickListener so that we don't have to define onClick methods in the MainActivity
 	
-	//Keep track of what distance user has selected from drop down menu. Saving now b/c likely later passed to other funtion 
-	private String searchDistance = "1 Mile";
+	//Keep track of what distance user has selected from drop down menu. Saving now b/c likely later passed to other function 
+	private String searchDistance = "1 mile";
 	private static Context context;
 
 	@Override

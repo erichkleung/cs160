@@ -56,6 +56,15 @@ public class ImageAdapter extends BaseAdapter {
             R.drawable.food, R.drawable.food,
             R.drawable.food, R.drawable.food,
             R.drawable.food, R.drawable.food,
+            R.drawable.food, R.drawable.food,
+            R.drawable.food, R.drawable.food,
+            R.drawable.food, R.drawable.food,
+            R.drawable.food, R.drawable.food,
+            R.drawable.food, R.drawable.food,
+            R.drawable.food, R.drawable.food,
+            R.drawable.food, R.drawable.food,
+            R.drawable.food, R.drawable.food,
+            R.drawable.food, R.drawable.food,
             R.drawable.food, R.drawable.food
     };
 }
