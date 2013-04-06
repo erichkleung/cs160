@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
+import android.view.WindowManager;
 import android.widget.AdapterView.OnItemClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -81,6 +82,9 @@ public class FindHome extends Fragment implements OnClickListener {
 	        }
 	    });
 		
+	    getActivity().getWindow().setSoftInputMode(
+	    	      WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+	    
 		return view;
 
 	}
