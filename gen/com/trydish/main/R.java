@@ -22,19 +22,20 @@ public final class R {
         public static final int distance_spinner=0x7f080002;
         public static final int food_images=0x7f080004;
         public static final int layout_group=0x7f080005;
-        public static final int layout_group_signup=0x7f08000b;
+        public static final int layout_group_signup=0x7f08000c;
+        public static final int left_check_boxes=0x7f08000b;
         public static final int login_button=0x7f080008;
         public static final int login_password=0x7f080007;
         public static final int login_username=0x7f080006;
-        public static final int menu_settings=0x7f08000f;
+        public static final int menu_settings=0x7f080010;
         public static final int my_location=0x7f080003;
         public static final int or_text=0x7f080009;
         public static final int search=0x7f080000;
         public static final int search_box=0x7f080001;
         public static final int signup_button=0x7f08000a;
-        public static final int signup_password=0x7f08000d;
-        public static final int signup_password_confirm=0x7f08000e;
-        public static final int signup_username=0x7f08000c;
+        public static final int signup_password=0x7f08000e;
+        public static final int signup_password_confirm=0x7f08000f;
+        public static final int signup_username=0x7f08000d;
     }
     public static final class layout {
         public static final int activity_find_home=0x7f030000;
