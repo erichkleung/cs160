@@ -27,7 +27,7 @@
     <string name="wheat">Wheat</string>
     <string name="gluten">Gluten</string>
     <string name="signup_allergies_title">Allergies</string>
-    <string name="allergies_warning">Please carefully and accurately enter your allergy information.  We use this to tag and filter dishes for you.</string>
+    <string name="allergies_warning">Please carefully and accurately enter your allergy information.  We will use this information to filter dishes safe for you.</string>
     <string name="important_allergies">Important!</string>
     <string name="ok">OK</string>
     <string name="title_activity_view_dish">ViewDish</string>

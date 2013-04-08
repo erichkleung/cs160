@@ -38,7 +38,8 @@
                 android:layout_height="50dp"
                 android:layout_below="@+id/login_username_label"
                 android:layout_centerHorizontal="true"
-                android:hint="@string/username_hint" />
+                android:hint="@string/username_hint"
+                android:fontFamily="Roboto" />
 
             <TextView
                 android:id="@+id/login_password_label"
@@ -58,8 +59,10 @@
                 android:layout_below="@+id/login_password_label"
                 android:layout_centerHorizontal="true"
                 android:hint="@string/password_hint"
-                android:inputType="textPassword" />
+                android:inputType="textPassword"
+                android:fontFamily="Roboto" />
         </LinearLayout>
+
 
         <Button
             android:id="@+id/login_button"
@@ -72,6 +75,7 @@
             android:textColor="#FFFFFF"
             android:textSize="15sp"
             android:color="#E6E6E6" />
+
 
         <TextView
             android:id="@+id/or_text"
@@ -93,6 +97,7 @@
             android:textColor="#FFFFFF"
             android:textSize="15sp"
             android:color="#E6E6E6" />
+
     </RelativeLayout>
 
 </RelativeLayout>
