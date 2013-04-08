@@ -9,8 +9,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_marginLeft="30dp"
         android:layout_below="@+id/dish_name"
+        android:layout_marginLeft="30dp"
         android:text="From: Restaurant Name"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
@@ -20,8 +20,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/restaurant_name"
-        android:text="Location: x miles away"
         android:layout_marginLeft="30dp"
+        android:text="Location: x miles away"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <TextView
@@ -86,9 +86,38 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_below="@+id/add_review_button"
-                android:layout_marginTop="34dp"
                 android:layout_marginLeft="30dp"
+                android:layout_marginTop="34dp"
                 android:text="Comments"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/comment_text"
+                android:layout_below="@+id/comment_text"
+                android:layout_marginLeft="26dp"
+                android:layout_marginTop="23dp"
+                android:text="i am going to put a lot of text here so that the comments scroll down or osmehting or anotheiarnaefhea fhsaufg sahfisa hfoiae ga ogr"
+                android:textSize="40dp" />
+
+            <Button
+                android:id="@+id/add_review_button"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/rating_text"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="39dp"
+                android:text="Add a More Detailed Review" />
+
+            <TextView
+                android:id="@+id/rating_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/textView1"
+                android:layout_alignTop="@+id/ratingBar1"
+                android:text="Your Rating: "
                 android:textAppearance="?android:attr/textAppearanceLarge" />
 
             <RatingBar
@@ -96,43 +125,30 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="18dp"
-                android:rating="3.5"
-                android:isIndicator="true"
+                android:layout_marginLeft="27dp"
+                android:layout_marginTop="16dp"
                 android:layout_toRightOf="@+id/rating_text" />
-
-            <TextView
-                android:id="@+id/rating_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/ratingBar1"
-                android:layout_alignLeft="@+id/comment_text"
-                android:layout_marginBottom="10dp"
-                android:text="Rating: "
-                android:textAppearance="?android:attr/textAppearanceLarge" />
-
-            <Button
-                android:id="@+id/done_button"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/add_review_button"
-                android:layout_alignBottom="@+id/add_review_button"
-                android:layout_marginLeft="16dp"
-                android:layout_toRightOf="@+id/add_review_button"
-                android:text="Done" />
-
-            <Button
-                android:id="@+id/add_review_button"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/ratingBar1"
-                android:layout_marginLeft="23dp"
-                android:layout_marginTop="36dp"
-                android:layout_toRightOf="@+id/comment_text"
-                android:text="Add Review" />
-
         </RelativeLayout>
     </ScrollView>
+
+    <TextView
+        android:id="@+id/dish_name2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="63dp"
+        android:text=""
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <RatingBar
+        android:id="@+id/ratingBar2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/dish_name2"
+        android:isIndicator="true"
+        android:maxWidth="20dp"
+        android:rating="3.5" />
 
 </RelativeLayout>
