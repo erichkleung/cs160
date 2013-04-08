@@ -1,25 +1,25 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="#ececec"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#ececec"
     tools:context=".SignupHome" >
-    
+
     <RelativeLayout
         android:id="@+id/layout_group_signup"
-        android:background="#ffffff"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true" >
+        android:layout_centerInParent="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:background="#ffffff" >
 
         <TextView
             android:id="@+id/signup_username_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
             android:text="Username:"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
@@ -29,15 +29,16 @@
             android:layout_height="50dp"
             android:layout_below="@+id/signup_username_label"
             android:layout_centerHorizontal="true"
+            android:fontFamily="Roboto"
             android:hint="@string/username_hint" />
-        
+
         <TextView
             android:id="@+id/signup_password_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="10dp"
             android:layout_below="@+id/signup_username"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
             android:text="Password:"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
@@ -47,39 +48,40 @@
             android:layout_height="50dp"
             android:layout_below="@+id/signup_password_label"
             android:layout_centerHorizontal="true"
+            android:fontFamily="Roboto"
             android:hint="@string/password_hint"
             android:inputType="textPassword" />
-        
+
         <TextView
             android:id="@+id/signup_password_confirm_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="10dp"
             android:layout_below="@+id/signup_password"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
             android:text="Confirm:"
             android:textAppearance="?android:attr/textAppearanceLarge" />
-        
-		<EditText
+
+        <EditText
             android:id="@+id/signup_password_confirm"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_below="@+id/signup_password_confirm_label"
-            android:layout_marginLeft="16dp"
             android:layout_centerHorizontal="true"
+            android:fontFamily="Roboto"
             android:hint="@string/confirm_password_hint"
             android:inputType="textPassword" />
 
         <Button
             android:id="@+id/signup_button"
-            android:layout_marginTop="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/signup_password_confirm"
             android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:onClick="signupNext"
             android:text="@string/signup_next_button"
-            android:textSize="15sp"
-            android:onClick="signupNext" />
+            android:textSize="15sp" />
+    </RelativeLayout>
 
-	</RelativeLayout>
 </RelativeLayout>
