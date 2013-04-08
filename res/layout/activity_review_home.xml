@@ -40,6 +40,8 @@
 	        android:layout_alignBaseline="@+id/textView2"
 	        android:layout_alignBottom="@+id/textView2"
 	        android:layout_alignLeft="@+id/editTextRestaurant"
+	        android:imeOptions="actionDone"
+            android:singleLine="true"
 	        android:ems="10" />
 	
 	    <EditText
@@ -48,6 +50,8 @@
 	        android:layout_height="wrap_content"
 	        android:layout_alignTop="@+id/textView1"
 	        android:layout_toRightOf="@+id/textView1"
+	        android:imeOptions="actionDone"
+            android:singleLine="true"
 	        android:ems="10" />
 	
 	    <RatingBar

@@ -68,6 +68,7 @@ public class ConfirmReview extends Activity {
 	public void cancel(View view) {
 		Intent result = new Intent();
 		result.putExtra("confirm", false);
+		setResult(Activity.RESULT_OK, result);
 		finish();
 	}
 	
@@ -100,6 +101,7 @@ public class ConfirmReview extends Activity {
 		
 		Intent result = new Intent();
 		result.putExtra("confirm", true);
+		setResult(Activity.RESULT_OK, result);
 		finish();
 	}
 
