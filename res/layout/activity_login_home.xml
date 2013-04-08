@@ -36,6 +36,7 @@
             android:layout_centerHorizontal="true"
             android:fontFamily="Roboto"
             android:hint="@string/username_hint"
+            android:textColor="#EEEEEE"
             android:textColorHint="#CCCCCC" />
 
         <TextView
@@ -58,6 +59,7 @@
             android:fontFamily="Roboto"
             android:hint="@string/password_hint"
             android:inputType="textPassword"
+            android:textColor="#EEEEEE"
             android:textColorHint="#CCCCCC" />
     </LinearLayout>
 
