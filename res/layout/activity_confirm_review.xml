@@ -1,0 +1,84 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ConfirmReview" >
+
+    <TextView
+        android:id="@+id/textViewName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textViewRestaurant"
+        android:layout_below="@+id/textViewRestaurant"
+        android:layout_marginTop="26dp"
+        android:text="Dish Name: "
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textViewName"
+        android:layout_below="@+id/textViewName"
+        android:layout_marginTop="60dp"
+        android:text="This dish will be approved for the following allergies:"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/textViewRestaurant"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="45dp"
+        android:layout_marginTop="133dp"
+        android:text="Restaurant:"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <LinearLayout
+        android:id="@+id/Layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textView3"
+        android:layout_below="@+id/textView3"
+        android:layout_marginTop="6dp"
+        android:orientation="vertical" >
+
+        <CheckBox
+        	android:id="@+id/checkBox1"
+        	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:text="Peanuts"
+        	android:checked="true"/>
+        
+        <CheckBox
+            android:id="@+id/checkBox2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Mango"
+            android:checked="true"/>
+        
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/buttonCancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/buttonConfirm"
+        android:layout_alignBottom="@+id/buttonConfirm"
+        android:layout_toLeftOf="@+id/buttonConfirm"
+        android:text="Cancel"
+        android:onClick="cancel"/>
+
+    <Button
+        android:id="@+id/buttonConfirm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/textView3"
+        android:layout_below="@+id/Layout"
+        android:layout_marginRight="102dp"
+        android:layout_marginTop="90dp"
+        android:text="Confirm"
+        android:onClick="confirm"/>
+
+</RelativeLayout>
