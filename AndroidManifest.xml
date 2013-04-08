@@ -68,7 +68,8 @@
         </activity>
         <activity
             android:name="com.trydish.review.ConfirmReview"
-            android:label="@string/title_activity_confirm_review" >
+            android:label="@string/title_activity_confirm_review"
+            android:screenOrientation="portrait" >
         </activity>
     </application>
 
