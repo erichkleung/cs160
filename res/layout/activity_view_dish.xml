@@ -9,6 +9,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
+        android:layout_marginLeft="30dp"
         android:layout_below="@+id/dish_name"
         android:text="From: Restaurant Name"
         android:textAppearance="?android:attr/textAppearanceLarge" />
@@ -20,6 +21,7 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/restaurant_name"
         android:text="Location: x miles away"
+        android:layout_marginLeft="30dp"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <TextView
@@ -78,15 +80,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" >
 
-            <Button
-                android:id="@+id/done_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/add_review_button"
-                android:layout_marginLeft="40dp"
-                android:layout_toRightOf="@+id/add_review_button"
-                android:text="Done" />
-
             <TextView
                 android:id="@+id/comment_text"
                 android:layout_width="wrap_content"
@@ -94,26 +87,8 @@
                 android:layout_alignParentLeft="true"
                 android:layout_below="@+id/add_review_button"
                 android:layout_marginTop="34dp"
-                android:text="Comments"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
-
-            <Button
-                android:id="@+id/add_review_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/ratingBar1"
-                android:layout_below="@+id/ratingBar1"
                 android:layout_marginLeft="30dp"
-                android:layout_marginTop="35dp"
-                android:text="Add Review" />
-
-            <TextView
-                android:id="@+id/rating_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/ratingBar1"
-                android:layout_alignParentLeft="true"
-                android:text="Rating: "
+                android:text="Comments"
                 android:textAppearance="?android:attr/textAppearanceLarge" />
 
             <RatingBar
@@ -121,8 +96,41 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
-                android:layout_marginLeft="45dp"
-                android:layout_toRightOf="@+id/comment_text" />
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="18dp"
+                android:rating="3.5"
+                android:isIndicator="true"
+                android:layout_toRightOf="@+id/rating_text" />
+
+            <TextView
+                android:id="@+id/rating_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/ratingBar1"
+                android:layout_alignLeft="@+id/comment_text"
+                android:layout_marginBottom="10dp"
+                android:text="Rating: "
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+            <Button
+                android:id="@+id/done_button"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/add_review_button"
+                android:layout_alignBottom="@+id/add_review_button"
+                android:layout_marginLeft="16dp"
+                android:layout_toRightOf="@+id/add_review_button"
+                android:text="Done" />
+
+            <Button
+                android:id="@+id/add_review_button"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ratingBar1"
+                android:layout_marginLeft="23dp"
+                android:layout_marginTop="36dp"
+                android:layout_toRightOf="@+id/comment_text"
+                android:text="Add Review" />
 
         </RelativeLayout>
     </ScrollView>
