@@ -31,7 +31,6 @@
             android:layout_weight="0"
             android:imeOptions="actionDone"
             android:singleLine="true"
-            android:maxLength="30"
             android:ems="10"
             />
         
