@@ -3,18 +3,19 @@ package com.trydish.review;
 import java.util.ArrayList;
 
 import android.app.Activity;
+import android.app.Instrumentation.ActivityResult;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.trydish.main.R;
 
 public class ConfirmReview extends Activity {
 
 	Intent intent;
+	ActivityResult actResult;
 	
 	
 	//Dish and Review serve no real purpose, feel free to remove/change/replace them.
@@ -95,11 +96,12 @@ public class ConfirmReview extends Activity {
 		//allergies?
 		
 		
-		Toast toast = Toast.makeText(getApplicationContext(), "Review submitted.", Toast.LENGTH_SHORT);
-		toast.show();
+//		Toast toast = Toast.makeText(getApplicationContext(), "Review submitted.", Toast.LENGTH_SHORT);
+//		toast.show();
 		
 		Intent result = new Intent();
 		result.putExtra("confirm", true);
+		this.setResult(RESULT_OK, result);
 		finish();
 	}
 

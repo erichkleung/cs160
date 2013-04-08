@@ -1,8 +1,9 @@
 package com.trydish.review;
 
-import java.util.ArrayList;
-
+import android.app.ActionBar;
 import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -19,10 +20,12 @@ import com.trydish.main.R;
 public class ReviewHome extends Fragment implements OnClickListener {
 
 	private View myView;
+	private ActionBar actionBar;
+	private static boolean returnForm = false;
 	
 	
-	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
 		View view = inflater.inflate(R.layout.activity_review_home,
 				container, false);
 		myView = view;
@@ -67,17 +70,28 @@ public class ReviewHome extends Fragment implements OnClickListener {
 		intent.putExtra("rating", rating);
 		//TODO: Image? 
 		
-		getActivity().startActivityForResult(intent, 1);
+		startActivityForResult(intent, 1);
 	}
 	
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		System.out.println("Activity result");
 		if (data.getBooleanExtra("confirm", false)) {
 			Toast toast = Toast.makeText(getActivity(), "Review submitted.", Toast.LENGTH_SHORT);
 			toast.show();
-			
 			//TODO: Go back to find?
+			ViewGroup viewGroup = (ViewGroup)myView.findViewById(R.id.review_form);
+			for (int i = 0; i < viewGroup.getChildCount(); i++) {
+				View view = viewGroup.getChildAt(i);
+				if (view instanceof EditText) {
+					((EditText) view).setText("");
+				} else if (view instanceof RatingBar) {
+					((RatingBar) view).setRating(0);
+				}
+			}
+			FragmentManager manager = getActivity().getFragmentManager();
+			manager.saveFragmentInstanceState(this);
+			actionBar = getActivity().getActionBar();
+			actionBar.setSelectedNavigationItem(0);
 		}
 		//else do nothing
 	}
@@ -87,6 +101,10 @@ public class ReviewHome extends Fragment implements OnClickListener {
 		if (view == myView.findViewById(R.id.buttonDone)) {
 			done(view);
 		}
+	}
+	
+	public void onResume(View view) {
+		
 	}
 
 }

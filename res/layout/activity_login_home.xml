@@ -13,6 +13,13 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_centerVertical="true" >
+        
+        <TextView
+            android:id="@+id/login_username_label"
+            android:text="Username"
+            android:labelFor="@+id/login_username"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
         <EditText
             android:id="@+id/login_username"
