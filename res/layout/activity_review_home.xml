@@ -13,67 +13,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:context=".ReviewHome" >
-	
-	    <TextView
-	        android:id="@+id/textView1"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_alignParentLeft="true"
-	        android:layout_alignParentTop="true"
-	        android:layout_marginLeft="15dp"
-	        android:layout_marginTop="23dp"
-	        android:text="Restaurant:"
-	        android:textAppearance="?android:attr/textAppearanceLarge" />
-	
-	    <TextView
-	        android:id="@+id/textView2"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_alignLeft="@+id/textView1"
-	        android:layout_below="@+id/textView1"
-	        android:layout_marginTop="18dp"
-	        android:text="Dish:"
-	        android:textAppearance="?android:attr/textAppearanceLarge" />
-	
-	    <EditText
-	        android:id="@+id/editTextName"
-	        android:layout_width="430dp"
-	        android:layout_height="wrap_content"
-	        android:layout_alignBaseline="@+id/textView2"
-	        android:layout_alignBottom="@+id/textView2"
-	        android:layout_alignLeft="@+id/editTextRestaurant"
-	        android:imeOptions="actionDone"
-            android:singleLine="true"
-	        android:ems="10" />
-	
-	    <EditText
-	        android:id="@+id/editTextRestaurant"
-	        android:layout_width="430dp"
-	        android:layout_height="wrap_content"
-	        android:layout_alignTop="@+id/textView1"
-	        android:layout_toRightOf="@+id/textView1"
-	        android:imeOptions="actionDone"
-            android:singleLine="true"
-	        android:ems="10" />
-	
-	    <RatingBar
-	        android:id="@+id/ratingBar"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_marginLeft="6dp"
-	        android:layout_marginBottom="-6dp"
-	        android:layout_alignBottom="@+id/textView3"
-	        android:layout_toRightOf="@+id/textView3" />
 
-	    <ImageView
-	        android:id="@+id/imageView1"
-	        android:layout_width="500dp"
-	        android:layout_height="400dp"
-	        android:layout_alignRight="@+id/editTextName"
-	        android:layout_below="@+id/editTextName"
-	        android:layout_marginTop="18dp"
-	        android:src="@drawable/cameraicon" />
->>>>>>> 8d927067107583cfab30ba606a77cc6efc9990d4
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="23dp"
+            android:text="Restaurant:"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <TextView
             android:id="@+id/textView2"
@@ -118,7 +68,7 @@
             android:layout_alignRight="@+id/editTextName"
             android:layout_below="@+id/editTextName"
             android:layout_marginTop="18dp"
-            android:src="@drawable/ic_launcher" />
+            android:src="@drawable/cameraicon" />
 
         <TextView
             android:id="@+id/textView3"
