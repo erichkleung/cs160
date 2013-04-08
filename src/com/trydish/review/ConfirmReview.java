@@ -69,6 +69,7 @@ public class ConfirmReview extends Activity {
 	public void cancel(View view) {
 		Intent result = new Intent();
 		result.putExtra("confirm", false);
+		setResult(Activity.RESULT_OK, result);
 		finish();
 	}
 	
@@ -95,13 +96,9 @@ public class ConfirmReview extends Activity {
 		currentReview.rating = intent.getDoubleExtra("rating", 0);
 		//allergies?
 		
-		
-//		Toast toast = Toast.makeText(getApplicationContext(), "Review submitted.", Toast.LENGTH_SHORT);
-//		toast.show();
-		
 		Intent result = new Intent();
 		result.putExtra("confirm", true);
-		this.setResult(RESULT_OK, result);
+		setResult(Activity.RESULT_OK, result);
 		finish();
 	}
 
