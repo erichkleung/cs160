@@ -66,6 +66,10 @@
             android:label="@string/title_activity_view_dish"
             android:screenOrientation="portrait" >
         </activity>
+        <activity
+            android:name="com.trydish.review.ConfirmReview"
+            android:label="@string/title_activity_confirm_review" >
+        </activity>
     </application>
 
 </manifest>

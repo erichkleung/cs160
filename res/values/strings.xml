@@ -32,5 +32,6 @@
     <string name="ok">OK</string>
     <string name="title_activity_view_dish">ViewDish</string>
     <string name="search_hint">Search dishes</string>
+    <string name="title_activity_confirm_review">Confirm</string>
 
 </resources>
