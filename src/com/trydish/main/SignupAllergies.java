@@ -1,12 +1,19 @@
 package com.trydish.main;
 
-import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.view.Menu;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 
 public class SignupAllergies extends Activity {
+	
+	private int leftRight = 0;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -26,12 +33,37 @@ public class SignupAllergies extends Activity {
 		AlertDialog dialog = builder.create();
 		dialog.show();
 	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.activity_sign_up_allergies, menu);
-		return true;
+	
+	public void addAllergy(View view) {
+    	EditText editText = (EditText) findViewById(R.id.add_new_allergy_box);
+    	String message = editText.getText().toString();
+    	LinearLayout allergiesList;
+    	if (leftRight == 0) {
+    		allergiesList = (LinearLayout) findViewById(R.id.left_check_boxes);
+    		leftRight++;
+    	} else {
+    		allergiesList = (LinearLayout) findViewById(R.id.right_check_boxes);
+    		leftRight--;
+    	}
+    	LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+    	params.setMargins(13, 13, 13, 13);
+    	CheckBox newAllergy = new CheckBox(this);
+    	newAllergy.setText(message);
+    	newAllergy.setChecked(true);
+    	newAllergy.setTextSize(30);
+    	allergiesList.addView(newAllergy, params);
 	}
+	
+	public void signupNext(View view) {
+		Intent intent = new Intent(this, PostLoginHome.class);
+		startActivity(intent);
+	}
+
+//	@Override
+//	public boolean onCreateOptionsMenu(Menu menu) {
+//		// Inflate the menu; this adds items to the action bar if it is present.
+//		getMenuInflater().inflate(R.menu.activity_sign_up_allergies, menu);
+//		return true;
+//	}
 
 }

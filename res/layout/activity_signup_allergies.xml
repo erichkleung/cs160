@@ -1,146 +1,183 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".SignUpAllergies" >
-	
-    <TextView 
-        android:id="@+id/signup_allergies"
-        android:text="@string/signup_allergies_title"
-        android:layout_centerHorizontal="true" 
-        android:layout_width="wrap_content"
+
+    <RelativeLayout
+        android:layout_width="fill_parent" 
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:textSize="50sp" />
-    
-    <TextView 
-        android:id="@+id/signup_allergies_warning"
-        android:text="@string/allergies_warning"
-        android:layout_centerHorizontal="true" 
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:layout_below="@+id/signup_allergies"
-        android:textSize="20sp" />
-    
-    <LinearLayout
-        android:id="@+id/allergies_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:baselineAligned="false"
-        android:layout_below="@+id/signup_allergies_warning" >
-        
-        <LinearLayout
-            android:id="@+id/left_check_boxes"
-            android:layout_margin="15dp"
-            android:layout_width="0dp"
-            android:layout_weight="1"
+        android:layout_margin="20dp" >
+
+        <TextView
+            android:id="@+id/signup_allergies"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:text="@string/signup_allergies_title"
+            android:textSize="50sp" />
 
-            <CheckBox
-                android:layout_margin="10dp"
-                android:id="@+id/allergy_dairy_checkbox"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/dairy"
-                android:textSize="30sp" />
-
-            <CheckBox
-                android:layout_margin="10dp"
-                android:id="@+id/allergy_eggs_checkbox"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/eggs"
-                android:textSize="30sp" />
-            
-            <CheckBox
-                android:layout_margin="10dp"
-                android:id="@+id/allergy_fish_checkbox"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/fish"
-                android:textSize="30sp" />
-            
-            <CheckBox
-                android:layout_margin="10dp"
-                android:id="@+id/allergy_peanuts_checkbox"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/peanuts"
-                android:textSize="30sp" />
-            
-            <CheckBox
-                android:layout_margin="10dp"
-                android:id="@+id/allergy_treenuts_checkbox"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/treenuts"
-                android:textSize="30sp" />
-            
-        </LinearLayout>
+        <TextView
+            android:id="@+id/signup_allergies_warning"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/signup_allergies"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:text="@string/allergies_warning"
+            android:textSize="20sp" />
 
         <LinearLayout
-            android:id="@+id/right_check_boxes"
-            android:layout_margin="15dp"
-            android:layout_width="0dp"
-            android:layout_weight="1"
+            android:id="@+id/allergies_layout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:layout_below="@+id/signup_allergies_warning"
+            android:layout_marginTop="20dp"
+            android:baselineAligned="false"
+            android:orientation="horizontal" >
 
-            <CheckBox
-                android:layout_margin="10dp"
-                android:id="@+id/allergy_sesame_checkbox"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/left_check_boxes"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@string/sesame"
-                android:textSize="30sp" />
+                android:layout_weight="1"
+                android:orientation="vertical" >
 
-            <CheckBox
-                android:layout_margin="10dp"
-                android:id="@+id/allergy_shellfish_checkbox"
-                android:layout_width="wrap_content"
+                <CheckBox
+                    android:id="@+id/allergy_dairy_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:text="@string/dairy"
+                    android:textSize="30sp" />
+
+                <CheckBox
+                    android:id="@+id/allergy_eggs_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:text="@string/eggs"
+                    android:textSize="30sp" />
+
+                <CheckBox
+                    android:id="@+id/allergy_fish_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:text="@string/fish"
+                    android:textSize="30sp" />
+
+                <CheckBox
+                    android:id="@+id/allergy_peanuts_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:text="@string/peanuts"
+                    android:textSize="30sp" />
+
+                <CheckBox
+                    android:id="@+id/allergy_treenuts_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:text="@string/treenuts"
+                    android:textSize="30sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/right_check_boxes"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@string/shellfish"
-                android:textSize="30sp" />
-            
-            <CheckBox
-                android:layout_margin="10dp"
-                android:id="@+id/allergy_soy_checkbox"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/soy"
-                android:textSize="30sp" />
-            
-            <CheckBox
-                android:layout_margin="10dp"
-                android:id="@+id/allergy_wheat_checkbox"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/wheat"
-                android:textSize="30sp" />
-            
-            <CheckBox
-                android:layout_margin="10dp"
-                android:id="@+id/allergy_gluten_checkbox"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/gluten"
-                android:textSize="30sp" />
-            
+                android:layout_weight="1"
+                android:orientation="vertical" >
+
+                <CheckBox
+                    android:id="@+id/allergy_sesame_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:text="@string/sesame"
+                    android:textSize="30sp" />
+
+                <CheckBox
+                    android:id="@+id/allergy_shellfish_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:text="@string/shellfish"
+                    android:textSize="30sp" />
+
+                <CheckBox
+                    android:id="@+id/allergy_soy_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:text="@string/soy"
+                    android:textSize="30sp" />
+
+                <CheckBox
+                    android:id="@+id/allergy_wheat_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:text="@string/wheat"
+                    android:textSize="30sp" />
+
+                <CheckBox
+                    android:id="@+id/allergy_gluten_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:text="@string/gluten"
+                    android:textSize="30sp" />
+            </LinearLayout>
         </LinearLayout>
 
-    </LinearLayout>
-    
-    <Button
-        android:id="@+id/signup_button_confirm"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/allergies_layout"
-        android:layout_centerHorizontal="true"
-        android:onClick="signupNext"
-        android:text="Confirm"
-        android:textSize="15sp" />
+        <TextView
+            android:id="@+id/add_new_allergy_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/allergies_layout"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:text="Add New:"
+            android:textSize="25sp" />
 
-</RelativeLayout>
+        <LinearLayout
+            android:id="@+id/new_allergy_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/add_new_allergy_text"
+            android:layout_margin="20dp"
+            android:baselineAligned="false" >
+
+            <EditText
+                android:id="@+id/add_new_allergy_box"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Your allergy here"
+                android:textSize="30sp" />
+
+            <Button
+                android:id="@+id/add_new_allergy_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.2"
+                android:onClick="addAllergy"
+                android:text="Add" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/signup_button_confirm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/new_allergy_layout"
+            android:layout_centerHorizontal="true"
+            android:onClick="signupNext"
+            android:text="Confirm"
+            android:textSize="15sp" />
+    </RelativeLayout>
+
+</ScrollView>

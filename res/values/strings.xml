@@ -32,5 +32,12 @@
     <string name="ok">OK</string>
     <string name="title_activity_view_dish">ViewDish</string>
     <string name="search_hint">Search dishes</string>
+    <string name="username_hint">Username</string>
+    <string name="password_hint">Password</string>
+    <string name="confirm_password_hint">Confirm Password</string>
+    <string name="login_or">Or</string>
+    <string name="login_button_text">Login</string>
+    <string name="login_signup_button_text">Sign Up for TryDish</string>
+    <string name="signup_next_button">Next</string>
 
 </resources>

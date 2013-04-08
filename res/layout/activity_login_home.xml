@@ -2,37 +2,42 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#ececec"
     tools:context=".LoginHome" >
     
     <RelativeLayout
         android:id="@+id/layout_group"
-        android:layout_width="wrap_content"
+        android:background="#ffffff"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true" >
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_centerVertical="true" >
 
         <EditText
             android:id="@+id/login_username"
-            android:layout_width="400dp"
+            android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_centerHorizontal="true"
-            android:hint="Username" />
+            android:hint="@string/username_hint" />
 
         <EditText
             android:id="@+id/login_password"
-            android:layout_width="400dp"
+            android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_below="@+id/login_username"
             android:layout_centerHorizontal="true"
-            android:hint="Password"
+            android:hint="@string/password_hint"
             android:inputType="textPassword" />
 
         <Button
             android:id="@+id/login_button"
-            android:layout_width="250dp"
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/login_password"
             android:layout_centerHorizontal="true"
-            android:text="Login"
+            android:text="@string/login_button_text"
             android:textSize="15sp"
             android:onClick="loginCheck" />
 
@@ -42,15 +47,15 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/login_button"
             android:layout_centerHorizontal="true"
-            android:text="Or" />
+            android:text="@string/login_or" />
 
         <Button
             android:id="@+id/signup_button"
-            android:layout_width="250dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/or_text"
             android:layout_centerHorizontal="true"
-            android:text="Sign Up Now"
+            android:text="@string/login_signup_button_text"
             android:textSize="15sp"
             android:onClick="signupButton" />
 

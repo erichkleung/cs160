@@ -15,7 +15,7 @@
         android:theme="@style/AppTheme"
         android:debuggable="true" >
         <activity
-            android:windowSoftInputMode="adjustPan"
+            android:windowSoftInputMode="stateHidden|adjustResize"
             android:name="com.trydish.main.LoginHome"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
@@ -46,11 +46,13 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
+            android:windowSoftInputMode="stateHidden|adjustResize"
             android:name="com.trydish.main.SignupHome"
             android:label="@string/title_activity_signup_home"
             android:screenOrientation="portrait" >
         </activity>
         <activity
+            android:windowSoftInputMode="stateHidden|adjustResize"
             android:name="com.trydish.main.SignupAllergies"
             android:label="@string/title_activity_sign_up_allergies"
             android:screenOrientation="portrait" >
