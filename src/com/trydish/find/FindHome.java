@@ -1,7 +1,16 @@
 package com.trydish.find;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
+
 import com.trydish.main.R;
 
+import android.location.Address;
+import android.location.Criteria;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.Fragment;
@@ -39,6 +48,10 @@ public class FindHome extends Fragment implements OnClickListener {
 	private String searchDistance = "1 mile";
 	private static Context context;
 	private View myView;
+	private LocationManager manager;
+	private Location location;
+	private double latitude;
+	private double longitude;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -114,10 +127,45 @@ public class FindHome extends Fragment implements OnClickListener {
 	                }
 	            } }); 
 		 */
+		
+		//
+		manager =
+                (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        setLocation();
+		
 		return view;
 
 	}
 
+	public void setLocation() {
+		List<Address> myList = null;
+    	String providerName = manager.getBestProvider(new Criteria(), true);
+    	System.out.println("name is " +providerName);
+    	location = manager.getLastKnownLocation(providerName);
+    	if (location == null) {
+    		
+    	} else {
+    		latitude = location.getLatitude();
+        	longitude = location.getLongitude();
+    	}
+    	Geocoder myLocation = new Geocoder(context.getApplicationContext(), Locale.getDefault());   
+    	try {
+			myList = myLocation.getFromLocation(latitude, longitude, 1);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	if (myList.size() >= 1) {
+    		Log.d("FindHome", Integer.toString(myList.size()));
+    		Log.d("FindHome", myList.get(0).getAddressLine(1));
+    		Button b = (Button) myView.findViewById(R.id.my_location);
+    		b.setText(myList.get(0).getAddressLine(1));
+    	} else {
+    		Log.d("FindHome", "null");
+    	}
+    	
+    }
+	
 	//Called when search icon is clicked
 	public void searchClicked(View v) {
 		//EditText et = (EditText) myView.findViewById(R.id.search_box);
