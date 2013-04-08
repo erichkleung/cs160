@@ -3,13 +3,12 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_below="@+id/ratingBar1"
-    android:layout_marginTop="30dp"
     android:layout_toRightOf="@+id/button2" >
 
     <RelativeLayout
-        android:id="@+id/review_form"
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/review_form"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:context=".ReviewHome" >
@@ -21,9 +20,9 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:layout_marginLeft="15dp"
-            android:layout_marginTop="23dp"
+            android:layout_marginTop="20dp"
             android:text="Restaurant:"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:textSize="20dp" />
 
         <TextView
             android:id="@+id/textView2"
@@ -31,25 +30,28 @@
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/textView1"
             android:layout_below="@+id/textView1"
-            android:layout_marginTop="18dp"
-            android:text="Dish:"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:layout_marginTop="20dp"
+            android:text="Dish Name:"
+            android:textSize="20dp" />
 
         <EditText
             android:id="@+id/editTextName"
-            android:layout_width="430dp"
+            android:layout_width="450dp"
             android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/textView2"
             android:layout_alignBottom="@+id/textView2"
-            android:layout_alignLeft="@+id/editTextRestaurant"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="-8dp"
+            android:layout_marginRight="15dp"
             android:ems="10" />
 
         <EditText
             android:id="@+id/editTextRestaurant"
-            android:layout_width="430dp"
+            android:layout_width="450dp"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/textView1"
-            android:layout_toRightOf="@+id/textView1"
+            android:layout_alignBottom="@+id/textView1"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="-8dp"
+            android:layout_marginRight="15dp"
             android:ems="10" />
 
         <RatingBar
@@ -57,17 +59,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/textView3"
-            android:layout_marginBottom="-6dp"
-            android:layout_marginLeft="6dp"
+            android:layout_marginBottom="-18dp"
+            android:layout_marginLeft="10dp"
             android:layout_toRightOf="@+id/textView3" />
 
         <ImageView
             android:id="@+id/imageView1"
             android:layout_width="500dp"
             android:layout_height="400dp"
-            android:layout_alignRight="@+id/editTextName"
             android:layout_below="@+id/editTextName"
-            android:layout_marginTop="18dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="27dp"
             android:src="@drawable/cameraicon" />
 
         <TextView
@@ -77,7 +79,7 @@
             android:layout_alignLeft="@+id/textView2"
             android:layout_below="@+id/imageView1"
             android:layout_marginTop="27dp"
-            android:text="Rating:"
+            android:text="Your Rating:"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <TextView

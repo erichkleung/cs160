@@ -177,6 +177,7 @@
         android:layout_above="@+id/horizontalScrollView1"
         android:layout_alignParentRight="true"
         android:isIndicator="true"
+        android:layout_marginRight="15dp"
         android:maxWidth="20dp"
         android:rating="3.5" />
 
