@@ -157,27 +157,21 @@ public class FindHome extends Fragment implements OnClickListener {
 		}
     	if (myList.size() >= 1) {
     		String address = "default";
-    		Log.d("FindHome", Integer.toString(myList.size()));
-    		Log.d("==Address==", myList.get(0).getAddressLine(0));
-    		Log.d("==ADdress==", myList.get(0).getAddressLine(1));
-    		Log.d("==Address==", myList.get(0).getAddressLine(2));
-    		Log.d("==Address==", myList.get(0).getAddressLine(3));
-    		try{
-    			Log.d("==Address==", myList.get(0).getAddressLine(2));
-    		} catch(NullPointerException e) {
-    			address = myList.get(0).getAddressLine(1);
-    		}
+    		//Log.d("FindHome", Integer.toString(myList.size()));
+    		//Log.d("==Address==", myList.get(0).getAddressLine(0));
+    		//Log.d("==ADdress==", myList.get(0).getAddressLine(1));
+    		//Log.d("==Address==", myList.get(0).getAddressLine(2));
+    		//Log.d("==Address==", myList.get(0).getAddressLine(3));
+    		Boolean flag = false;
     		try{
     			Log.d("==Address==", myList.get(0).getAddressLine(3));
     		} catch(NullPointerException e) {
+    			address = myList.get(0).getAddressLine(1);
+    			flag = true;
+    		}
+    		if (flag == false) {
     			address = myList.get(0).getAddressLine(2);
     		}
-    		try{
-    			Log.d("==Address==", myList.get(0).getAddressLine(4));
-    		} catch(NullPointerException e) {
-    			address = myList.get(0).getAddressLine(3);
-    		}
-    		Log.d("==Address==", myList.get(0).getAddressLine(4));
     		String addressLine[] = address.split(" ", 2);
     		String first = addressLine[0];
     		first = first.replace(",", " ");
