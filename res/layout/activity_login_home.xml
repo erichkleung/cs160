@@ -2,12 +2,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ececec"
+    android:background="#BA4A00"
     tools:context=".LoginHome" >
     
     <RelativeLayout
         android:id="@+id/layout_group"
-        android:background="#ffffff"
+        android:background="#BA4A00"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
@@ -29,7 +29,8 @@
             android:layout_height="50dp"
             android:layout_below="@+id/login_username_label"
             android:layout_centerHorizontal="true"
-            android:hint="@string/username_hint" />
+            android:hint="@string/username_hint"
+             />
         
         <TextView
             android:id="@+id/login_password_label"
@@ -48,7 +49,8 @@
             android:layout_below="@+id/login_password_label"
             android:layout_centerHorizontal="true"
             android:hint="@string/password_hint"
-            android:inputType="textPassword" />
+            android:inputType="textPassword"
+            android:background="#FFFFFF" />
 
         <Button
             android:id="@+id/login_button"
