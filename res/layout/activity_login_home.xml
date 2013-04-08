@@ -5,99 +5,96 @@
     android:background="#BA4A00"
     tools:context=".LoginHome" >
 
-    <RelativeLayout
-        android:id="@+id/layout_group"
-        android:layout_width="fill_parent"
+    <LinearLayout
+        android:id="@+id/linear"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp" >
-
-        <LinearLayout
-            android:id="@+id/linear"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/login_button"
-            android:background="#FFFFFF"
-            android:orientation="vertical"
-            tools:context=".HomeScreen" >
-
-            <TextView
-                android:id="@+id/login_username_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
-                android:text="Username:"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="#FFFFFF" />
-
-            <EditText
-                android:id="@+id/login_username"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_below="@+id/login_username_label"
-                android:layout_centerHorizontal="true"
-                android:hint="@string/username_hint"
-                android:fontFamily="Roboto" />
-
-            <TextView
-                android:id="@+id/login_password_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/login_username"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
-                android:text="Password:"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="#FFFFFF" />
-
-            <EditText
-                android:id="@+id/login_password"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_below="@+id/login_password_label"
-                android:layout_centerHorizontal="true"
-                android:hint="@string/password_hint"
-                android:inputType="textPassword"
-                android:fontFamily="Roboto" />
-        </LinearLayout>
-
-
-        <Button
-            android:id="@+id/login_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dp"
-            android:onClick="loginCheck"
-            android:text="@string/login_button_text"
-            android:textColor="#FFFFFF"
-            android:textSize="15sp"
-            android:color="#E6E6E6" />
-
+        android:layout_marginRight="20dp"
+        android:background="#BA4A00"
+        android:orientation="vertical"
+        tools:context=".HomeScreen" >
 
         <TextView
-            android:id="@+id/or_text"
+            android:id="@+id/login_username_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/login_button"
-            android:layout_centerHorizontal="true"
-            android:text="@string/login_or"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:text="Username:"
+            android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="#FFFFFF" />
 
-        <Button
-            android:id="@+id/signup_button"
+        <EditText
+            android:id="@+id/login_username"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/or_text"
+            android:layout_height="50dp"
+            android:layout_below="@+id/login_username_label"
             android:layout_centerHorizontal="true"
-            android:onClick="signupButton"
-            android:text="@string/login_signup_button_text"
-            android:textColor="#FFFFFF"
-            android:textSize="15sp"
-            android:color="#E6E6E6" />
+            android:fontFamily="Roboto"
+            android:hint="@string/username_hint"
+            android:textColorHint="#CCCCCC" />
 
-    </RelativeLayout>
+        <TextView
+            android:id="@+id/login_password_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/login_username"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:text="Password:"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="#FFFFFF" />
+
+        <EditText
+            android:id="@+id/login_password"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@+id/login_password_label"
+            android:layout_centerHorizontal="true"
+            android:fontFamily="Roboto"
+            android:hint="@string/password_hint"
+            android:inputType="textPassword"
+            android:textColorHint="#CCCCCC" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/login_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/linear"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp"
+        android:onClick="loginCheck"
+        android:text="@string/login_button_text"
+        android:textColor="#FFFFFF"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/or_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/login_button"
+        android:layout_centerHorizontal="true"
+        android:text="@string/login_or"
+        android:textColor="#FFFFFF" />
+
+    <Button
+        android:id="@+id/signup_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/or_text"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:onClick="signupButton"
+        android:text="@string/login_signup_button_text"
+        android:textColor="#FFFFFF"
+        android:textSize="15sp" />
 
 </RelativeLayout>
