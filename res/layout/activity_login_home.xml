@@ -13,19 +13,38 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_centerVertical="true" >
+        
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Username:"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <EditText
             android:id="@+id/login_username"
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:layout_toRightOf="@+id/textView1"
             android:layout_centerHorizontal="true"
             android:hint="@string/username_hint" />
+        
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/login_username"
+            android:text="Password:"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <EditText
             android:id="@+id/login_password"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_below="@+id/login_username"
+            android:layout_toRightOf="@+id/textView2"
             android:layout_centerHorizontal="true"
             android:hint="@string/password_hint"
             android:inputType="textPassword" />
