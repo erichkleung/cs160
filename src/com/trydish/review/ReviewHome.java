@@ -3,7 +3,6 @@ package com.trydish.review;
 import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -21,7 +20,6 @@ public class ReviewHome extends Fragment implements OnClickListener {
 
 	private View myView;
 	private ActionBar actionBar;
-	private static boolean returnForm = false;
 	
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -78,7 +76,7 @@ public class ReviewHome extends Fragment implements OnClickListener {
 		if (data.getBooleanExtra("confirm", false)) {
 			Toast toast = Toast.makeText(getActivity(), "Review submitted.", Toast.LENGTH_SHORT);
 			toast.show();
-			//TODO: Go back to find?
+			
 			ViewGroup viewGroup = (ViewGroup)myView.findViewById(R.id.review_form);
 			for (int i = 0; i < viewGroup.getChildCount(); i++) {
 				View view = viewGroup.getChildAt(i);
