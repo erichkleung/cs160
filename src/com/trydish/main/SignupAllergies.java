@@ -1,9 +1,11 @@
 package com.trydish.main;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +32,10 @@ public class SignupAllergies extends Activity {
 			}
 		});
 		
+		ActionBar actionBar = getActionBar();
+		actionBar.setDisplayShowHomeEnabled(false);
+		actionBar.setDisplayShowTitleEnabled(false);
+		
 		AlertDialog dialog = builder.create();
 		dialog.show();
 	}
@@ -50,6 +56,7 @@ public class SignupAllergies extends Activity {
     	CheckBox newAllergy = new CheckBox(this);
     	newAllergy.setText(message);
     	newAllergy.setChecked(true);
+    	newAllergy.setTextColor(Color.WHITE);
     	newAllergy.setTextSize(30);
     	allergiesList.addView(newAllergy, params);
 	}
