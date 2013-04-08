@@ -3,6 +3,10 @@
     package="com.trydish.main"
     android:versionCode="1"
     android:versionName="1.0" >
+    
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <uses-sdk
         android:minSdkVersion="13"
@@ -13,7 +17,9 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme"
-        android:debuggable="true" >
+        android:debuggable="true"
+         >
+         
         <activity
             android:windowSoftInputMode="stateHidden|adjustResize"
             android:name="com.trydish.main.LoginHome"
@@ -60,6 +66,11 @@
         <activity
             android:name="com.trydish.find.ViewDish"
             android:label="@string/title_activity_view_dish"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.trydish.review.ConfirmReview"
+            android:label="@string/title_activity_confirm_review"
             android:screenOrientation="portrait" >
         </activity>
     </application>
