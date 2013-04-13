@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".SignUpAllergies"
-    android:background="#BA4A00" >
+    android:background="#C55A24" >
 
     <RelativeLayout
         android:layout_width="fill_parent" 
@@ -183,7 +183,8 @@
                 android:layout_weight="0.2"
                 android:onClick="addAllergy"
                 android:text="Add"
-                android:textColor="#FFFFFF" />
+                android:textColor="#FFFFFF"
+                android:background="@drawable/button_states" />
         </LinearLayout>
 
         <Button
@@ -195,7 +196,8 @@
             android:onClick="signupNext"
             android:text="Confirm"
             android:textSize="15sp"
-            android:textColor="#FFFFFF" />
+            android:textColor="#FFFFFF"
+            android:background="@drawable/button_states" />
     </RelativeLayout>
 
 </ScrollView>

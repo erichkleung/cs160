@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#BA4A00"
+    android:background="#C55A24"
     tools:context=".SignupHome" >
 
     <ImageView
@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:layout_alignParentTop="true"
-        android:src="@drawable/login3" />
+        android:src="@drawable/logo_home" />
 
     <RelativeLayout
         android:id="@+id/layout_group_signup"
@@ -20,7 +20,7 @@
         android:layout_centerInParent="true"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:background="#BA4A00" >
+        android:background="@drawable/rounded_rect" >
 
         <TextView
             android:id="@+id/signup_username_label"
@@ -99,7 +99,8 @@
             android:onClick="signupNext"
             android:text="@string/signup_next_button"
             android:textSize="15sp"
-            android:textColor="#FFFFFF" />
+            android:textColor="#FFFFFF"
+            android:background="@drawable/button_states" />
     </RelativeLayout>
 
 </RelativeLayout>
