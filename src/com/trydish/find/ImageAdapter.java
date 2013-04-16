@@ -1,17 +1,13 @@
 package com.trydish.find;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-
 import com.trydish.main.R;
 
 public class ImageAdapter extends BaseAdapter {
@@ -54,14 +50,6 @@ public class ImageAdapter extends BaseAdapter {
 	private Integer[] mThumbIds = {
 			R.drawable.food, R.drawable.wings,
 			R.drawable.dimsum, R.drawable.burger,
-//			R.drawable.food1, R.drawable.food, R.drawable.wings,
-//			R.drawable.dimsum, R.drawable.burger,
-//			R.drawable.food1, R.drawable.food, R.drawable.wings,
-//			R.drawable.dimsum, R.drawable.burger,
-//			R.drawable.food1, R.drawable.food, R.drawable.wings,
-//			R.drawable.dimsum, R.drawable.burger,
-//			R.drawable.food1, R.drawable.food, R.drawable.wings,
-//			R.drawable.dimsum, R.drawable.burger,
-//			R.drawable.food1
+
 	};
 }

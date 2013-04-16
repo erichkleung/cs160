@@ -3,12 +3,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".SignUpAllergies"
-    android:background="#C55A24" >
+    android:background="@drawable/background" >
 
     <RelativeLayout
         android:layout_width="fill_parent" 
         android:layout_height="wrap_content"
-        android:layout_margin="20dp" >
+        android:layout_margin="20dp"
+        android:background="@drawable/rounded_rect" >
 
         <TextView
             android:id="@+id/signup_allergies"
@@ -18,7 +19,7 @@
             android:layout_marginTop="20dp"
             android:text="@string/signup_allergies_title"
             android:textSize="50sp"
-            android:textColor="#FFFFFF" />
+            android:textColor="#000000" />
 
         <TextView
             android:id="@+id/signup_allergies_warning"
@@ -29,7 +30,7 @@
             android:layout_marginTop="20dp"
             android:text="@string/allergies_warning"
             android:textSize="20sp"
-            android:textColor="#FFFFFF" />
+            android:textColor="#000000" />
 
         <LinearLayout
             android:id="@+id/allergies_layout"
@@ -53,7 +54,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:text="@string/dairy"
-                    android:textColor="#FFFFFF"
+                    android:textColor="#000000"
                     android:textSize="30sp" />
 
                 <CheckBox
@@ -62,7 +63,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:text="@string/eggs"
-                    android:textColor="#FFFFFF"
+                    android:textColor="#000000"
                     android:textSize="30sp" />
 
                 <CheckBox
@@ -71,7 +72,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:text="@string/fish"
-                    android:textColor="#FFFFFF"
+                    android:textColor="#000000"
                     android:textSize="30sp" />
 
                 <CheckBox
@@ -80,7 +81,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:text="@string/peanuts"
-                    android:textColor="#FFFFFF"
+                    android:textColor="#000000"
                     android:textSize="30sp" />
 
                 <CheckBox
@@ -89,7 +90,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:text="@string/treenuts"
-                    android:textColor="#FFFFFF"
+                    android:textColor="#000000"
                     android:textSize="30sp" />
             </LinearLayout>
 
@@ -106,7 +107,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:text="@string/sesame"
-                    android:textColor="#FFFFFF"
+                    android:textColor="#000000"
                     android:textSize="30sp" />
 
                 <CheckBox
@@ -115,7 +116,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:text="@string/shellfish"
-                    android:textColor="#FFFFFF"
+                    android:textColor="#000000"
                     android:textSize="30sp" />
 
                 <CheckBox
@@ -124,7 +125,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:text="@string/soy"
-                    android:textColor="#FFFFFF"
+                    android:textColor="#000000"
                     android:textSize="30sp" />
 
                 <CheckBox
@@ -133,7 +134,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:text="@string/wheat"
-                    android:textColor="#FFFFFF"
+                    android:textColor="#000000"
                     android:textSize="30sp" />
 
                 <CheckBox
@@ -142,7 +143,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:text="@string/gluten"
-                    android:textColor="#FFFFFF"
+                    android:textColor="#000000"
                     android:textSize="30sp" />
             </LinearLayout>
         </LinearLayout>
@@ -156,7 +157,7 @@
             android:layout_marginLeft="20dp"
             android:text="Add New:"
             android:textSize="25sp"
-            android:textColor="#FFFFFF" />
+            android:textColor="#000000" />
 
         <LinearLayout
             android:id="@+id/new_allergy_layout"
@@ -173,7 +174,7 @@
                 android:layout_weight="1"
                 android:hint="Your allergy here"
                 android:textSize="30sp"
-                android:textColor="#EEEEEE"
+                android:textColor="#000000"
             	android:textColorHint="#CCCCCC" />
 
             <Button
@@ -183,7 +184,7 @@
                 android:layout_weight="0.2"
                 android:onClick="addAllergy"
                 android:text="Add"
-                android:textColor="#FFFFFF"
+                android:textColor="#000000"
                 android:background="@drawable/button_states" />
         </LinearLayout>
 
@@ -196,7 +197,7 @@
             android:onClick="signupNext"
             android:text="Confirm"
             android:textSize="15sp"
-            android:textColor="#FFFFFF"
+            android:textColor="#000000"
             android:background="@drawable/button_states" />
     </RelativeLayout>
 
