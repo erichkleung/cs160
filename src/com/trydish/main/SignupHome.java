@@ -14,9 +14,7 @@ public class SignupHome extends Activity {
 		setContentView(R.layout.activity_signup_home);
 		
 		ActionBar actionBar = getActionBar();
-		actionBar.setDisplayShowHomeEnabled(false);
-		actionBar.setDisplayShowTitleEnabled(false);
-		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+		actionBar.hide();
 	}
 	
 	public void signupNext(View view) {

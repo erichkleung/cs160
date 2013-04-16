@@ -33,8 +33,7 @@ public class SignupAllergies extends Activity {
 		});
 		
 		ActionBar actionBar = getActionBar();
-		actionBar.setDisplayShowHomeEnabled(false);
-		actionBar.setDisplayShowTitleEnabled(false);
+		actionBar.hide();
 		
 		AlertDialog dialog = builder.create();
 		dialog.show();

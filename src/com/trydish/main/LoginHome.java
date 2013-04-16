@@ -15,9 +15,7 @@ public class LoginHome extends Activity {
 		setContentView(R.layout.activity_login_home);
 		
 		ActionBar actionBar = getActionBar();
-		actionBar.setDisplayShowHomeEnabled(false);
-		actionBar.setDisplayShowTitleEnabled(false);
-		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+		actionBar.hide();
 	}
 	
 	public void loginCheck(View view) {
