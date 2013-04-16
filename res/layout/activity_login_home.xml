@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#C55A24"
+    android:background="@drawable/back"
     tools:context=".LoginHome" >
 
     <ImageView
@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:layout_alignParentTop="true"
-        android:src="@drawable/logo_home" />
+        android:src="@drawable/trydishtext" />
 
     <LinearLayout
         android:id="@+id/linear"
