@@ -27,6 +27,7 @@ import android.view.WindowManager;
 import android.widget.AdapterView.OnItemClickListener;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
@@ -189,6 +190,9 @@ public class FindHome extends Fragment implements OnClickListener {
 		//et.setLayoutParams(new TableLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, 1f));
 		//hideSoftKeyboard(myView);
 		Log.d("Find Home", "search clicked");
+		InputMethodManager imm = (InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
+		EditText et = (EditText) myView.findViewById(R.id.search_box);
+		imm.hideSoftInputFromWindow(et.getWindowToken(), 0);
 	}
 
 	//Called when the My Location button is clicked to change location
