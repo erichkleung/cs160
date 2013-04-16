@@ -11,6 +11,8 @@ import android.location.Criteria;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.Fragment;
@@ -41,6 +43,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.view.KeyEvent;
 
+
+
 public class FindHome extends Fragment implements OnClickListener {
 
 	//Implements OnClickListener so that we don't have to define onClick methods in the LoginHome
@@ -53,6 +57,7 @@ public class FindHome extends Fragment implements OnClickListener {
 	private Location location;
 	private double latitude;
 	private double longitude;
+
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -148,18 +153,26 @@ public class FindHome extends Fragment implements OnClickListener {
 		} else {
 			latitude = location.getLatitude();
 			longitude = location.getLongitude();
-			
-			try {
-				Geocoder myLocation = new Geocoder(context.getApplicationContext(), Locale.getDefault());
-				List<Address> myList = myLocation.getFromLocation(latitude, longitude, 1);
-				int address_lines = myList.get(0).getMaxAddressLineIndex();
 
-				if (address_lines >= 1) {
-					String address = myList.get(0).getAddressLine(address_lines - 1);
-					String city = address.split(",", 2)[0];
-					location_button.setText(city);
-				} 			
-			} catch (Exception e) {}
+			try {
+				ConnectivityManager cm = (ConnectivityManager) this.context.getSystemService(Context.CONNECTIVITY_SERVICE);
+				NetworkInfo activeNetworkInfo = cm.getActiveNetworkInfo();
+				boolean isConnected = activeNetworkInfo != null && activeNetworkInfo.isConnected(); 
+				
+				if (isConnected) {
+					Geocoder myLocation = new Geocoder(context.getApplicationContext(), Locale.getDefault());
+					List<Address> myList = myLocation.getFromLocation(latitude, longitude, 1);
+					int address_lines = myList.get(0).getMaxAddressLineIndex();
+
+					if (address_lines >= 1) {
+						String address = myList.get(0).getAddressLine(address_lines - 1);
+						String city = address.split(",", 2)[0];
+						location_button.setText(city);
+					}
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
