@@ -108,8 +108,7 @@ public class FindHome extends Fragment implements OnClickListener {
 
 
 		//Hide keyboard
-		getActivity().getWindow().setSoftInputMode(
-				WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+		getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
 		//define the behavior of the "DONE" key on the keyboard
 		/*
@@ -127,62 +126,42 @@ public class FindHome extends Fragment implements OnClickListener {
 	                }
 	            } }); 
 		 */
-		
+
 		//
-		manager =
-                (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-        setLocation();
-		
+		manager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+		setLocation();
+
 		return view;
 
 	}
 
 	public void setLocation() {
-		List<Address> myList = null;
-    	String providerName = manager.getBestProvider(new Criteria(), true);
-    	System.out.println("name is " +providerName);
-    	location = manager.getLastKnownLocation(providerName);
-    	if (location == null) {
-    		
-    	} else {
-    		latitude = location.getLatitude();
-        	longitude = location.getLongitude();
-    	}
-    	Geocoder myLocation = new Geocoder(context.getApplicationContext(), Locale.getDefault());   
-    	try {
-			myList = myLocation.getFromLocation(latitude, longitude, 1);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		String providerName = manager.getBestProvider(new Criteria(), true);
+		location = manager.getLastKnownLocation(providerName);
+
+		Button location_button = (Button) myView.findViewById(R.id.my_location);
+		location_button.setText("My Location");
+
+		if (location == null) {
+			location_button.setText("GPS Off");
+		} else {
+			latitude = location.getLatitude();
+			longitude = location.getLongitude();
+			
+			try {
+				Geocoder myLocation = new Geocoder(context.getApplicationContext(), Locale.getDefault());
+				List<Address> myList = myLocation.getFromLocation(latitude, longitude, 1);
+				int address_lines = myList.get(0).getMaxAddressLineIndex();
+
+				if (address_lines >= 1) {
+					String address = myList.get(0).getAddressLine(address_lines - 1);
+					String city = address.split(",", 2)[0];
+					location_button.setText(city);
+				} 			
+			} catch (Exception e) {}
 		}
-    	if (myList.size() >= 1) {
-    		String address = "default";
-    		//Log.d("FindHome", Integer.toString(myList.size()));
-    		//Log.d("==Address==", myList.get(0).getAddressLine(0));
-    		//Log.d("==ADdress==", myList.get(0).getAddressLine(1));
-    		//Log.d("==Address==", myList.get(0).getAddressLine(2));
-    		//Log.d("==Address==", myList.get(0).getAddressLine(3));
-    		Boolean flag = false;
-    		try{
-    			Log.d("==Address==", myList.get(0).getAddressLine(3));
-    		} catch(NullPointerException e) {
-    			address = myList.get(0).getAddressLine(1);
-    			flag = true;
-    		}
-    		if (flag == false) {
-    			address = myList.get(0).getAddressLine(2);
-    		}
-    		String addressLine[] = address.split(" ", 2);
-    		String first = addressLine[0];
-    		first = first.replace(",", " ");
-    		Button b = (Button) myView.findViewById(R.id.my_location);
-    		b.setText(first);
-    	} else {
-    		Log.d("FindHome", "null");
-    	}
-    	
-    }
-	
+	}
+
 	//Called when search icon is clicked
 	public void searchClicked(View v) {
 		//EditText et = (EditText) myView.findViewById(R.id.search_box);
