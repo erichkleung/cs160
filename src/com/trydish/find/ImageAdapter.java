@@ -3,6 +3,7 @@ import com.trydish.main.R;
 import com.trydish.main.R.drawable;
 
 import android.content.Context;
+import android.graphics.Matrix;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -33,9 +34,11 @@ public class ImageAdapter extends BaseAdapter {
 		ImageView imageView;
 		if (convertView == null) {  // if it's not recycled, initialize some attributes
 			imageView = new ImageView(mContext);
-			imageView.setLayoutParams(new GridView.LayoutParams(255, 200));
-			imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-			imageView.setPadding(4, 4, 4, 4);
+			imageView.setLayoutParams(new GridView.LayoutParams(400, 400)); // 255, 200
+			imageView.setMaxHeight(300);
+			imageView.setMaxWidth(300);
+			imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+			imageView.setPadding(0, 0, 0, 0);
 		} else {
 			imageView = (ImageView) convertView;
 		}

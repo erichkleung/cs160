@@ -40,10 +40,13 @@ public class SignupAllergies extends Activity {
 		dialog.show();
 	}
 	
+	// used to add allergies on-the-fly
 	public void addAllergy(View view) {
     	EditText editText = (EditText) findViewById(R.id.add_new_allergy_box);
     	String message = editText.getText().toString();
     	LinearLayout allergiesList;
+    	// leftRight is used to switch between the two LinearLayouts
+    	// holding the checkboxes
     	if (leftRight == 0) {
     		allergiesList = (LinearLayout) findViewById(R.id.left_check_boxes);
     		leftRight++;
