@@ -1,20 +1,23 @@
 package com.trydish.find;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
+
 import com.trydish.main.R;
+import com.trydish.main.Workers.BitmapWorkerTask;
 
 public class ImageAdapter extends BaseAdapter {
 	private Context mContext;
+	private int screenWidth;
+	private int screenHeight;
 
 	public ImageAdapter(Context c) {
 		mContext = c;
+		screenHeight = mContext.getResources().getDisplayMetrics().heightPixels;
+		screenWidth = mContext.getResources().getDisplayMetrics().widthPixels;
 	}
 
 	public int getCount() {
@@ -32,24 +35,22 @@ public class ImageAdapter extends BaseAdapter {
 	// create a new ImageView for each item referenced by the Adapter
 	public View getView(int position, View convertView, ViewGroup parent) {
 		ImageView imageView;
+		int imageDimension = screenWidth / 2 - 10;
 		if (convertView == null) {  // if it's not recycled, initialize some attributes
 			imageView = new ImageView(mContext);
-			imageView.setLayoutParams(new GridView.LayoutParams(390, 390)); // 255, 200
+			imageView.setLayoutParams(new GridView.LayoutParams(imageDimension, imageDimension)); // 255, 200
 			imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+			BitmapWorkerTask task = new BitmapWorkerTask(imageView);
+			task.execute(mThumbIds[position], imageDimension, imageDimension);
 		} else {
 			imageView = (ImageView) convertView;
 		}
-		Drawable draw = mContext.getResources().getDrawable(mThumbIds[position]);
-		Bitmap d = ((BitmapDrawable)draw).getBitmap();
-		Bitmap newBitmap = Bitmap.createScaledBitmap(d, (int)(d.getWidth() * 1.5), (int)(d.getHeight() * 1.5), false);
-		imageView.setImageBitmap(newBitmap);
 		return imageView;
-	}
+	}	
 
 	// references to our images
 	private Integer[] mThumbIds = {
 			R.drawable.food, R.drawable.wings,
 			R.drawable.dimsum, R.drawable.burger,
-
 	};
 }
