@@ -4,6 +4,7 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -29,19 +30,23 @@ public class SignupHome extends Activity {
 		String conf = confText.getText().toString();
 		
 		if (user.equals("")) {
-			Toast toast = Toast.makeText(this, "Please enter a username.", Toast.LENGTH_SHORT);
+			Toast toast = Toast.makeText(this, "Please enter a username.", Toast.LENGTH_LONG);
+			toast.setGravity(Gravity.TOP|Gravity.CENTER_HORIZONTAL, 0, 400);
 			toast.show();
 			return;
 		} else if (pass.equals("")) {
-			Toast toast = Toast.makeText(this, "Please enter a password.", Toast.LENGTH_SHORT);
+			Toast toast = Toast.makeText(this, "Please enter a password.", Toast.LENGTH_LONG);
+			toast.setGravity(Gravity.TOP|Gravity.CENTER_HORIZONTAL, 0, 400);
 			toast.show();
 			return;
 		} else if (conf.equals("")) {
-			Toast toast = Toast.makeText(this, "Please confirm your password.", Toast.LENGTH_SHORT);
+			Toast toast = Toast.makeText(this, "Please confirm your password.", Toast.LENGTH_LONG);
+			toast.setGravity(Gravity.TOP|Gravity.CENTER_HORIZONTAL, 0, 400);
 			toast.show();
 			return;
 		} else if (!(conf.equals(pass))) {
-			Toast toast = Toast.makeText(this, "Mismatched passwords, try again.", Toast.LENGTH_SHORT);
+			Toast toast = Toast.makeText(this, "Mismatched passwords, try again.", Toast.LENGTH_LONG);
+			toast.setGravity(Gravity.TOP|Gravity.CENTER_HORIZONTAL, 0, 400);
 			toast.show();
 			passText.setText("");
 			confText.setText("");
