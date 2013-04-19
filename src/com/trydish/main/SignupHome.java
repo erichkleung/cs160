@@ -59,6 +59,12 @@ public class SignupHome extends Activity {
 		overridePendingTransition( R.anim.slide_in_left, R.anim.slide_out_left );
 	}
 
+	@Override
+	public void onBackPressed() {
+	    super.onBackPressed();
+	    overridePendingTransition( R.anim.slide_in_right, R.anim.slide_out_right );
+	}
+	
 //	@Override
 //	public boolean onCreateOptionsMenu(Menu menu) {
 //		// Inflate the menu; this adds items to the action bar if it is present.
