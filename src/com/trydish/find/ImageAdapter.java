@@ -1,10 +1,5 @@
 package com.trydish.find;
 import android.content.Context;
-import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -12,6 +7,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 
 import com.trydish.main.R;
+import com.trydish.main.Workers.BitmapWorkerTask;
 
 public class ImageAdapter extends BaseAdapter {
 	private Context mContext;
@@ -44,48 +40,17 @@ public class ImageAdapter extends BaseAdapter {
 			imageView = new ImageView(mContext);
 			imageView.setLayoutParams(new GridView.LayoutParams(imageDimension, imageDimension)); // 255, 200
 			imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+			BitmapWorkerTask task = new BitmapWorkerTask(imageView);
+			task.execute(mThumbIds[position], imageDimension, imageDimension);
 		} else {
 			imageView = (ImageView) convertView;
 		}
-		imageView.setImageBitmap(decodeSampledBitmapFromResource(mContext.getResources(), mThumbIds[position], imageDimension, imageDimension));
 		return imageView;
-	}
-	
-	public int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
-		// setting raw width and raw heights
-		final int rawWidth = options.outWidth;
-		final int rawHeight = options.outHeight;
-		int sampleSize = 1;
-		if (reqWidth < rawWidth || reqHeight < reqHeight) {
-	        // Calculate ratios of height and width to requested height and width
-			final int widthRatio = Math.round((float) rawWidth / (float) reqWidth);
-			final int heightRatio = Math.round((float) rawHeight / (float) reqHeight);
-	        // Choose the smallest ratio as inSampleSize value, this will guarantee
-	        // a final image with both dimensions larger than or equal to the
-	        // requested height and width.
-			sampleSize = heightRatio < widthRatio ? heightRatio : widthRatio;
-		}
-		return sampleSize;
-	}
-	
-	public Bitmap decodeSampledBitmapFromResource(Resources res, int resId, int reqWidth, int reqHeight) {
-
-	    // First decode with inJustDecodeBounds=true to check dimensions
-	    final BitmapFactory.Options options = new BitmapFactory.Options();
-	    options.inJustDecodeBounds = true;
-	    BitmapFactory.decodeResource(res, resId, options);
-
-	    // Calculate inSampleSize
-	    options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
-
-	    // Decode bitmap with inSampleSize set
-	    options.inJustDecodeBounds = false;
-	    return BitmapFactory.decodeResource(res, resId, options);
-	}
+	}	
 
 	// references to our images
 	private Integer[] mThumbIds = {
 			R.drawable.food, R.drawable.wings,
-			R.drawable.dimsum, R.drawable.burger
+			R.drawable.dimsum, R.drawable.burger,
 	};
 }
