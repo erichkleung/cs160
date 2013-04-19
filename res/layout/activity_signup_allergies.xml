@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".SignUpAllergies"
-    android:background="@drawable/background" >
+    android:background="@drawable/template" >
 
     <RelativeLayout
         android:layout_width="fill_parent" 
@@ -175,7 +175,7 @@
                 android:hint="Your allergy here"
                 android:textSize="30sp"
                 android:textColor="#000000"
-            	android:textColorHint="#CCCCCC" />
+            	android:textColorHint="#333333" />
 
             <Button
                 android:id="@+id/add_new_allergy_button"

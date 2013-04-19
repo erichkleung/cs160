@@ -55,6 +55,13 @@ public class LoginHome extends Activity {
 	public void signupButton(View view) {
 		Intent intent = new Intent(this, SignupHome.class);
 		startActivity(intent);
+		overridePendingTransition( R.anim.slide_in_left, R.anim.slide_out_left );
+	}
+	
+	@Override
+	public void onBackPressed() {
+	    super.onBackPressed();
+	    overridePendingTransition( R.anim.slide_in_right, R.anim.slide_out_right );
 	}
 	
 	
@@ -124,7 +131,7 @@ public class LoginHome extends Activity {
 			
 			Intent intent = new Intent(this, PostLoginHome.class);
 	    	startActivity(intent);
-	    	//overridePendingTransition( R.anim.slide_in_left, R.anim.slide_out_left );
+	    	overridePendingTransition( R.anim.slide_in_left, R.anim.slide_out_left );
 		} else {
 			Toast toast = Toast.makeText(this, "Username or password is incorrect.", Toast.LENGTH_LONG);
 			toast.setGravity(Gravity.TOP|Gravity.CENTER_HORIZONTAL, 0, 400);

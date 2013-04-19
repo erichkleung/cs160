@@ -70,7 +70,7 @@
             android:layout_below="@+id/editTextName"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="27dp"
-            android:src="@drawable/cameraicon" />
+             />
 
         <TextView
             android:id="@+id/textView3"
