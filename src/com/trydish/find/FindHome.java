@@ -108,10 +108,8 @@ public class FindHome extends Fragment implements OnClickListener {
 				trans.replace(((ViewGroup) myView.getParent()).getId(), view_dish);
 				trans.addToBackStack(null);
 				trans.commit();
-
 			}
 		});
-
 
 		//Hide keyboard
 		getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);

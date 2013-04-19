@@ -111,6 +111,7 @@
             android:layout_alignRight="@+id/editTextComments"
             android:layout_below="@+id/editTextComments"
             android:text="Done" />
+
     </RelativeLayout>
 
 </ScrollView>

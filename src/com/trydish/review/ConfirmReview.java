@@ -1,10 +1,22 @@
 package com.trydish.review;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
 
 import android.app.Activity;
 import android.app.Instrumentation.ActivityResult;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
@@ -96,10 +108,45 @@ public class ConfirmReview extends Activity {
 		currentReview.rating = intent.getDoubleExtra("rating", 0);
 		//allergies?
 		
+		ReviewTask submit = new ReviewTask();
+		//submit.execute(currentDish, intent.getDoubleExtra("rating", 0), intent.getStringExtra("comments"));
+		
 		Intent result = new Intent();
 		result.putExtra("confirm", true);
 		setResult(Activity.RESULT_OK, result);
 		finish();
 	}
+	
+	
+	private class ReviewTask extends AsyncTask<String, Void, String> {
 
+		@Override
+		protected String doInBackground(String... params) {
+
+			String url = "";//"http://trydish.pythonanywhere.com/messages";
+
+			HttpClient httpclient = new DefaultHttpClient();
+			try {
+				 HttpPost post = new HttpPost(url);
+			     List<NameValuePair> postParameters = new ArrayList<NameValuePair>();
+			     postParameters.add(new BasicNameValuePair("name", params[0]));
+			     postParameters.add(new BasicNameValuePair("comment", params[1]));
+
+			     UrlEncodedFormEntity entity = new UrlEncodedFormEntity(postParameters);
+		         post.setEntity(entity);
+
+		         httpclient.execute(post);
+ 	            
+ 	        } catch (ClientProtocolException e) {
+ 	        } catch (IOException e) {
+ 	        }
+
+			 return null;
+		}
+
+		@Override
+		protected void onPostExecute(String arg0) {
+			
+		}
+	}
 }
