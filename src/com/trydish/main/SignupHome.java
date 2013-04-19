@@ -20,6 +20,7 @@ public class SignupHome extends Activity {
 	public void signupNext(View view) {
 		Intent intent = new Intent(this, SignupAllergies.class);
 		startActivity(intent);
+		overridePendingTransition( R.anim.slide_in_left, R.anim.slide_out_left );
 	}
 
 //	@Override

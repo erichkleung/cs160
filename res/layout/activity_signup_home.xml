@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background"
+    android:background="@drawable/template"
     tools:context=".SignupHome" >
 
     <ImageView
@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:layout_alignParentTop="true"
-        android:src="@drawable/logo_home" />
+         />
 
     <RelativeLayout
         android:id="@+id/layout_group_signup"
@@ -20,7 +20,8 @@
         android:layout_centerInParent="true"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:background="@drawable/rounded_rect" >
+        android:background="@drawable/rounded_rect"
+        android:textColor="#000000" >
 
         <TextView
             android:id="@+id/signup_username_label"
@@ -30,7 +31,7 @@
             android:layout_marginTop="10dp"
             android:text="Username:"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="#FFFFFF" />
+             />
 
         <EditText
             android:id="@+id/signup_username"
@@ -40,8 +41,7 @@
             android:layout_centerHorizontal="true"
             android:fontFamily="Roboto"
             android:hint="@string/username_hint"
-            android:textColor="#EEEEEE"
-            android:textColorHint="#CCCCCC" />
+            android:textColorHint="#333333" />
 
         <TextView
             android:id="@+id/signup_password_label"
@@ -51,9 +51,8 @@
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
             android:text="Password:"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="#FFFFFF" />
-
+            android:textAppearance="?android:attr/textAppearanceLarge"/>
+        
         <EditText
             android:id="@+id/signup_password"
             android:layout_width="match_parent"
@@ -63,8 +62,7 @@
             android:fontFamily="Roboto"
             android:hint="@string/password_hint"
             android:inputType="textPassword"
-            android:textColor="#EEEEEE"
-            android:textColorHint="#CCCCCC" />
+            android:textColorHint="#333333" />
 
         <TextView
             android:id="@+id/signup_password_confirm_label"
@@ -75,7 +73,7 @@
             android:layout_marginTop="10dp"
             android:text="Confirm:"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="#FFFFFF" />
+             />
 
         <EditText
             android:id="@+id/signup_password_confirm"
@@ -86,8 +84,7 @@
             android:fontFamily="Roboto"
             android:hint="@string/confirm_password_hint"
             android:inputType="textPassword"
-            android:textColor="#EEEEEE"
-            android:textColorHint="#CCCCCC" />
+            android:textColorHint="#333333" />
 
         <Button
             android:id="@+id/signup_button"
@@ -99,7 +96,6 @@
             android:onClick="signupNext"
             android:text="@string/signup_next_button"
             android:textSize="15sp"
-            android:textColor="#FFFFFF"
             android:background="@drawable/button_states" />
     </RelativeLayout>
 

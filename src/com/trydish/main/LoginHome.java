@@ -21,11 +21,13 @@ public class LoginHome extends Activity {
 	public void loginCheck(View view) {
     	Intent intent = new Intent(this, PostLoginHome.class);
     	startActivity(intent);
+    	overridePendingTransition( R.anim.slide_in_left, R.anim.slide_out_left );
 	}
 	
 	public void signupButton(View view) {
 		Intent intent = new Intent(this, SignupHome.class);
 		startActivity(intent);
+		overridePendingTransition( R.anim.slide_in_left, R.anim.slide_out_left );
 	}
 
 }
