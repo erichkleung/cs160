@@ -2,10 +2,11 @@ package com.trydish.main;
 
 import java.lang.ref.WeakReference;
 
-import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.widget.ImageView;
 
@@ -34,12 +35,31 @@ public class Workers {
 		
 		@Override
 		protected void onPostExecute(Bitmap bitmap) {
+			if (isCancelled()) {
+				bitmap = null;
+			}
 			if (imageViewReference != null && bitmap != null) {
 				final ImageView imageView = imageViewReference.get();
-				if (imageView != null) {
+				final BitmapWorkerTask bitmapWorkerTask = getBitmapWorkerTask(imageView);
+				if (this == bitmapWorkerTask && imageView != null) {
 					imageView.setImageBitmap(bitmap);
 				}
 			}
+		}
+		
+		public static BitmapWorkerTask getBitmapWorkerTask(ImageView imageView) {
+			if (imageView != null) {
+				final Drawable drawable = imageView.getDrawable();
+				if (drawable instanceof AsyncDrawable) {
+					final AsyncDrawable asyncDrawable = (AsyncDrawable) drawable;
+					return asyncDrawable.getBitmapWorkerTask();
+				}
+			}
+			return null;
+		}
+		
+		public int getData() {
+			return data;
 		}
 		
 		public int calculateInSampleSize(BitmapFactory.Options options, 
@@ -75,6 +95,21 @@ public class Workers {
 		    // Decode bitmap with inSampleSize set
 		    options.inJustDecodeBounds = false;
 		    return BitmapFactory.decodeResource(res, resId, options);
+		}
+	}
+	
+	public static class AsyncDrawable extends BitmapDrawable {
+		private final WeakReference<BitmapWorkerTask> bitmapWorkerTaskReference;
+		
+		public AsyncDrawable(Resources res, Bitmap bitmap,
+				BitmapWorkerTask bitmapWorkerTask) {
+			super(res, bitmap);
+			bitmapWorkerTaskReference =
+					new WeakReference<BitmapWorkerTask>(bitmapWorkerTask);
+		}
+		
+		public BitmapWorkerTask getBitmapWorkerTask() {
+			return bitmapWorkerTaskReference.get();
 		}
 	}
 

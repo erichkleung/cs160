@@ -1,11 +1,11 @@
 package com.trydish.find;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
-import com.trydish.main.R;
-
+import android.app.Fragment;
+import android.app.FragmentTransaction;
+import android.content.Context;
 import android.location.Address;
 import android.location.Criteria;
 import android.location.Geocoder;
@@ -14,23 +14,15 @@ import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentTransaction;
-import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup.LayoutParams;
-import android.view.WindowManager;
-import android.widget.AdapterView.OnItemClickListener;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -38,10 +30,8 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.Spinner;
-import android.widget.TableLayout;
-import android.widget.TextView;
-import android.widget.Toast;
-import android.view.KeyEvent;
+
+import com.trydish.main.R;
 
 
 
@@ -155,7 +145,7 @@ public class FindHome extends Fragment implements OnClickListener {
 			longitude = location.getLongitude();
 
 			try {
-				ConnectivityManager cm = (ConnectivityManager) this.context.getSystemService(Context.CONNECTIVITY_SERVICE);
+				ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 				NetworkInfo activeNetworkInfo = cm.getActiveNetworkInfo();
 				boolean isConnected = activeNetworkInfo != null && activeNetworkInfo.isConnected(); 
 				
