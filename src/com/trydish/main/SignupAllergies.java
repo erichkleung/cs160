@@ -43,6 +43,11 @@ public class SignupAllergies extends Activity {
 	public void addAllergy(View view) {
     	EditText editText = (EditText) findViewById(R.id.add_new_allergy_box);
     	String message = editText.getText().toString();
+    	
+    	if (message.equals("")) {
+    		return;
+    	}
+    	
     	LinearLayout allergiesList;
     	// leftRight is used to switch between the two LinearLayouts
     	// holding the checkboxes
@@ -61,6 +66,8 @@ public class SignupAllergies extends Activity {
     	newAllergy.setTextColor(Color.BLACK);
     	newAllergy.setTextSize(30);
     	allergiesList.addView(newAllergy, params);
+    	
+    	editText.setText("");
 	}
 	
 	public void signupNext(View view) {

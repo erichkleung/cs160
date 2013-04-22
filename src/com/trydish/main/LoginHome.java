@@ -129,6 +129,7 @@ public class LoginHome extends Activity {
 		}
 		
 		if (global.userID != -1) {
+			global.username = ((EditText)findViewById(R.id.login_username)).getText().toString();
 			Toast toast = Toast.makeText(this, "Thank you for logging in!", Toast.LENGTH_SHORT);
 			toast.setGravity(Gravity.TOP|Gravity.CENTER_HORIZONTAL, 0, 400);
 			toast.show();

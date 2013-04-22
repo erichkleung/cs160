@@ -54,13 +54,13 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:windowSoftInputMode="stateHidden|adjustResize"
+            android:windowSoftInputMode="stateHidden|adjustPan"
             android:name="com.trydish.main.SignupHome"
             android:label="@string/title_activity_signup_home"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:windowSoftInputMode="stateHidden|adjustResize"
+            android:windowSoftInputMode="stateHidden|adjustPan"
             android:name="com.trydish.main.SignupAllergies"
             android:label="@string/title_activity_sign_up_allergies"
             android:screenOrientation="portrait" >

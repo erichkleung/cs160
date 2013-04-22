@@ -139,8 +139,7 @@ public class SignupHome extends Activity {
 		}
 		
 		if (global.userID != -1) {
-			//toast here?
-			
+			global.username = ((EditText)findViewById(R.id.signup_username)).getText().toString();
 			Intent intent = new Intent(this, SignupAllergies.class);
 			startActivity(intent);
 			overridePendingTransition( R.anim.slide_in_left, R.anim.slide_out_left);

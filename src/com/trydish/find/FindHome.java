@@ -15,6 +15,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -29,6 +30,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageButton;
+import android.widget.PopupMenu;
+import android.widget.PopupWindow;
 import android.widget.Spinner;
 
 import com.trydish.main.R;
@@ -38,6 +41,7 @@ import com.trydish.main.R;
 public class FindHome extends Fragment implements OnClickListener {
 
 	//Implements OnClickListener so that we don't have to define onClick methods in the LoginHome
+	//PopupWindow usage modeled after http://www.mobilemancer.com/2011/01/08/popup-window-in-android/ 
 
 	//Keep track of what distance user has selected from drop down menu. Saving now b/c likely later passed to other function 
 	private String searchDistance = "1 mile";
@@ -47,6 +51,7 @@ public class FindHome extends Fragment implements OnClickListener {
 	private Location location;
 	private double latitude;
 	private double longitude;
+	private PopupWindow pop;
 
 
 	@Override
@@ -176,11 +181,38 @@ public class FindHome extends Fragment implements OnClickListener {
 	}
 
 	//Called when the My Location button is clicked to change location
+	//PopupWindow usage modeled after http://www.mobilemancer.com/2011/01/08/popup-window-in-android/ 
 	public void myLocationClicked(View v) {
 		Log.d("Find Home", "location clicked");
+		//Add the popup window
+		LayoutInflater inflater = LayoutInflater.from(context);
+		View popup_menu = inflater.inflate(R.layout.location_popup, (ViewGroup) myView.findViewById(R.id.location_popup));
+		pop = new PopupWindow(popup_menu, 700, 300, true);
+		pop.showAtLocation(popup_menu, Gravity.NO_GRAVITY, 50, 160);
+		//grab button and set onClickListener to be able to dismiss the window
+		Button b = (Button) popup_menu.findViewById(R.id.change_my_location);
+
+		//set b's OnClickListener to allow dismissing popup
+		b.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				//do something
+				}
+		});
+		
+		Button c = (Button) popup_menu.findViewById(R.id.cancel_change_my_location);
+		c.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				//get rid of popup window
+				pop.dismiss();
+			}
+		});
+		
+		
 	}
 
-
+	
 	//Decides which method to call based on which button is clicked. Again, this is needed because by default buttons 
 	//onClickListener is not the Fragment
 	@Override

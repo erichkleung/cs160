@@ -171,6 +171,8 @@
                 android:id="@+id/add_new_allergy_box"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+            	android:singleLine="true"
+            	android:imeActionLabel="Done"
                 android:layout_weight="1"
                 android:hint="Your allergy here"
                 android:textSize="30sp"

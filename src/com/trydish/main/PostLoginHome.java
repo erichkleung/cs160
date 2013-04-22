@@ -1,6 +1,9 @@
 package com.trydish.main;
 
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.PopupMenu;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.ActionBar.Tab;
@@ -33,6 +36,16 @@ public class PostLoginHome extends Activity {
 				.setTabListener(new TabListener<Settings>(
 						this, "settings", Settings.class));
 		actionBar.addTab(tab);
+	}
+	
+	public void changeLocation(View v) {
+		Log.d("Find Home", "CHANGE location clicked");
+		
+	}
+	
+	public void cancelChangeLocation(View v) {
+		Log.d("Find Home", "CHANGE location clicked");
+		
 	}
 
 }
