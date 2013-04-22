@@ -58,7 +58,7 @@ public class SignupAllergies extends Activity {
     	CheckBox newAllergy = new CheckBox(this);
     	newAllergy.setText(message);
     	newAllergy.setChecked(true);
-    	newAllergy.setTextColor(Color.WHITE);
+    	newAllergy.setTextColor(Color.BLACK);
     	newAllergy.setTextSize(30);
     	allergiesList.addView(newAllergy, params);
 	}

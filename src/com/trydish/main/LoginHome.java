@@ -24,6 +24,7 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 public class LoginHome extends Activity {
@@ -46,7 +47,9 @@ public class LoginHome extends Activity {
 		} else {
 			EditText userText = (EditText)findViewById(R.id.login_username);
 			EditText passText = (EditText)findViewById(R.id.login_password);
+			ProgressBar progress = (ProgressBar)findViewById(R.id.login_progressbar);
 			
+			progress.setVisibility(View.VISIBLE);
 			LoginTask checkLogin = new LoginTask();
 			checkLogin.execute(userText.getText().toString(), passText.getText().toString());
 		}
@@ -93,18 +96,14 @@ public class LoginHome extends Activity {
 	            } else {
 	                //Closes the connection.
 	                response.getEntity().getContent().close();
-	                return "false";
+	                return "-1";
 	            }
 	        } catch (ClientProtocolException e) {
-	        	return "false";
+	        	return "-1";
 	        } catch (IOException e) {
-	        	return "false";
+	        	return "-1";
 	        }
-			if (responseString.indexOf("true") != -1) {
-				return "true";
-			} else {
-				return "false";
-			}
+			return responseString;
     	}
     
 		@Override
@@ -115,7 +114,12 @@ public class LoginHome extends Activity {
     }
 	
 	private void checkLogin(String login) {
-		if (login.equalsIgnoreCase("true")) {
+		System.out.println("login: " + login);
+		
+		ProgressBar progress = (ProgressBar)findViewById(R.id.login_progressbar);
+		progress.setVisibility(View.INVISIBLE);
+		
+		if (login.indexOf("-1") == -1) {
 			Toast toast = Toast.makeText(this, "Thank you for logging in!", Toast.LENGTH_SHORT);
 			toast.setGravity(Gravity.TOP|Gravity.CENTER_HORIZONTAL, 0, 400);
 			toast.show();
@@ -132,37 +136,4 @@ public class LoginHome extends Activity {
 			password.setText("");
 		}
 	}
-	
-	
-	//Code from: http://www.anyexample.com/programming/java/java_simple_class_to_compute_sha_1_hash.xml
-	private static String convertToHex(byte[] data) { 
-        StringBuffer buf = new StringBuffer();
-        for (int i = 0; i < data.length; i++) { 
-            int halfbyte = (data[i] >>> 4) & 0x0F;
-            int two_halfs = 0;
-            do { 
-                if ((0 <= halfbyte) && (halfbyte <= 9)) 
-                    buf.append((char) ('0' + halfbyte));
-                else 
-                    buf.append((char) ('a' + (halfbyte - 10)));
-                halfbyte = data[i] & 0x0F;
-            } while(two_halfs++ < 1);
-        } 
-        return buf.toString();
-    } 
- 
-    public static String SHA1(String text) {
-    	MessageDigest md;
-    	try {
-    		md = MessageDigest.getInstance("SHA-1");
-    		byte[] sha1hash = new byte[40];
-    		md.update(text.getBytes("iso-8859-1"), 0, text.length());
-    		sha1hash = md.digest();
-    		return convertToHex(sha1hash);
-    	} catch (Exception e) {
-    		System.out.println("Something broke in SHA1!");
-    		return "broken";
-    	}
-    }
-
 }
