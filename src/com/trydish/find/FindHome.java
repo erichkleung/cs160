@@ -200,7 +200,7 @@ public class FindHome extends Fragment implements OnClickListener {
 				}
 		});
 		
-		Button c = (Button) popup_menu.findViewById(R.id.change_my_location);
+		Button c = (Button) popup_menu.findViewById(R.id.cancel_change_my_location);
 		c.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
