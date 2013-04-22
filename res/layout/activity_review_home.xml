@@ -38,6 +38,8 @@
             android:id="@+id/editTextName"
             android:layout_width="450dp"
             android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:imeActionLabel="Done"
             android:layout_alignBottom="@+id/textView2"
             android:layout_alignParentRight="true"
             android:layout_marginBottom="-8dp"
@@ -46,12 +48,14 @@
 
         <EditText
             android:id="@+id/editTextRestaurant"
+            android:singleLine="true"
             android:layout_width="450dp"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/textView1"
             android:layout_alignParentRight="true"
             android:layout_marginBottom="-8dp"
             android:layout_marginRight="15dp"
+            android:imeActionLabel="Done"
             android:ems="10" />
 
         <RatingBar
@@ -101,7 +105,6 @@
             android:ems="10"
             android:inputType="textMultiLine" >
 
-            <requestFocus />
         </EditText>
 
         <Button
