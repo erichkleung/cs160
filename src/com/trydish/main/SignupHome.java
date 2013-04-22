@@ -119,18 +119,14 @@ public class SignupHome extends Activity {
 	            	
 	            	
 	                response.getEntity().getContent().close();
-	                return "false";
+	                return "-1";
 	            }
 	        } catch (ClientProtocolException e) {
-	        	return "false";
+	        	return "-1";
 	        } catch (IOException e) {
-	        	return "false";
+	        	return "-1";
 	        }
-			if (responseString.indexOf("-1") == -1) {
-				return "true";
-			} else {
-				return "false";
-			}
+			return responseString;
     	}
     
 		@Override
@@ -144,7 +140,7 @@ public class SignupHome extends Activity {
 		ProgressBar progress = (ProgressBar)findViewById(R.id.login_progressbar);
 		progress.setVisibility(View.INVISIBLE);
 		
-		if (check.equalsIgnoreCase("true")) {
+		if (check.indexOf("-1") == -1) {
 			//toast here?
 			
 			Intent intent = new Intent(this, SignupAllergies.class);
