@@ -30,7 +30,7 @@ import android.widget.Toast;
 
 public class LoginHome extends Activity {
 	
-	boolean nocheck = false;
+	boolean nocheck = true;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
