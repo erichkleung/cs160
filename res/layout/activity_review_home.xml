@@ -38,25 +38,25 @@
             android:id="@+id/editTextName"
             android:layout_width="450dp"
             android:layout_height="wrap_content"
-            android:singleLine="true"
-            android:imeActionLabel="Done"
             android:layout_alignBottom="@+id/textView2"
             android:layout_alignParentRight="true"
             android:layout_marginBottom="-8dp"
             android:layout_marginRight="15dp"
-            android:ems="10" />
+            android:ems="10"
+            android:imeActionLabel="Done"
+            android:singleLine="true" />
 
         <EditText
             android:id="@+id/editTextRestaurant"
-            android:singleLine="true"
             android:layout_width="450dp"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/textView1"
             android:layout_alignParentRight="true"
             android:layout_marginBottom="-8dp"
             android:layout_marginRight="15dp"
+            android:ems="10"
             android:imeActionLabel="Done"
-            android:ems="10" />
+            android:singleLine="true" />
 
         <RatingBar
             android:id="@+id/ratingBar"
@@ -73,8 +73,7 @@
             android:layout_height="400dp"
             android:layout_below="@+id/editTextName"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="27dp"
-             />
+            android:layout_marginTop="27dp" />
 
         <TextView
             android:id="@+id/textView3"
@@ -104,7 +103,6 @@
             android:layout_below="@+id/textView4"
             android:ems="10"
             android:inputType="textMultiLine" >
-
         </EditText>
 
         <Button
@@ -114,6 +112,15 @@
             android:layout_alignRight="@+id/editTextComments"
             android:layout_below="@+id/editTextComments"
             android:text="Done" />
+        
+        <Button
+            android:id="@+id/buttonMap"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_alignRight="@+id/editTextComments"
+            android:layout_below="@+id/buttonDone"
+            android:text="Show me a map"
+            android:onClick="showMap" />
 
     </RelativeLayout>
 
