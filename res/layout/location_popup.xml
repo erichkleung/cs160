@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/location_popup"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/dialog"
+    android:orientation="vertical"
+    android:padding="20dp"
+    android:textColor="#000000" >
+
+    <TextView
+        android:id="@+id/user_location_popup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:paddingTop="20dp"
+        android:text="Your location is: "
+        android:textColor="#000000" />
+
+    <TextView
+        android:id="@+id/change_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="Change location"
+        android:textColor="#000000" />
+
+    <EditText
+        android:id="@+id/change_location_edit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:ems="10"
+        android:hint="enter different location"
+        android:imeOptions="actionDone"
+        android:singleLine="true"
+        android:textColor="#000000"
+        android:textColorHint="#333333" />
+
+    <Button
+        android:id="@+id/change_my_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="2dp"
+        android:layout_marginRight="2dp"
+        android:background="@drawable/menu_bar_button_states"
+        android:imeOptions="actionDone"
+        android:onClick="changeLocation"
+        android:singleLine="true"
+        android:text="change location"
+        android:textColor="#000000" />
+
+</LinearLayout>
