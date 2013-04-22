@@ -2,7 +2,6 @@ package com.trydish.main;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +14,8 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -24,6 +25,7 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 public class LoginHome extends Activity {
@@ -42,11 +44,18 @@ public class LoginHome extends Activity {
 	
 	public void loginCheck(View view) {
 		if (nocheck) {
-			checkLogin("true");
+			try {
+				checkLogin(new JSONObject("{\"status\": 1}"));
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		} else {
 			EditText userText = (EditText)findViewById(R.id.login_username);
 			EditText passText = (EditText)findViewById(R.id.login_password);
+			ProgressBar progress = (ProgressBar)findViewById(R.id.login_progressbar);
 			
+			progress.setVisibility(View.VISIBLE);
 			LoginTask checkLogin = new LoginTask();
 			checkLogin.execute(userText.getText().toString(), passText.getText().toString());
 		}
@@ -66,12 +75,13 @@ public class LoginHome extends Activity {
 	
 	
 	
-	private class LoginTask extends AsyncTask<String, Void, String> {
+	private class LoginTask extends AsyncTask<String, Void, JSONObject> {
 
 		@Override
-		protected String doInBackground(String... params) {
+		protected JSONObject doInBackground(String... params) {
 			String url = "http://trydish.pythonanywhere.com/login";
 			String responseString;
+			JSONObject result;
 
 			HttpClient httpclient = new DefaultHttpClient();
 			
@@ -89,33 +99,36 @@ public class LoginHome extends Activity {
 	                response.getEntity().writeTo(out);
 	                out.close();
 	                responseString = out.toString();
-
+	                result = new JSONObject(responseString);
 	            } else {
 	                //Closes the connection.
 	                response.getEntity().getContent().close();
-	                return "false";
+	                return null;
 	            }
-	        } catch (ClientProtocolException e) {
-	        	return "false";
-	        } catch (IOException e) {
-	        	return "false";
+	        } catch (Exception e) {
+	        	return null;
 	        }
-			if (responseString.indexOf("true") != -1) {
-				return "true";
-			} else {
-				return "false";
-			}
+			return result;
     	}
     
 		@Override
-		protected void onPostExecute(String login) {
-			checkLogin(login);
+		protected void onPostExecute(JSONObject login) {
+				checkLogin(login);
 		}
     	
     }
 	
-	private void checkLogin(String login) {
-		if (login.equalsIgnoreCase("true")) {
+	private void checkLogin(JSONObject login) {
+		ProgressBar progress = (ProgressBar)findViewById(R.id.login_progressbar);
+		progress.setVisibility(View.INVISIBLE);
+		
+		try {
+			global.userID = login.getInt("status");
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		
+		if (global.userID != -1) {
 			Toast toast = Toast.makeText(this, "Thank you for logging in!", Toast.LENGTH_SHORT);
 			toast.setGravity(Gravity.TOP|Gravity.CENTER_HORIZONTAL, 0, 400);
 			toast.show();
@@ -132,37 +145,4 @@ public class LoginHome extends Activity {
 			password.setText("");
 		}
 	}
-	
-	
-	//Code from: http://www.anyexample.com/programming/java/java_simple_class_to_compute_sha_1_hash.xml
-	private static String convertToHex(byte[] data) { 
-        StringBuffer buf = new StringBuffer();
-        for (int i = 0; i < data.length; i++) { 
-            int halfbyte = (data[i] >>> 4) & 0x0F;
-            int two_halfs = 0;
-            do { 
-                if ((0 <= halfbyte) && (halfbyte <= 9)) 
-                    buf.append((char) ('0' + halfbyte));
-                else 
-                    buf.append((char) ('a' + (halfbyte - 10)));
-                halfbyte = data[i] & 0x0F;
-            } while(two_halfs++ < 1);
-        } 
-        return buf.toString();
-    } 
- 
-    public static String SHA1(String text) {
-    	MessageDigest md;
-    	try {
-    		md = MessageDigest.getInstance("SHA-1");
-    		byte[] sha1hash = new byte[40];
-    		md.update(text.getBytes("iso-8859-1"), 0, text.length());
-    		sha1hash = md.digest();
-    		return convertToHex(sha1hash);
-    	} catch (Exception e) {
-    		System.out.println("Something broke in SHA1!");
-    		return "broken";
-    	}
-    }
-
 }

@@ -37,7 +37,7 @@
     <string name="confirm_password_hint">Confirm Password</string>
     <string name="login_or">Or</string>
     <string name="login_button_text">Login</string>
-    <string name="login_signup_button_text">Sign Up for TryDish</string>
+    <string name="login_signup_button_text">Sign Up for trydish</string>
     <string name="signup_next_button">Next</string>
     <string name="title_activity_confirm_review">Confirm</string>
 </resources>

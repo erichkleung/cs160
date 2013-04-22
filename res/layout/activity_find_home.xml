@@ -10,18 +10,22 @@
     android:layout_height="wrap_content"
     tools:context=".HomeScreen"
     android:orientation="horizontal"
-    android:background="#CCCCCC" >
+    android:background="@drawable/menu_bar_gradient"
+    android:baselineAligned="false" >
     
         <ImageButton
             android:id="@+id/search"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/search"
+            android:layout_height="fill_parent"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="2dp"
+            android:src="@drawable/searchicon"
             android:contentDescription="search icon"
             android:layout_weight="1"
-            android:background="@drawable/button_states"
             android:onClick="searchClicked" 
             android:layout_marginLeft="2dp"
+            android:background="@drawable/menu_bar_button_states"
+            android:layout_gravity="center"
              />
         
         <EditText
@@ -33,32 +37,40 @@
             android:imeOptions="actionDone"
             android:singleLine="true"
             android:ems="10"
+            android:layout_gravity="center"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#CCCCCC"
             />
         
     	<Spinner
     		android:id="@+id/distance_spinner"
     		android:layout_width="120dp"
-    		android:layout_height="wrap_content"
+    		android:layout_height="fill_parent"
     		android:layout_weight="0"
+    		android:layout_gravity="center"
     		 />
 
     	<TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="from"
-            android:layout_marginLeft="10dp"
             android:layout_weight="1"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textColor="#FFFFFF"
              />
     	
     	<Button
     	    android:id="@+id/my_location"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp"
             android:text="@string/location"
             android:layout_weight="1"
-            android:background="@drawable/button_states" 
+            android:background="@drawable/menu_bar_button_states" 
             android:onClick="myLocationClicked"
             android:layout_marginRight="2dp"
+            android:textColor="#FFFFFF"
              />
     	
     	
