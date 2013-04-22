@@ -2,7 +2,6 @@ package com.trydish.main;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +14,8 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -43,7 +44,12 @@ public class LoginHome extends Activity {
 	
 	public void loginCheck(View view) {
 		if (nocheck) {
-			checkLogin("true");
+			try {
+				checkLogin(new JSONObject("{\"status\": 1"));
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		} else {
 			EditText userText = (EditText)findViewById(R.id.login_username);
 			EditText passText = (EditText)findViewById(R.id.login_password);
@@ -69,12 +75,13 @@ public class LoginHome extends Activity {
 	
 	
 	
-	private class LoginTask extends AsyncTask<String, Void, String> {
+	private class LoginTask extends AsyncTask<String, Void, JSONObject> {
 
 		@Override
-		protected String doInBackground(String... params) {
+		protected JSONObject doInBackground(String... params) {
 			String url = "http://trydish.pythonanywhere.com/login";
 			String responseString;
+			JSONObject result;
 
 			HttpClient httpclient = new DefaultHttpClient();
 			
@@ -92,34 +99,36 @@ public class LoginHome extends Activity {
 	                response.getEntity().writeTo(out);
 	                out.close();
 	                responseString = out.toString();
-
+	                result = new JSONObject(responseString);
 	            } else {
 	                //Closes the connection.
 	                response.getEntity().getContent().close();
-	                return "-1";
+	                return null;
 	            }
-	        } catch (ClientProtocolException e) {
-	        	return "-1";
-	        } catch (IOException e) {
-	        	return "-1";
+	        } catch (Exception e) {
+	        	return null;
 	        }
-			return responseString;
+			return result;
     	}
     
 		@Override
-		protected void onPostExecute(String login) {
-			checkLogin(login);
+		protected void onPostExecute(JSONObject login) {
+				checkLogin(login);
 		}
     	
     }
 	
-	private void checkLogin(String login) {
-		System.out.println("login: " + login);
-		
+	private void checkLogin(JSONObject login) {
 		ProgressBar progress = (ProgressBar)findViewById(R.id.login_progressbar);
 		progress.setVisibility(View.INVISIBLE);
 		
-		if (login.indexOf("-1") == -1) {
+		try {
+			global.userID = login.getInt("status");
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		
+		if (global.userID != -1) {
 			Toast toast = Toast.makeText(this, "Thank you for logging in!", Toast.LENGTH_SHORT);
 			toast.setGravity(Gravity.TOP|Gravity.CENTER_HORIZONTAL, 0, 400);
 			toast.show();

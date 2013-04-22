@@ -1,26 +1,25 @@
 package com.trydish.main;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
@@ -85,12 +84,13 @@ public class SignupHome extends Activity {
 	}
 	
 	
-	private class CreateUserTask extends AsyncTask<String, Void, String> {
+	private class CreateUserTask extends AsyncTask<String, Void, JSONObject> {
 
 		@Override
-		protected String doInBackground(String... params) {
+		protected JSONObject doInBackground(String... params) {
 			String url = "http://trydish.pythonanywhere.com/add_user";
 			String responseString;
+			JSONObject result;
 
 			HttpClient httpclient = new DefaultHttpClient();
 			
@@ -108,39 +108,37 @@ public class SignupHome extends Activity {
 	                response.getEntity().writeTo(out);
 	                out.close();
 	                responseString = out.toString();
-
+	                result = new JSONObject(responseString);
 	            } else {
-	            	System.out.println("broken");
 	                //Closes the connection.
-	            	ByteArrayOutputStream out = new ByteArrayOutputStream();
-	                response.getEntity().writeTo(out);
-	                out.close();
-	                responseString = out.toString();
-	            	
-	            	
 	                response.getEntity().getContent().close();
-	                return "-1";
+	                return null;
 	            }
-	        } catch (ClientProtocolException e) {
-	        	return "-1";
-	        } catch (IOException e) {
-	        	return "-1";
+	        } catch (Exception e) {
+	        	return null;
 	        }
-			return responseString;
+			return result;
     	}
     
 		@Override
-		protected void onPostExecute(String check) {
+		protected void onPostExecute(JSONObject check) {
 			checkName(check);
 		}
     	
     }
 	
-	private void checkName(String check) {
+	private void checkName(JSONObject check) {
 		ProgressBar progress = (ProgressBar)findViewById(R.id.login_progressbar);
 		progress.setVisibility(View.INVISIBLE);
 		
-		if (check.indexOf("-1") == -1) {
+		try {
+			global.userID = check.getInt("id");
+		} catch (JSONException e) {
+			e.printStackTrace();
+			System.out.println("broken  :(");
+		}
+		
+		if (global.userID != -1) {
 			//toast here?
 			
 			Intent intent = new Intent(this, SignupAllergies.class);
