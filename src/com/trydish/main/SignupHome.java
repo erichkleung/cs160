@@ -1,9 +1,26 @@
 package com.trydish.main;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
@@ -53,10 +70,8 @@ public class SignupHome extends Activity {
 			return;
 		}
 		
-		
-		Intent intent = new Intent(this, SignupAllergies.class);
-		startActivity(intent);
-		overridePendingTransition( R.anim.slide_in_left, R.anim.slide_out_left );
+		CreateUserTask newUser = new CreateUserTask();
+		newUser.execute(user, pass);
 	}
 
 	@Override
@@ -65,11 +80,74 @@ public class SignupHome extends Activity {
 	    overridePendingTransition( R.anim.slide_in_right, R.anim.slide_out_right );
 	}
 	
-//	@Override
-//	public boolean onCreateOptionsMenu(Menu menu) {
-//		// Inflate the menu; this adds items to the action bar if it is present.
-//		getMenuInflater().inflate(R.menu.activity_signup_home, menu);
-//		return true;
-//	}
+	
+	private class CreateUserTask extends AsyncTask<String, Void, String> {
 
+		@Override
+		protected String doInBackground(String... params) {
+			String url = "http://trydish.pythonanywhere.com/add_user";
+			String responseString;
+
+			HttpClient httpclient = new DefaultHttpClient();
+			
+			HttpPost post = new HttpPost(url);
+			try {
+				List<NameValuePair> postParameters = new ArrayList<NameValuePair>();
+				postParameters.add(new BasicNameValuePair("username", params[0]));
+				postParameters.add(new BasicNameValuePair("password", params[1]));
+				UrlEncodedFormEntity entity = new UrlEncodedFormEntity(postParameters);
+				post.setEntity(entity);
+	            HttpResponse response = httpclient.execute(post);
+	            
+	            if(response.getStatusLine().getStatusCode() == HttpStatus.SC_OK){
+	                ByteArrayOutputStream out = new ByteArrayOutputStream();
+	                response.getEntity().writeTo(out);
+	                out.close();
+	                responseString = out.toString();
+
+	            } else {
+	            	System.out.println("broken");
+	                //Closes the connection.
+	            	ByteArrayOutputStream out = new ByteArrayOutputStream();
+	                response.getEntity().writeTo(out);
+	                out.close();
+	                responseString = out.toString();
+	            	
+	            	
+	                response.getEntity().getContent().close();
+	                return "false";
+	            }
+	        } catch (ClientProtocolException e) {
+	        	return "false";
+	        } catch (IOException e) {
+	        	return "false";
+	        }
+			System.out.println("R: " + responseString);
+			if (responseString.indexOf("-1") == -1) {
+				return "true";
+			} else {
+				return "false";
+			}
+    	}
+    
+		@Override
+		protected void onPostExecute(String check) {
+			checkName(check);
+		}
+    	
+    }
+	
+	private void checkName(String check) {
+		if (check.equalsIgnoreCase("true")) {
+			//toast here?
+			
+			Intent intent = new Intent(this, SignupAllergies.class);
+			startActivity(intent);
+			overridePendingTransition( R.anim.slide_in_left, R.anim.slide_out_left);
+		} else {
+			Toast toast = Toast.makeText(this, "Something broke, try a different name?", Toast.LENGTH_LONG);
+			toast.setGravity(Gravity.TOP|Gravity.CENTER_HORIZONTAL, 0, 400);
+			toast.show();
+		}
+	}
 }
