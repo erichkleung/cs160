@@ -42,5 +42,10 @@ public class PostLoginHome extends Activity {
 		Log.d("Find Home", "CHANGE location clicked");
 		
 	}
+	
+	public void cancelChangeLocation(View v) {
+		Log.d("Find Home", "CHANGE location clicked");
+		
+	}
 
 }

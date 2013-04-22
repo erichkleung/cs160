@@ -47,10 +47,20 @@
         android:layout_marginBottom="2dp"
         android:layout_marginRight="2dp"
         android:background="@drawable/menu_bar_button_states"
-        android:imeOptions="actionDone"
         android:onClick="changeLocation"
-        android:singleLine="true"
         android:text="change location"
+        android:textColor="#000000" />
+
+    <Button
+        android:id="@+id/cancel_change_my_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="2dp"
+        android:layout_marginRight="2dp"
+        android:background="@drawable/menu_bar_button_states"
+        android:onClick="cancelChangeLocation"
+        android:text="cancel"
         android:textColor="#000000" />
 
 </LinearLayout>

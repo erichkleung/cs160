@@ -189,35 +189,30 @@ public class FindHome extends Fragment implements OnClickListener {
 		View popup_menu = inflater.inflate(R.layout.location_popup, (ViewGroup) myView.findViewById(R.id.location_popup));
 		pop = new PopupWindow(popup_menu, 700, 300, true);
 		pop.showAtLocation(popup_menu, Gravity.NO_GRAVITY, 50, 160);
-		//pop.setContentView(myView.findViewById(R.id.location_popup));
 		//grab button and set onClickListener to be able to dismiss the window
 		Button b = (Button) popup_menu.findViewById(R.id.change_my_location);
-		if (b==null){
-			Log.d("yo,", "wtf");
-		}
-		
-		//popOnClickListener p = new popOnClickListener();
-		//b.setOnClickListener(p);
-		
+
+		//set b's OnClickListener to allow dismissing popup
 		b.setOnClickListener(new OnClickListener() {
-			
 			@Override
 			public void onClick(View v) {
+				//do something
+				}
+		});
+		
+		Button c = (Button) popup_menu.findViewById(R.id.change_my_location);
+		c.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				//get rid of popup window
 				pop.dismiss();
-				//
 			}
 		});
+		
 		
 	}
 
 	
-	//OnClickListener for popup window button
-	/*private class popOnClickListener implements OnClickListener {
-		public void onClick(View v) {
-			pop.dismiss();
-		}
-	}*/
-
 	//Decides which method to call based on which button is clicked. Again, this is needed because by default buttons 
 	//onClickListener is not the Fragment
 	@Override
