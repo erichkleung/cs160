@@ -45,7 +45,7 @@ public class LoginHome extends Activity {
 	public void loginCheck(View view) {
 		if (nocheck) {
 			try {
-				checkLogin(new JSONObject("{\"status\": 1"));
+				checkLogin(new JSONObject("{\"status\": 1}"));
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
