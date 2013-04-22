@@ -73,24 +73,15 @@ public class LoginHome extends Activity {
 			String url = "http://trydish.pythonanywhere.com/login";
 			String responseString;
 
-			System.out.println(0);
-			
 			HttpClient httpclient = new DefaultHttpClient();
-			
-			System.out.println(1);
 			
 			HttpPost post = new HttpPost(url);
 			try {
 				List<NameValuePair> postParameters = new ArrayList<NameValuePair>();
-				System.out.println("2" + params[0]);
 				postParameters.add(new BasicNameValuePair("username", params[0]));
-				System.out.println(2.5);
 				postParameters.add(new BasicNameValuePair("password", params[1]));
-				System.out.println(3);
 				UrlEncodedFormEntity entity = new UrlEncodedFormEntity(postParameters);
-				System.out.println(4);
 				post.setEntity(entity);
-				System.out.println(5);
 	            HttpResponse response = httpclient.execute(post);
 	            
 	            if(response.getStatusLine().getStatusCode() == HttpStatus.SC_OK){
