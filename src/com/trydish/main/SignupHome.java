@@ -24,6 +24,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 public class SignupHome extends Activity {
@@ -69,6 +70,9 @@ public class SignupHome extends Activity {
 			confText.setText("");
 			return;
 		}
+		
+		ProgressBar progress = (ProgressBar)findViewById(R.id.login_progressbar);
+		progress.setVisibility(View.VISIBLE);
 		
 		CreateUserTask newUser = new CreateUserTask();
 		newUser.execute(user, pass);
@@ -122,7 +126,6 @@ public class SignupHome extends Activity {
 	        } catch (IOException e) {
 	        	return "false";
 	        }
-			System.out.println("R: " + responseString);
 			if (responseString.indexOf("-1") == -1) {
 				return "true";
 			} else {
@@ -138,6 +141,9 @@ public class SignupHome extends Activity {
     }
 	
 	private void checkName(String check) {
+		ProgressBar progress = (ProgressBar)findViewById(R.id.login_progressbar);
+		progress.setVisibility(View.INVISIBLE);
+		
 		if (check.equalsIgnoreCase("true")) {
 			//toast here?
 			
@@ -145,7 +151,7 @@ public class SignupHome extends Activity {
 			startActivity(intent);
 			overridePendingTransition( R.anim.slide_in_left, R.anim.slide_out_left);
 		} else {
-			Toast toast = Toast.makeText(this, "Something broke, try a different name?", Toast.LENGTH_LONG);
+			Toast toast = Toast.makeText(this, "That username is taken.", Toast.LENGTH_LONG);
 			toast.setGravity(Gravity.TOP|Gravity.CENTER_HORIZONTAL, 0, 400);
 			toast.show();
 		}

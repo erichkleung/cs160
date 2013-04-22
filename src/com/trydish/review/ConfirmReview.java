@@ -1,10 +1,12 @@
 package com.trydish.review;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
@@ -18,48 +20,21 @@ import android.app.Instrumentation.ActivityResult;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.trydish.main.PostLoginHome;
 import com.trydish.main.R;
 
 public class ConfirmReview extends Activity {
 
 	Intent intent;
 	ActivityResult actResult;
-	
-	
-	//Dish and Review serve no real purpose, feel free to remove/change/replace them.
-	class Dish {
-		String name, restaurant;
-		ArrayList<Review> reviews = new ArrayList<Review>();
-		//allergies?
-		
-		public double getRating() {
-			double ratings = 0;
-			for (int i = 0; i < reviews.size(); i++) {
-				ratings += reviews.get(i).rating;
-			}
-			ratings /= reviews.size();
-			
-			return ratings;
-		}
-	}
-	
-	ArrayList<Dish> DishList = new ArrayList<Dish>();
-	
-	class Review {
-		String user;
-		String comment;
-		double rating;
-		//picture?
-		Dish dish;
-	}
-	
-	
-	
-	
+	String restaurant, dish;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -67,8 +42,10 @@ public class ConfirmReview extends Activity {
 		setContentView(R.layout.activity_confirm_review);
 		intent = getIntent();
 		
-		((TextView)findViewById(R.id.textViewRestaurant)).setText("Restaurant: " + intent.getStringExtra("restaurant"));
-		((TextView)findViewById(R.id.textViewName)).setText("Dish Name: " + intent.getStringExtra("name"));
+		restaurant = intent.getStringExtra("restaurant");
+		dish = intent.getStringExtra("name");
+		((TextView)findViewById(R.id.textViewRestaurant)).setText("Restaurant: " + restaurant);
+		((TextView)findViewById(R.id.textViewName)).setText("Dish Name: " + dish);
 	}
 
 	@Override
@@ -86,30 +63,9 @@ public class ConfirmReview extends Activity {
 	}
 	
 	public void confirm(View view) {
-		Review currentReview = new Review();
-		Dish currentDish = null;
 		
-		for (int i = 0; i < DishList.size(); i++) {
-			if (DishList.get(i).name.equalsIgnoreCase(intent.getStringExtra("name")) && DishList.get(i).restaurant.equalsIgnoreCase(intent.getStringExtra("restaurant"))) {
-				currentDish = DishList.get(i);
-				break;
-			}
-		}
-		
-		if (currentDish == null) {
-			currentDish = new Dish();
-			currentDish.restaurant = intent.getStringExtra("restaurant");
-			currentDish.name = intent.getStringExtra("name");
-		}
-		
-		//currentReview.user = ???
-		currentReview.dish = currentDish;
-		currentReview.comment = intent.getStringExtra("comments");
-		currentReview.rating = intent.getDoubleExtra("rating", 0);
-		//allergies?
-		
-		ReviewTask submit = new ReviewTask();
-		//submit.execute(currentDish, intent.getDoubleExtra("rating", 0), intent.getStringExtra("comments"));
+		AddReviewTask submit = new AddReviewTask();
+		//submit.execute(dish, restaurant, "NAME GOES HERE", "" + intent.getDoubleExtra("rating", 0), intent.getStringExtra("comments"));
 		
 		Intent result = new Intent();
 		result.putExtra("confirm", true);
@@ -118,35 +74,76 @@ public class ConfirmReview extends Activity {
 	}
 	
 	
-	private class ReviewTask extends AsyncTask<String, Void, String> {
+	private class AddReviewTask extends AsyncTask<String, Void, String> {
 
+		
+		//params: dish, restaurant, user, rating, comments
 		@Override
 		protected String doInBackground(String... params) {
-
-			String url = "";//"http://trydish.pythonanywhere.com/messages";
+			String url = "http://trydish.pythonanywhere.com/login";
+			String responseString;
 
 			HttpClient httpclient = new DefaultHttpClient();
-			try {
-				 HttpPost post = new HttpPost(url);
-			     List<NameValuePair> postParameters = new ArrayList<NameValuePair>();
-			     postParameters.add(new BasicNameValuePair("name", params[0]));
-			     postParameters.add(new BasicNameValuePair("comment", params[1]));
-
-			     UrlEncodedFormEntity entity = new UrlEncodedFormEntity(postParameters);
-		         post.setEntity(entity);
-
-		         httpclient.execute(post);
- 	            
- 	        } catch (ClientProtocolException e) {
- 	        } catch (IOException e) {
- 	        }
-
-			 return null;
-		}
-
-		@Override
-		protected void onPostExecute(String arg0) {
 			
+			HttpPost post = new HttpPost(url);
+			try {
+				List<NameValuePair> postParameters = new ArrayList<NameValuePair>();
+				postParameters.add(new BasicNameValuePair("dish", params[0]));
+				postParameters.add(new BasicNameValuePair("restaurant", params[1]));
+				postParameters.add(new BasicNameValuePair("user", params[2]));
+				postParameters.add(new BasicNameValuePair("rating", params[3]));
+				postParameters.add(new BasicNameValuePair("comment", params[4]));
+				
+				UrlEncodedFormEntity entity = new UrlEncodedFormEntity(postParameters);
+				post.setEntity(entity);
+	            HttpResponse response = httpclient.execute(post);
+	            
+	            if(response.getStatusLine().getStatusCode() == HttpStatus.SC_OK){
+	                ByteArrayOutputStream out = new ByteArrayOutputStream();
+	                response.getEntity().writeTo(out);
+	                out.close();
+	                responseString = out.toString();
+
+	            } else {
+	                //Closes the connection.
+	                response.getEntity().getContent().close();
+	                return "false";
+	            }
+	        } catch (ClientProtocolException e) {
+	        	return "false";
+	        } catch (IOException e) {
+	        	return "false";
+	        }
+			if (responseString.indexOf("true") != -1) {
+				return "true";
+			} else {
+				return "false";
+			}
+    	}
+    
+		@Override
+		protected void onPostExecute(String login) {
+			checkLogin(login);
+		}
+    	
+    }
+	
+	private void checkLogin(String login) {
+		if (login.equalsIgnoreCase("true")) {
+			Toast toast = Toast.makeText(this, "Thank you for logging in!", Toast.LENGTH_SHORT);
+			toast.setGravity(Gravity.TOP|Gravity.CENTER_HORIZONTAL, 0, 400);
+			toast.show();
+			
+			Intent intent = new Intent(this, PostLoginHome.class);
+	    	startActivity(intent);
+	    	overridePendingTransition( R.anim.slide_in_left, R.anim.slide_out_left );
+		} else {
+			Toast toast = Toast.makeText(this, "Username or password is incorrect.", Toast.LENGTH_LONG);
+			toast.setGravity(Gravity.TOP|Gravity.CENTER_HORIZONTAL, 0, 400);
+			toast.show();
+			
+			EditText password = (EditText)findViewById(R.id.login_password);
+			password.setText("");
 		}
 	}
 }

@@ -24,6 +24,7 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 public class LoginHome extends Activity {
@@ -46,7 +47,9 @@ public class LoginHome extends Activity {
 		} else {
 			EditText userText = (EditText)findViewById(R.id.login_username);
 			EditText passText = (EditText)findViewById(R.id.login_password);
+			ProgressBar progress = (ProgressBar)findViewById(R.id.login_progressbar);
 			
+			progress.setVisibility(View.VISIBLE);
 			LoginTask checkLogin = new LoginTask();
 			checkLogin.execute(userText.getText().toString(), passText.getText().toString());
 		}
@@ -115,6 +118,9 @@ public class LoginHome extends Activity {
     }
 	
 	private void checkLogin(String login) {
+		ProgressBar progress = (ProgressBar)findViewById(R.id.login_progressbar);
+		progress.setVisibility(View.INVISIBLE);
+		
 		if (login.equalsIgnoreCase("true")) {
 			Toast toast = Toast.makeText(this, "Thank you for logging in!", Toast.LENGTH_SHORT);
 			toast.setGravity(Gravity.TOP|Gravity.CENTER_HORIZONTAL, 0, 400);
