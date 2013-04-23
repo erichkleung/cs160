@@ -245,5 +245,9 @@ public class FindHome extends Fragment implements OnClickListener {
 //	public void donePressed() {
 //		searchClicked(myView);
 //	}
+	
+	public static Context getContext() {
+		return context;
+	}
 
 }

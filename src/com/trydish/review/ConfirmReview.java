@@ -14,6 +14,8 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.app.Activity;
 import android.app.Instrumentation.ActivityResult;
@@ -24,11 +26,13 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.trydish.main.PostLoginHome;
 import com.trydish.main.R;
+import com.trydish.main.global;
 
 public class ConfirmReview extends Activity {
 
@@ -42,10 +46,8 @@ public class ConfirmReview extends Activity {
 		setContentView(R.layout.activity_confirm_review);
 		intent = getIntent();
 		
-		restaurant = intent.getStringExtra("restaurant");
-		dish = intent.getStringExtra("name");
-		((TextView)findViewById(R.id.textViewRestaurant)).setText("Restaurant: " + restaurant);
-		((TextView)findViewById(R.id.textViewName)).setText("Dish Name: " + dish);
+		((TextView)findViewById(R.id.textViewRestaurant)).setText("Restaurant: " + intent.getStringExtra("restaurant"));
+		((TextView)findViewById(R.id.textViewName)).setText("Dish Name: " + intent.getStringExtra("name"));
 	}
 
 	@Override
@@ -63,24 +65,24 @@ public class ConfirmReview extends Activity {
 	}
 	
 	public void confirm(View view) {
+		ProgressBar progress = (ProgressBar)findViewById(R.id.review_progressbar);
+		progress.setVisibility(View.VISIBLE);
 		
-		AddReviewTask submit = new AddReviewTask();
-		//submit.execute(dish, restaurant, "NAME GOES HERE", "" + intent.getDoubleExtra("rating", 0), intent.getStringExtra("comments"));
-		
-		Intent result = new Intent();
-		result.putExtra("confirm", true);
-		setResult(Activity.RESULT_OK, result);
-		finish();
+		if (intent.getIntExtra("dishID",-1) != -1) {
+			addReview(intent.getIntExtra("dishID",-1));
+		} else {
+			AddDishTask addDish = new AddDishTask();
+			addDish.execute(intent.getStringExtra("name"), "" + intent.getIntExtra("restaurantID", -1));
+		}
 	}
 	
 	
-	private class AddReviewTask extends AsyncTask<String, Void, String> {
-
+	private class AddReviewTask extends AsyncTask<String, Void, Boolean> {
 		
-		//params: dish, restaurant, user, rating, comments
+		//params: dish (id), user (id), rating, comment
 		@Override
-		protected String doInBackground(String... params) {
-			String url = "http://trydish.pythonanywhere.com/login";
+		protected Boolean doInBackground(String... params) {
+			String url = "http://trydish.pythonanywhere.com/add_review";
 			String responseString;
 
 			HttpClient httpclient = new DefaultHttpClient();
@@ -89,10 +91,57 @@ public class ConfirmReview extends Activity {
 			try {
 				List<NameValuePair> postParameters = new ArrayList<NameValuePair>();
 				postParameters.add(new BasicNameValuePair("dish", params[0]));
-				postParameters.add(new BasicNameValuePair("restaurant", params[1]));
-				postParameters.add(new BasicNameValuePair("user", params[2]));
-				postParameters.add(new BasicNameValuePair("rating", params[3]));
-				postParameters.add(new BasicNameValuePair("comment", params[4]));
+				postParameters.add(new BasicNameValuePair("author", params[1]));
+				postParameters.add(new BasicNameValuePair("rating", params[2]));
+				postParameters.add(new BasicNameValuePair("comment", params[3]));
+				
+				UrlEncodedFormEntity entity = new UrlEncodedFormEntity(postParameters);
+				post.setEntity(entity);
+	            HttpResponse response = httpclient.execute(post);
+	            
+	            if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+	                ByteArrayOutputStream out = new ByteArrayOutputStream();
+	                response.getEntity().writeTo(out);
+	                out.close();
+	                responseString = out.toString();
+	                System.out.println("response: " + responseString);
+	            } else {
+	                //Closes the connection.
+	            	System.out.println("Status: " + response.getStatusLine().getStatusCode());
+	                response.getEntity().getContent().close();
+	                return false;
+	            }
+	        } catch (Exception e) {
+	        	return false;
+	        }
+			
+			return true;
+    	}
+		
+		protected void onPostExecute(Boolean callsubmit) {
+			System.out.println("callsubmit: " + callsubmit);
+			if (callsubmit) {
+				submitFinished();
+			}
+		}
+    }
+	
+	private class AddDishTask extends AsyncTask<String, Void, Integer> {
+		
+		//params: dish (id), user (id), rating, comment
+		@Override
+		protected Integer doInBackground(String... params) {
+			JSONObject result;
+			String url = "http://trydish.pythonanywhere.com/add_dish";
+			String responseString;
+
+			HttpClient httpclient = new DefaultHttpClient();
+			
+			HttpPost post = new HttpPost(url);
+			try {
+				List<NameValuePair> postParameters = new ArrayList<NameValuePair>();
+				postParameters.add(new BasicNameValuePair("name", params[0]));
+				postParameters.add(new BasicNameValuePair("restaurant_id", params[1]));
 				
 				UrlEncodedFormEntity entity = new UrlEncodedFormEntity(postParameters);
 				post.setEntity(entity);
@@ -103,47 +152,51 @@ public class ConfirmReview extends Activity {
 	                response.getEntity().writeTo(out);
 	                out.close();
 	                responseString = out.toString();
-
+	                result = new JSONObject(responseString);
 	            } else {
 	                //Closes the connection.
+	            	System.out.println("Status: " + response.getStatusLine().getStatusCode());
 	                response.getEntity().getContent().close();
-	                return "false";
+	                return -1;
 	            }
-	        } catch (ClientProtocolException e) {
-	        	return "false";
-	        } catch (IOException e) {
-	        	return "false";
+	        } catch (Exception e) {
+	        	return -1;
 	        }
-			if (responseString.indexOf("true") != -1) {
-				return "true";
-			} else {
-				return "false";
+			
+			try {
+				return (Integer) result.get("id");
+			} catch (JSONException e) {
+				e.printStackTrace();
+				return -1;
 			}
     	}
-    
-		@Override
-		protected void onPostExecute(String login) {
-			checkLogin(login);
+		
+		protected void onPostExecute(Integer id) {
+			System.out.println("dish id: " + id);
+			addReview(id);
 		}
-    	
     }
-	
-	private void checkLogin(String login) {
-		if (login.equalsIgnoreCase("true")) {
-			Toast toast = Toast.makeText(this, "Thank you for logging in!", Toast.LENGTH_SHORT);
+
+	private void addReview(int id) {
+		if (id == -1) {
+			Toast toast = Toast.makeText(this, "Something broke, review not sumbitted!.", Toast.LENGTH_LONG);
 			toast.setGravity(Gravity.TOP|Gravity.CENTER_HORIZONTAL, 0, 400);
 			toast.show();
-			
-			Intent intent = new Intent(this, PostLoginHome.class);
-	    	startActivity(intent);
-	    	overridePendingTransition( R.anim.slide_in_left, R.anim.slide_out_left );
-		} else {
-			Toast toast = Toast.makeText(this, "Username or password is incorrect.", Toast.LENGTH_LONG);
-			toast.setGravity(Gravity.TOP|Gravity.CENTER_HORIZONTAL, 0, 400);
-			toast.show();
-			
-			EditText password = (EditText)findViewById(R.id.login_password);
-			password.setText("");
+			ProgressBar progress = (ProgressBar)findViewById(R.id.review_progressbar);
+			progress.setVisibility(View.INVISIBLE);
 		}
+		
+		AddReviewTask submit = new AddReviewTask();
+		submit.execute("" + id, "" + global.userID, "" + (intent.getDoubleExtra("rating", 0)*2), intent.getStringExtra("comments"));
+	}
+	
+	private void submitFinished() {
+		ProgressBar progress = (ProgressBar)findViewById(R.id.review_progressbar);
+		progress.setVisibility(View.INVISIBLE);
+		
+		Intent result = new Intent();
+		result.putExtra("confirm", true);
+		setResult(Activity.RESULT_OK, result);
+		finish();
 	}
 }

@@ -3,6 +3,7 @@ package com.trydish.review;
 import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -20,6 +21,7 @@ public class ReviewHome extends Fragment implements OnClickListener {
 
 	private View myView;
 	private ActionBar actionBar;
+	private static Context context;
 	
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -27,10 +29,19 @@ public class ReviewHome extends Fragment implements OnClickListener {
 		View view = inflater.inflate(R.layout.activity_review_home,
 				container, false);
 		myView = view;
+		//context = getApplicationContext();
 		
 		((Button)(view.findViewById(R.id.buttonDone))).setOnClickListener(this);
 		
-		
+		Button b = (Button) myView.findViewById(R.id.buttonMap);
+		b.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				//get rid of popup window
+				Intent intent = new Intent(com.trydish.find.FindHome.getContext(), MapActivity.class);
+			    startActivity(intent); 
+			}
+		});
 		return view;
 
 	}
@@ -66,7 +77,9 @@ public class ReviewHome extends Fragment implements OnClickListener {
 		intent.putExtra("name", name);
 		intent.putExtra("comments", comments);
 		intent.putExtra("rating", rating);
-		//TODO: Image? 
+		intent.putExtra("dishID", -1);
+		intent.putExtra("restaurantID", 1);
+		//TODO: Image?
 		
 		startActivityForResult(intent, 1);
 	}
@@ -104,5 +117,8 @@ public class ReviewHome extends Fragment implements OnClickListener {
 	public void onResume(View view) {
 		
 	}
+	
+	
+	
 
 }

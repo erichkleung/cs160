@@ -1,5 +1,7 @@
 package com.trydish.main;
 
+import com.trydish.review.MapActivity;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -7,6 +9,7 @@ import android.widget.PopupMenu;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.ActionBar.Tab;
+import android.content.Intent;
 
 public class PostLoginHome extends Activity {
 
@@ -46,6 +49,11 @@ public class PostLoginHome extends Activity {
 	public void cancelChangeLocation(View v) {
 		Log.d("Find Home", "CHANGE location clicked");
 		
+	}
+	
+	public void showMap(View v) {
+		Intent intent = new Intent(com.trydish.find.FindHome.getContext(), MapActivity.class);
+	    startActivity(intent);
 	}
 
 }

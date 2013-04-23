@@ -1,11 +1,27 @@
 package com.trydish.main;
 
+import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,9 +87,27 @@ public class SignupAllergies extends Activity {
 	}
 	
 	public void signupNext(View view) {
-		Intent intent = new Intent(this, PostLoginHome.class);
-		startActivity(intent);
-		overridePendingTransition( R.anim.slide_in_left, R.anim.slide_out_left );
+		LinearLayout allergiesList = (LinearLayout) findViewById(R.id.left_check_boxes);
+		int childcount = allergiesList.getChildCount();
+		ArrayList<String> allergies = new ArrayList<String>();
+		for (int i=0; i < childcount; i++){
+		      CheckBox v = (CheckBox)allergiesList.getChildAt(i);
+		      if (v.isChecked()) {
+		    	  allergies.add(v.getText().toString().toLowerCase());
+		      }
+		}
+		
+		allergiesList = (LinearLayout) findViewById(R.id.right_check_boxes);
+		childcount = allergiesList.getChildCount();
+		for (int i=0; i < childcount; i++) {
+		      CheckBox v = (CheckBox)allergiesList.getChildAt(i);
+		      if (v.isChecked()) {
+		    	  allergies.add(v.getText().toString().toLowerCase());
+		      }
+		}
+		
+		AddAllergiesTask a = new AddAllergiesTask();
+		a.execute(allergies);
 	}
 	
 	@Override
@@ -82,11 +116,59 @@ public class SignupAllergies extends Activity {
 	    overridePendingTransition( R.anim.slide_in_right, R.anim.slide_out_right );
 	}
 
-//	@Override
-//	public boolean onCreateOptionsMenu(Menu menu) {
-//		// Inflate the menu; this adds items to the action bar if it is present.
-//		getMenuInflater().inflate(R.menu.activity_sign_up_allergies, menu);
-//		return true;
-//	}
+	
+	private class AddAllergiesTask extends AsyncTask<ArrayList<String>, Void, Void> {
+
+		@Override
+		protected Void doInBackground(ArrayList<String>... params) {
+			String url = "http://trydish.pythonanywhere.com/add_user_allergies/" + global.userID;
+			String responseString;
+			JSONObject result;
+
+			HttpClient httpclient = new DefaultHttpClient();
+			
+			HttpPost post = new HttpPost(url);
+			try {
+				List<NameValuePair> postParameters = new ArrayList<NameValuePair>();
+				for (int i = 0; i < params[0].size(); i++) {
+					postParameters.add(new BasicNameValuePair("allergy", params[0].get(i)));
+				}
+				UrlEncodedFormEntity entity = new UrlEncodedFormEntity(postParameters);
+				post.setEntity(entity);
+	            HttpResponse response = httpclient.execute(post);
+	            
+	            if(response.getStatusLine().getStatusCode() == HttpStatus.SC_OK){
+	                ByteArrayOutputStream out = new ByteArrayOutputStream();
+	                response.getEntity().writeTo(out);
+	                out.close();
+	                responseString = out.toString();
+	                result = new JSONObject(responseString);
+	                
+	                ArrayList<String> list = new ArrayList<String>();
+	                JSONArray jArray = result.getJSONArray("allergy_ids");
+	                for(int i = 0 ; i < jArray.length() ; i++){
+	                    list.add(jArray.getString(i));
+	                }
+	                global.allergy_ids = list;
+	                
+	            } else {
+	                //Closes the connection.
+	            	System.out.println("Status: " + response.getStatusLine().getStatusCode());
+	                response.getEntity().getContent().close();
+	                return null;
+	            }
+	        } catch (Exception e) {
+	        	return null;
+	        }
+			nextScreen();
+			return null;
+    	}
+    }
+	
+	private void nextScreen() {
+		Intent intent = new Intent(this, PostLoginHome.class);
+		startActivity(intent);
+		overridePendingTransition( R.anim.slide_in_left, R.anim.slide_out_left );
+	}
 
 }
