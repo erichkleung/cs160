@@ -81,4 +81,15 @@
         android:text="Confirm"
         android:onClick="confirm"/>
 
+    
+    <ProgressBar android:indeterminate="true"
+        android:id="@+id/review_progressbar"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="300dp" 
+        android:visibility="invisible"/>
+    
 </RelativeLayout>

@@ -77,7 +77,9 @@ public class ReviewHome extends Fragment implements OnClickListener {
 		intent.putExtra("name", name);
 		intent.putExtra("comments", comments);
 		intent.putExtra("rating", rating);
-		//TODO: Image? 
+		intent.putExtra("dishID", -1);
+		intent.putExtra("restaurantID", 1);
+		//TODO: Image?
 		
 		startActivityForResult(intent, 1);
 	}
