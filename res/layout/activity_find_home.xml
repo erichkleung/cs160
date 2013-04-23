@@ -2,44 +2,29 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#ffffff"
     tools:context=".HomeScreen"
     android:orientation="vertical" >
     
     <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginTop="-1dp"
     tools:context=".HomeScreen"
     android:orientation="horizontal"
-    android:background="@drawable/menu_bar_gradient"
+    android:background="@drawable/bluebartop"
     android:baselineAligned="false" >
-    
-        <ImageButton
-            android:id="@+id/search"
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:layout_marginTop="2dp"
-            android:layout_marginBottom="2dp"
-            android:src="@drawable/searchicon"
-            android:contentDescription="search icon"
-            android:layout_weight="1"
-            android:onClick="searchClicked" 
-            android:layout_marginLeft="2dp"
-            android:background="@drawable/menu_bar_button_states"
-            android:layout_gravity="center"
-             />
         
-        <EditText
+        <SearchView
             android:id="@+id/search_box"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
-            android:hint="Search dishes"
-            android:layout_weight="0"
+            android:maxWidth="250dp"
+            android:iconifiedByDefault="false"
             android:imeOptions="actionDone"
             android:singleLine="true"
             android:ems="10"
             android:layout_gravity="center"
-            android:textColor="#FFFFFF"
-            android:textColorHint="#CCCCCC"
             />
         
     	<Spinner
@@ -79,15 +64,15 @@
     
         <GridView
     	android:id="@+id/food_images"
-    	android:layout_marginLeft="0dp"
-    	android:layout_marginRight="0dp"
-    	android:layout_marginTop="0dp"
+    	android:layout_marginLeft="1dp"
+    	android:layout_marginRight="1dp"
+    	android:layout_marginTop="1dp"
     	android:layout_marginBottom="0dp"
     	android:layout_width="fill_parent" 
     	android:layout_height="fill_parent"
     	android:columnWidth="390dp"
     	android:numColumns="1"
-    	android:verticalSpacing="5dp"
+    	android:verticalSpacing="2dp"
     	android:horizontalSpacing="5dp"
     	android:stretchMode="columnWidth"
     	android:gravity="center"

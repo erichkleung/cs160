@@ -40,4 +40,6 @@
     <string name="login_signup_button_text">Sign Up for trydish</string>
     <string name="signup_next_button">Next</string>
     <string name="title_activity_confirm_review">Confirm</string>
+    <string name="title_activity_searchable">SearchableActivity</string>
+
 </resources>

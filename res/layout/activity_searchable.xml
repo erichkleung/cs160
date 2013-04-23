@@ -1,0 +1,26 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SearchableActivity"
+    android:background="#ffffff"
+    android:id="@+id/search_results" >
+
+    <GridView
+    	android:id="@+id/search_food_images"
+    	android:layout_marginLeft="1dp"
+    	android:layout_marginRight="1dp"
+    	android:layout_marginTop="1dp"
+    	android:layout_marginBottom="1dp"
+    	android:layout_width="fill_parent" 
+    	android:layout_height="fill_parent"
+    	android:columnWidth="390dp"
+    	android:smoothScrollbar="true"
+    	android:numColumns="1"
+    	android:verticalSpacing="2dp"
+    	android:horizontalSpacing="5dp"
+    	android:stretchMode="columnWidth"
+    	android:gravity="center"
+		/>
+
+</RelativeLayout>

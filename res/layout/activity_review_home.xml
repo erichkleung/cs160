@@ -69,6 +69,7 @@
 
         <ImageView
             android:id="@+id/imageView1"
+            android:src="@drawable/cameraicon"
             android:layout_width="500dp"
             android:layout_height="400dp"
             android:layout_below="@+id/editTextName"

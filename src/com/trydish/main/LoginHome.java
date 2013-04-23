@@ -44,12 +44,15 @@ public class LoginHome extends Activity {
 	
 	public void loginCheck(View view) {
 		if (nocheck) {
-			try {
-				checkLogin(new JSONObject("{\"status\": 1}"));
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+//			try {
+//				checkLogin(new JSONObject("{\"status\": 1}"));
+//			} catch (JSONException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+			Intent intent = new Intent(this, PostLoginHome.class);
+	    	startActivity(intent);
+	    	overridePendingTransition( R.anim.slide_in_left, R.anim.slide_out_left );
 		} else {
 			EditText userText = (EditText)findViewById(R.id.login_username);
 			EditText passText = (EditText)findViewById(R.id.login_password);
