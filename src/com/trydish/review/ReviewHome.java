@@ -6,10 +6,15 @@ import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RatingBar;
@@ -17,7 +22,7 @@ import android.widget.Toast;
 
 import com.trydish.main.R;
 
-public class ReviewHome extends Fragment implements OnClickListener {
+public class ReviewHome extends Fragment implements OnClickListener, OnItemClickListener {
 
 	private View myView;
 	private ActionBar actionBar;
@@ -30,6 +35,7 @@ public class ReviewHome extends Fragment implements OnClickListener {
 				container, false);
 		myView = view;
 		//context = getApplicationContext();
+		context = view.getContext();
 		
 		((Button)(view.findViewById(R.id.buttonDone))).setOnClickListener(this);
 		
@@ -42,6 +48,37 @@ public class ReviewHome extends Fragment implements OnClickListener {
 			    startActivity(intent); 
 			}
 		});
+		
+		EditText e = (EditText) myView.findViewById(R.id.editTextRestaurant);
+		e.addTextChangedListener(new TextWatcher() {
+		
+			@Override
+			public void afterTextChanged(Editable s) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void beforeTextChanged(CharSequence arg0, int arg1,
+					int arg2, int arg3) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before,
+					int count) {
+				// TODO Auto-generated method stub
+				
+			}
+
+		});
+		
+		//for autocomplete google API
+		AutoCompleteTextView autoCompView = (AutoCompleteTextView) view.findViewById(R.id.editTextRestaurant);
+	    autoCompView.setAdapter(new PlacesAutoCompleteAdapter(context, R.layout.list_item));
+	    autoCompView.setOnItemClickListener(this);
+		
 		return view;
 
 	}
@@ -114,6 +151,20 @@ public class ReviewHome extends Fragment implements OnClickListener {
 	
 	public void onResume(View view) {
 		
+	}
+	
+	public static Context getContext() {
+		return context;
+	}
+
+	
+	@Override
+	public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+		// TODO Auto-generated method stub
+		String str = (String) adapterView.getItemAtPosition(position);
+		//String idToQuery = (String) PlacesAutoCompleteAdapter.getid(position);
+		System.out.println("the id clicked was: "+ str);
+        Toast.makeText(context, str, Toast.LENGTH_LONG).show();
 	}
 	
 	

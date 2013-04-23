@@ -21,7 +21,7 @@
         android:layout_alignLeft="@+id/textViewName"
         android:layout_below="@+id/textViewName"
         android:layout_marginTop="60dp"
-        android:text="This dish will be approved for the following allergies:"
+        android:text="Please confirm that the following ingredients are not present in this dish:"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView

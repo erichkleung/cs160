@@ -3,16 +3,19 @@ package com.trydish.find;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.trydish.main.R;
+import com.trydish.review.MapActivity;
 
 public class ViewDish extends Fragment implements OnClickListener {
 
@@ -21,6 +24,16 @@ public class ViewDish extends Fragment implements OnClickListener {
 		View view = inflater.inflate(R.layout.activity_view_dish, container, false);
 
 		((ImageButton)(view.findViewById(R.id.flagButton))).setOnClickListener(this);
+		
+		Button b = (Button) view.findViewById(R.id.mapButtonView);
+		b.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				//get rid of popup window
+				Intent intent = new Intent(com.trydish.find.FindHome.getContext(), MapActivity.class);
+			    startActivity(intent); 
+			}
+		});
 		
 		return view;
 

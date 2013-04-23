@@ -24,6 +24,15 @@
         android:text="Location: 10.5 miles away"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
+    <Button
+        android:id="@+id/mapButtonView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/dish_location"
+        android:layout_above="@+id/horizontalScrollView1"
+        android:layout_centerHorizontal="true"
+        android:text="map" />
+
     <TextView
         android:id="@+id/dish_name"
         android:layout_width="wrap_content"
@@ -41,10 +50,9 @@
         android:layout_height="300dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-                        android:paddingTop="5dp"
-        
         android:layout_below="@+id/dish_location"
-        android:fadeScrollbars="false" >
+        android:fadeScrollbars="false"
+        android:paddingTop="5dp" >
 
         <LinearLayout
             android:layout_width="300dp"
@@ -58,7 +66,6 @@
                 android:layout_height="fill_parent"
                 android:maxHeight="300dp"
                 android:maxWidth="300dp"
-                
                 android:paddingBottom="10dp"
                 android:src="@drawable/wings" />
 
@@ -149,14 +156,14 @@
 
             <RatingBar
                 android:id="@+id/ratingBar3"
+                style="?android:attr/ratingBarStyleSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@+id/author_name"
-                style="?android:attr/ratingBarStyleSmall"
-                android:rating="4"
                 android:layout_marginBottom="4.5dp"
                 android:layout_marginLeft="10dp"
-                android:layout_toRightOf="@+id/author_name" />
+                android:layout_toRightOf="@+id/author_name"
+                android:rating="4" />
 
             <TextView
                 android:id="@+id/textView1"
@@ -164,9 +171,8 @@
                 android:layout_height="wrap_content"
                 android:layout_alignLeft="@+id/author_name"
                 android:layout_below="@+id/author_name"
-                android:textSize="20dp"
-                android:text="I think the wings were really wing-y. They were also quite buffalo-y. I think this place makes pretty decent buffalo wings. 4 stars." />
-
+                android:text="I think the wings were really wing-y. They were also quite buffalo-y. I think this place makes pretty decent buffalo wings. 4 stars."
+                android:textSize="20dp" />
         </RelativeLayout>
     </ScrollView>
 
@@ -176,8 +182,8 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/horizontalScrollView1"
         android:layout_alignParentRight="true"
-        android:isIndicator="true"
         android:layout_marginRight="15dp"
+        android:isIndicator="true"
         android:maxWidth="20dp"
         android:rating="3.5" />
 

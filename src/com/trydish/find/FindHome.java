@@ -44,13 +44,13 @@ public class FindHome extends Fragment implements OnClickListener {
 	//PopupWindow usage modeled after http://www.mobilemancer.com/2011/01/08/popup-window-in-android/ 
 
 	//Keep track of what distance user has selected from drop down menu. Saving now b/c likely later passed to other function 
-	private String searchDistance = "1 mile";
+	private static String searchDistance = "1 mile";
 	private static Context context;
 	private View myView;
 	private LocationManager manager;
 	private Location location;
-	private double latitude;
-	private double longitude;
+	private static double latitude;
+	private static double longitude;
 	private PopupWindow pop;
 
 
@@ -237,5 +237,17 @@ public class FindHome extends Fragment implements OnClickListener {
 	public static Context getContext() {
 		return context;
 	}
-
+	
+	public static String getRadius() {
+		return searchDistance;
+	}
+	
+	public static double getLat() {
+		return latitude;
+	}
+	
+	public static double getLong() {
+		return longitude;
+	}
+	
 }

@@ -46,7 +46,7 @@
             android:imeActionLabel="Done"
             android:singleLine="true" />
 
-        <EditText
+        <AutoCompleteTextView
             android:id="@+id/editTextRestaurant"
             android:layout_width="450dp"
             android:layout_height="wrap_content"
