@@ -26,6 +26,9 @@ import android.widget.TextView;
 import com.trydish.main.R;
 
 public class ImageAdapter extends BaseAdapter {
+	public final static double REGULAR = 1.0;
+	public final static double HALF = 0.5;
+	
 	private Context mContext;
 	private int screenWidth;
 	private int screenHeight;
@@ -33,11 +36,11 @@ public class ImageAdapter extends BaseAdapter {
 	private Bitmap mPlaceHolderBitmap;
 	private LruCache<String, Bitmap> mMemoryCache;
 
-	public ImageAdapter(Context c) {
+	public ImageAdapter(Context c, double scale) {
 		mContext = c;
 		screenHeight = mContext.getResources().getDisplayMetrics().heightPixels;
 		screenWidth = mContext.getResources().getDisplayMetrics().widthPixels;
-		imageDimension = (int) Math.round(screenWidth / 1.5 - 10);
+		imageDimension = (int) Math.round((screenWidth / 1.5 - 10) * scale);
 		Bitmap.Config conf = Bitmap.Config.ARGB_8888;
 		mPlaceHolderBitmap = Bitmap.createBitmap(screenWidth, imageDimension, conf);
 		

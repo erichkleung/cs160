@@ -12,7 +12,7 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONException;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.app.ActionBar;
@@ -23,14 +23,11 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import android.widget.Toast;
 
 public class SignupAllergies extends Activity {
 	
@@ -96,7 +93,7 @@ public class SignupAllergies extends Activity {
 		for (int i=0; i < childcount; i++){
 		      CheckBox v = (CheckBox)allergiesList.getChildAt(i);
 		      if (v.isChecked()) {
-		    	  allergies.add(v.getText().toString());
+		    	  allergies.add(v.getText().toString().toLowerCase());
 		      }
 		}
 		
@@ -105,7 +102,7 @@ public class SignupAllergies extends Activity {
 		for (int i=0; i < childcount; i++) {
 		      CheckBox v = (CheckBox)allergiesList.getChildAt(i);
 		      if (v.isChecked()) {
-		    	  allergies.add(v.getText().toString());
+		    	  allergies.add(v.getText().toString().toLowerCase());
 		      }
 		}
 		
@@ -146,6 +143,14 @@ public class SignupAllergies extends Activity {
 	                out.close();
 	                responseString = out.toString();
 	                result = new JSONObject(responseString);
+	                
+	                ArrayList<String> list = new ArrayList<String>();
+	                JSONArray jArray = result.getJSONArray("allergy_ids");
+	                for(int i = 0 ; i < jArray.length() ; i++){
+	                    list.add(jArray.getString(i));
+	                }
+	                global.allergy_ids = list;
+	                
 	            } else {
 	                //Closes the connection.
 	            	System.out.println("Status: " + response.getStatusLine().getStatusCode());

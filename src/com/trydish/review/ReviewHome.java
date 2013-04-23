@@ -39,7 +39,7 @@ public class ReviewHome extends Fragment implements OnClickListener, OnItemClick
 		
 		((Button)(view.findViewById(R.id.buttonDone))).setOnClickListener(this);
 		
-		Button b = (Button) myView.findViewById(R.id.buttonMap);
+		/*Button b = (Button) myView.findViewById(R.id.buttonMap);
 		b.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -47,7 +47,7 @@ public class ReviewHome extends Fragment implements OnClickListener, OnItemClick
 				Intent intent = new Intent(com.trydish.find.FindHome.getContext(), MapActivity.class);
 			    startActivity(intent); 
 			}
-		});
+		});*/
 		
 		EditText e = (EditText) myView.findViewById(R.id.editTextRestaurant);
 		e.addTextChangedListener(new TextWatcher() {
@@ -114,7 +114,9 @@ public class ReviewHome extends Fragment implements OnClickListener, OnItemClick
 		intent.putExtra("name", name);
 		intent.putExtra("comments", comments);
 		intent.putExtra("rating", rating);
-		//TODO: Image? 
+		intent.putExtra("dishID", -1);
+		intent.putExtra("restaurantID", 1);
+		//TODO: Image?
 		
 		startActivityForResult(intent, 1);
 	}
