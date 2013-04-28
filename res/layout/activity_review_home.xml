@@ -67,14 +67,16 @@
             android:layout_marginLeft="10dp"
             android:layout_toRightOf="@+id/textView3" />
 
-        <ImageView
+        <ImageButton
             android:id="@+id/imageView1"
-            android:src="@drawable/cameraicon"
+            android:src="@drawable/cameraicon1"
             android:layout_width="500dp"
             android:layout_height="400dp"
             android:layout_below="@+id/editTextName"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="27dp" />
+            android:layout_marginTop="27dp"
+            android:adjustViewBounds="false"
+            android:onClick="addImage" />
 
         <TextView
             android:id="@+id/textView3"

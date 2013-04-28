@@ -25,7 +25,8 @@ import android.widget.Toast;
 
 public class PlacesAutoCompleteAdapter extends ArrayAdapter<String> implements Filterable {
 	private ArrayList<String> resultList;
-	private static ArrayList<String> idList;
+	private ArrayList<String> refList;
+	private static ArrayList<String> refListCopy;
 	private static final String LOG_TAG = "trydish";
 
 	private static final String PLACES_API_BASE = "https://maps.googleapis.com/maps/api/place";
@@ -161,13 +162,14 @@ public class PlacesAutoCompleteAdapter extends ArrayAdapter<String> implements F
 
 			// Extract the Place descriptions from the results
 			resultList = new ArrayList<String>(predsJsonArray.length());
+			refList = new ArrayList<String>(predsJsonArray.length());
 			for (int i = 0; i < predsJsonArray.length(); i++) {
+				refList.add(predsJsonArray.getJSONObject(i).getString("reference"));
 				resultList.add(predsJsonArray.getJSONObject(i).getString("description"));
-				//idList.add(predsJsonArray.getJSONObject(i).getString("id"));
 			}
-			//for (int i = 0; i < predsJsonArray.length(); i++) {
+		//	for (int i = 0; i < predsJsonArray.length(); i++) {
 				//resultList.add(predsJsonArray.getJSONObject(i).getString("description"));
-				//idList.add(predsJsonArray.getJSONObject(i).getString("id"));
+			//	refList.add(predsJsonArray.getJSONObject(i).getString("id"));
 			//}
 		} catch (JSONException e) {
 			Log.e(LOG_TAG, "Cannot process JSON results", e);
@@ -179,10 +181,11 @@ public class PlacesAutoCompleteAdapter extends ArrayAdapter<String> implements F
 
 
 
-	//public String getid(int index) {
-	//	String toReturn = idList.get(index);
-//		return toReturn;
-//	}
+	public String getRef(int index) {
+		//refListCopy = new ArrayList<String>(refList.length());
+		String toReturn = refList.get(index);
+		return toReturn;
+	}
 
 
 
