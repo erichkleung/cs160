@@ -146,7 +146,7 @@ public class SignupAllergies extends Activity {
 	                
 	                ArrayList<String> list = new ArrayList<String>();
 	                JSONArray jArray = result.getJSONArray("allergy_ids");
-	                for(int i = 0 ; i < jArray.length() ; i++){
+	                for(int i = 0 ; i < jArray.length() ; i++) {
 	                    list.add(jArray.getString(i));
 	                }
 	                global.allergy_ids = list;

@@ -1,25 +1,28 @@
 package com.trydish.main;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -31,6 +34,7 @@ import android.widget.Toast;
 public class LoginHome extends Activity {
 	
 	boolean nocheck = true;
+	Context forAllergySync;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -40,19 +44,20 @@ public class LoginHome extends Activity {
 		
 		ActionBar actionBar = getActionBar();
 		actionBar.hide();
+		
+		forAllergySync = getBaseContext();
+		
+		AllergyDBTask allergysync = new AllergyDBTask();
+		allergysync.execute();
 	}
 	
 	public void loginCheck(View view) {
 		if (nocheck) {
-//			try {
-//				checkLogin(new JSONObject("{\"status\": 1}"));
-//			} catch (JSONException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-			Intent intent = new Intent(this, PostLoginHome.class);
-	    	startActivity(intent);
-	    	overridePendingTransition( R.anim.slide_in_left, R.anim.slide_out_left );
+			try {
+				checkLogin(new JSONObject("{\"status\": 1}"));
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
 		} else {
 			EditText userText = (EditText)findViewById(R.id.login_username);
 			EditText passText = (EditText)findViewById(R.id.login_password);
@@ -148,5 +153,69 @@ public class LoginHome extends Activity {
 			EditText password = (EditText)findViewById(R.id.login_password);
 			password.setText("");
 		}
+	}
+	
+	
+	//I HAVE NO IDEA WHAT I'M DOING
+	private class AllergyDBTask extends AsyncTask<Void, Void, SQLiteDatabase> {
+    	
+    	protected SQLiteDatabase doInBackground(Void...arg0) {			
+    		String url = "http://trydish.pythonanywhere.com/sync_allergies";
+			SQLiteDatabase db = null;
+			
+			HttpResponse response;
+			HttpClient httpclient = new DefaultHttpClient();
+
+			try {
+	            response = httpclient.execute(new HttpGet(url));
+	            if(response.getStatusLine().getStatusCode() == HttpStatus.SC_OK){
+	                ByteArrayOutputStream out = new ByteArrayOutputStream();
+	                response.getEntity().writeTo(out);
+
+	                final String databaseCommands = out.toString();
+	                out.close();
+	                
+	                class DatabaseOpenHelper extends SQLiteOpenHelper {
+	                    private static final int DATABASE_VERSION = 1;
+	                    DatabaseOpenHelper(Context context) {
+	                        super(context, "database_name", null, DATABASE_VERSION);
+	                    }
+	                    @Override
+	                    public void onCreate(SQLiteDatabase db) {
+	                    	db.execSQL("CREATE TABLE allergies (id INTEGER PRIMARY KEY, name TEXT UNIQUE);");
+	                    	//db.execSQL(databaseCommands);
+	                        db.close();
+	                        System.out.println("Commands: " + databaseCommands);
+	                    }
+						@Override
+						public void onUpgrade(SQLiteDatabase db,
+								int oldVersion, int newVersion) {
+						}
+	                }
+	                
+	                db = (new DatabaseOpenHelper(forAllergySync)).getWritableDatabase();
+	                
+	                System.out.println("database created");
+	                
+	            } else{
+	                //Closes the connection.
+	                response.getEntity().getContent().close();
+	                System.out.println("status: " + response.getStatusLine().getStatusCode());
+	                return null;
+	            }
+	        } catch (Exception e) {
+	            //TODO Handle problems..
+	        	return null;
+	        }
+			return db;
+    	}
+    	
+    	@Override
+		protected void onPostExecute(SQLiteDatabase db) {
+				storeDB(db);
+		}
+	}
+	private void storeDB(SQLiteDatabase db) {
+		global.allergyDB = db;
 	}
 }

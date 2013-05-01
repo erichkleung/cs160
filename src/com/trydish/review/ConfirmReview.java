@@ -1,14 +1,12 @@
 package com.trydish.review;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
@@ -20,17 +18,19 @@ import org.json.JSONObject;
 import android.app.Activity;
 import android.app.Instrumentation.ActivityResult;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.View;
-import android.widget.EditText;
+import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.trydish.main.PostLoginHome;
 import com.trydish.main.R;
 import com.trydish.main.global;
 
@@ -48,6 +48,27 @@ public class ConfirmReview extends Activity {
 		
 		((TextView)findViewById(R.id.textViewRestaurant)).setText("Restaurant: " + intent.getStringExtra("restaurant"));
 		((TextView)findViewById(R.id.textViewName)).setText("Dish Name: " + intent.getStringExtra("name"));
+		
+		LinearLayout allergiesList = (LinearLayout) findViewById(R.id.Layout);
+		for (int i = 0; i < global.allergy_ids.size(); i++) {
+			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+			params.setMargins(13, 13, 13, 13);
+			CheckBox newAllergy = new CheckBox(this);
+			
+			System.out.println("start of DB code");
+			
+			String[] allergyID = { global.allergy_ids.get(i) };
+			
+			System.out.println("query DB");
+			System.out.println("isOpen: " + global.allergyDB.isOpen());
+			System.out.println("Path: " + global.allergyDB.getPath());
+			Cursor allergyCursor = global.allergyDB.rawQuery("SELECT name FROM allergies WHERE id=?", allergyID);
+			
+			System.out.println("before getString");
+			newAllergy.setText(allergyCursor.getString(0));
+			newAllergy.setChecked(true);
+			allergiesList.addView(newAllergy, params);
+		}
 	}
 
 	@Override
