@@ -125,7 +125,6 @@ public class ImageAdapter extends BaseAdapter {
 		// Adding everything to the RelativeLayout
 		rLayout.addView(imageView);
 		rLayout.addView(foodText);
-		// rLayout.addView(restaurant);
 		rLayout.addView(ratingBar);
 		rLayout.addView(distanceText(distances[position]));
 

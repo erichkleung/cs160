@@ -116,7 +116,6 @@ public class SignupHome extends Activity {
 
 			@Override
 			protected void onPostExecute(JSONObject result) {
-				System.out.println(result.toString());
 				checkName(result);
 			}
 		}

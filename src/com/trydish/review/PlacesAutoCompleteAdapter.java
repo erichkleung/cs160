@@ -63,22 +63,8 @@ public class PlacesAutoCompleteAdapter extends ArrayAdapter<String> implements F
 				FilterResults filterResults = new FilterResults();
 				if (constraint != null) {
 					// Retrieve the autocomplete results.
-					//System.out.println(constraint.toString());
 					resultList = autocomplete(constraint.toString());
 
-					// Assign the data to the FilterResults
-					if (filterResults == null) {
-						System.out.println("filterResults is null");
-					} else {
-						//System.out.println("filterResults is NOT null");
-					}
-					if (resultList == null) {
-						System.out.println("resultList is null");
-					} else {
-						//System.out.println("resultList is NOT null");
-					}
-					//Log.d("filterResults is:", filterResults.toString());
-					//Log.d("resultsList is:", resultList.toString());
 					filterResults.values = resultList;
 					filterResults.count = resultList.size();
 				}
@@ -103,7 +89,6 @@ public class PlacesAutoCompleteAdapter extends ArrayAdapter<String> implements F
 	private ArrayList<String> autocomplete(String input) {
 		ArrayList<String> resultList = null;
 
-		//Log.d("initiating", "autocomplete");
 		HttpURLConnection conn = null;
 		StringBuilder jsonResults = new StringBuilder();
 		try {
@@ -120,17 +105,14 @@ public class PlacesAutoCompleteAdapter extends ArrayAdapter<String> implements F
 			sb.append("&components=country:us");
 			sb.append("&input=" + URLEncoder.encode(input, "utf8"));
 			//check for user location being null - should actually check for
-			//if (userLat != 0.0 && userLong != 0.0) {
 				sb.append("&radius=" + userRadius);
 				sb.append("&location="+userLat+","+userLong);
-			//}
 			sb.append("&types=establishment");
 			
  
 			//Log.d("key is:", sb.toString());
 			
 			URL url = new URL(sb.toString());
-			//URL url = new URL("https://maps.googleapis.com/maps/api/place/autocomplete/json?input=Amoeba&types=establishment&location=37.76999,-122.44696&radius=500&sensor=true&key=AIzaSyBlB6PKsmromS6TfMDIcy7fGRhnusRZ3r8");
 			conn = (HttpURLConnection) url.openConnection();
 			InputStreamReader in = new InputStreamReader(conn.getInputStream());
 
@@ -140,7 +122,6 @@ public class PlacesAutoCompleteAdapter extends ArrayAdapter<String> implements F
 			while ((read = in.read(buff)) != -1) {
 				jsonResults.append(buff, 0, read);
 			}
-			//System.out.println("The results from the autocomplete were"+jsonResults.toString());
 		} catch (MalformedURLException e) {
 			Log.e(LOG_TAG, "Error processing Places API URL", e);
 			return resultList;
@@ -157,7 +138,6 @@ public class PlacesAutoCompleteAdapter extends ArrayAdapter<String> implements F
 			// Create a JSON object hierarchy from the results
 			JSONObject jsonObj = new JSONObject(jsonResults.toString());
 			JSONArray predsJsonArray = jsonObj.getJSONArray("predictions");
-			//Log.d("JSON results", jsonResults.toString());
 
 			// Extract the Place descriptions from the results
 			resultList = new ArrayList<String>(predsJsonArray.length());
@@ -166,10 +146,6 @@ public class PlacesAutoCompleteAdapter extends ArrayAdapter<String> implements F
 				refList.add(predsJsonArray.getJSONObject(i).getString("reference"));
 				resultList.add(predsJsonArray.getJSONObject(i).getString("description"));
 			}
-		//	for (int i = 0; i < predsJsonArray.length(); i++) {
-				//resultList.add(predsJsonArray.getJSONObject(i).getString("description"));
-			//	refList.add(predsJsonArray.getJSONObject(i).getString("id"));
-			//}
 		} catch (JSONException e) {
 			Log.e(LOG_TAG, "Cannot process JSON results", e);
 		}
@@ -181,7 +157,6 @@ public class PlacesAutoCompleteAdapter extends ArrayAdapter<String> implements F
 
 
 	public String getRef(int index) {
-		//refListCopy = new ArrayList<String>(refList.length());
 		String toReturn = refList.get(index);
 		return toReturn;
 	}
