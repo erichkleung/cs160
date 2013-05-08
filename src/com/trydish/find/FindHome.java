@@ -7,14 +7,11 @@ import java.util.Locale;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
-import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Fragment;
@@ -50,7 +47,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.PopupWindow;
-import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -78,6 +74,7 @@ public class FindHome extends Fragment implements OnClickListener {
 	private static boolean myLocationChanged = false;
 	private ArrayList<String> dishes;
 	private GridView gridView;
+	private JSONArray jArray;
 
 
 	@Override
@@ -92,6 +89,8 @@ public class FindHome extends Fragment implements OnClickListener {
 		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(view.getContext(), R.array.distance_array, android.R.layout.simple_spinner_item);
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		distanceSpinner.setAdapter(adapter);
+		
+		jArray = new JSONArray();
 
 		//Create a new OnItemSelectedListener for the Spinner using anonymous class to define necessary methods
 		OnItemSelectedListener listener = new OnItemSelectedListener() {
@@ -115,24 +114,6 @@ public class FindHome extends Fragment implements OnClickListener {
 		//Grab the buttons and set their onClickListeners to be this Fragment
 		Button b = (Button) view.findViewById(R.id.my_location);
 		b.setOnClickListener(this);
-		
-		gridView = (GridView) view.findViewById(R.id.food_images);
-		gridView.setAdapter(new ImageAdapter(view.getContext(), ImageAdapter.HALF));
-
-		gridView.setOnItemClickListener(new OnItemClickListener() {
-			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-				InputMethodManager imm = (InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
-				AutoCompleteTextView et = (AutoCompleteTextView) myView.findViewById(R.id.search_box);
-				imm.hideSoftInputFromWindow(et.getWindowToken(), 0);
-
-				Fragment view_dish = new ViewDish();
-				FragmentTransaction trans = getFragmentManager().beginTransaction();
-
-				trans.replace(((ViewGroup) myView.getParent()).getId(), view_dish);
-				trans.addToBackStack(null);
-				trans.commit();
-			}
-		});
 
 		//Hide keyboard
 		getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
@@ -156,23 +137,23 @@ public class FindHome extends Fragment implements OnClickListener {
 	            if (actionId == EditorInfo.IME_ACTION_DONE){
 	                    //Do your stuff here
 	            		Log.d("FindHome","DONE pressed");
-	            		gridView = (GridView) myView.findViewById(R.id.food_images);
-	            		gridView.setAdapter(new ImageAdapter(myView.getContext(), ImageAdapter.HALF));
-
-	            		gridView.setOnItemClickListener(new OnItemClickListener() {
-	            			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-	            				InputMethodManager imm = (InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
-	            				AutoCompleteTextView et = (AutoCompleteTextView) myView.findViewById(R.id.search_box);
-	            				imm.hideSoftInputFromWindow(et.getWindowToken(), 0);
-
-	            				Fragment view_dish = new ViewDish();
-	            				FragmentTransaction trans = getFragmentManager().beginTransaction();
-
-	            				trans.replace(((ViewGroup) myView.getParent()).getId(), view_dish);
-	            				trans.addToBackStack(null);
-	            				trans.commit();
-	            			}
-	            		});
+//	            		gridView = (GridView) myView.findViewById(R.id.food_images);
+//	            		gridView.setAdapter(new ImageAdapter(myView.getContext(), ImageAdapter.HALF, ));
+//
+//	            		gridView.setOnItemClickListener(new OnItemClickListener() {
+//	            			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+//	            				InputMethodManager imm = (InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
+//	            				AutoCompleteTextView et = (AutoCompleteTextView) myView.findViewById(R.id.search_box);
+//	            				imm.hideSoftInputFromWindow(et.getWindowToken(), 0);
+//
+//	            				Fragment view_dish = new ViewDish();
+//	            				FragmentTransaction trans = getFragmentManager().beginTransaction();
+//
+//	            				trans.replace(((ViewGroup) myView.getParent()).getId(), view_dish);
+//	            				trans.addToBackStack(null);
+//	            				trans.commit();
+//	            			}
+//	            		});
 	            		return true;
 	                } else {
 	                	return false;
@@ -378,45 +359,6 @@ public class FindHome extends Fragment implements OnClickListener {
 		longitude = lng;
 	}
 	
-	private class DishDBTask extends AsyncTask<Void, Void, SQLiteDatabase> {
-
-		protected SQLiteDatabase doInBackground(Void...arg0) {			
-			String url = "http://trydish.pythonanywhere.com/sync_dishes";
-			SQLiteDatabase db = null;
-
-			HttpResponse response;
-			HttpClient httpclient = new DefaultHttpClient();
-
-			try {
-				response = httpclient.execute(new HttpGet(url));
-				if(response.getStatusLine().getStatusCode() == HttpStatus.SC_OK){
-					ByteArrayOutputStream out = new ByteArrayOutputStream();
-					response.getEntity().writeTo(out);
-
-					final String databaseCommands = out.toString();
-					out.close(); 
-
-					DatabaseHandler db_handler = new DatabaseHandler(context);
-					db_handler.execSQL(databaseCommands);
-
-				} else{
-					//Closes the connection.
-					response.getEntity().getContent().close();
-//					System.out.println("status: " + response.getStatusLine().getStatusCode());
-					return null;
-				}
-			} catch (Exception e) {
-				return null;
-			}
-			return db;
-		}
-
-		@Override
-		protected void onPostExecute(SQLiteDatabase db) {
-			updateArray();
-		}
-	}
-	
 	public void updateArray() {
 		dishes = new ArrayList<String>();
 		String query = "SELECT * FROM dishes";
@@ -437,7 +379,7 @@ public class FindHome extends Fragment implements OnClickListener {
 	
 	private class getDishesTask extends AsyncTask<String, Void, JSONArray> {
 
-		JSONArray jArray;
+		JSONArray jArrayIn;
 		protected JSONArray doInBackground(String... params) {			
 			String url = "http://trydish.pythonanywhere.com/get_dishes_by_location/";
 
@@ -462,7 +404,7 @@ public class FindHome extends Fragment implements OnClickListener {
 					responseString = out.toString();
 					result = new JSONObject(responseString);
 					
-					jArray = result.getJSONArray("dish_list");
+					jArrayIn = result.getJSONArray("dish_list");
 				} else {
 					//Closes the connection.
 					response.getEntity().getContent().close();
@@ -473,13 +415,43 @@ public class FindHome extends Fragment implements OnClickListener {
 				System.out.println(e);
 				return null;
 			}
-			return jArray;
+			return jArrayIn;
 		}
 		@Override
 		protected void onPostExecute(JSONArray result) {
 			//do whatever with dish_list
-			System.out.println(result);
+//			System.out.println(result);
+			jArray = result;
+			populateHome();
 		}
+	}
+	
+	public void populateHome() {
+		gridView = (GridView) myView.findViewById(R.id.food_images);
+		gridView.setAdapter(new ImageAdapter(myView.getContext(), ImageAdapter.HALF, jArray));
+		
+		gridView.setOnItemClickListener(new OnItemClickListener() {
+			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+				try {
+					InputMethodManager imm = (InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
+					AutoCompleteTextView et = (AutoCompleteTextView) myView.findViewById(R.id.search_box);
+					imm.hideSoftInputFromWindow(et.getWindowToken(), 0);
+
+					Fragment view_dish = new ViewDish();
+					Bundle bn = new Bundle();
+					bn.putInt("dish_id", jArray.getJSONObject(position).getInt("dish_id"));
+					view_dish.setArguments(bn);
+					FragmentTransaction trans = getFragmentManager().beginTransaction();
+
+					trans.replace(((ViewGroup) myView.getParent()).getId(), view_dish);
+					trans.addToBackStack(null);
+					trans.commit();
+				}
+				catch (JSONException e) {
+					e.printStackTrace();
+				}
+			}
+		});
 	}
 
 }

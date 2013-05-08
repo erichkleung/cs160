@@ -66,15 +66,14 @@ public class ViewDish extends Fragment implements OnClickListener {
 	private int screenWidth;
 	private int imageDimension;
 	private Bitmap mPlaceHolderBitmap;
-	private Integer[] mThumbIds = {
-			R.drawable.wings, R.drawable.wings2, R.drawable.wings3,
-	};
 	private ArrayList<String> encodedImages;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.activity_view_dish, container, false);
 		context = view.getContext();
+		
+		dishID = getArguments().getInt("dish_id");
 
 		myView = view;
 		((ImageButton)(view.findViewById(R.id.flagButton))).setOnClickListener(this);
@@ -96,9 +95,9 @@ public class ViewDish extends Fragment implements OnClickListener {
 		text.setTextSize(20);
 		text.setShadowLayer(1, 0, 0, Color.WHITE);
 		text.setTypeface(Typeface.SANS_SERIF);
-		text.setText(Html.fromHtml("<h2>Buffalo Wings</h2>" +
-				"<small>from</small> Buffalo Wild Wings<br />" + 
-				"10.5 <small>miles away</small>"));
+//		text.setText(Html.fromHtml("<h2>Buffalo Wings</h2>" +
+//				"<small>from</small> Buffalo Wild Wings<br />" + 
+//				"10.5 <small>miles away</small>"));
 
 		screenHeight = getResources().getDisplayMetrics().heightPixels;
 		screenWidth = getResources().getDisplayMetrics().widthPixels;
