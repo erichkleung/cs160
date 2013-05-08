@@ -35,6 +35,10 @@ public class SignupHome extends Activity {
 		
 		ActionBar actionBar = getActionBar();
 		actionBar.hide();
+		
+		Intent i = getIntent();
+		((EditText)(findViewById(R.id.signup_username))).setText(i.getStringExtra("user"));
+		((EditText)(findViewById(R.id.signup_password))).setText(i.getStringExtra("pass"));
 	}
 	
 	public void signupNext(View view) {

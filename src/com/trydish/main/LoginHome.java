@@ -30,7 +30,7 @@ import android.widget.Toast;
 
 public class LoginHome extends Activity {
 	
-	boolean nocheck = false;
+	boolean nocheck = true;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +47,6 @@ public class LoginHome extends Activity {
 			try {
 				checkLogin(new JSONObject("{\"status\": 1}"));
 			} catch (JSONException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		} else {
@@ -62,7 +61,13 @@ public class LoginHome extends Activity {
 	}
 	
 	public void signupButton(View view) {
+		String username = ((EditText)findViewById(R.id.login_username)).getText().toString();
+		String pass = ((EditText)findViewById(R.id.login_password)).getText().toString();
+		
+		
 		Intent intent = new Intent(this, SignupHome.class);
+		intent.putExtra("user", username);
+		intent.putExtra("pass", pass);
 		startActivity(intent);
 		overridePendingTransition( R.anim.slide_in_left, R.anim.slide_out_left );
 	}

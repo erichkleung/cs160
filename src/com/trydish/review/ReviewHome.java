@@ -240,7 +240,6 @@ public class ReviewHome extends Fragment implements OnClickListener, OnItemClick
 		String refToQuery = (String) ((PlacesAutoCompleteAdapter)adapterView.getAdapter()).getRef(position);
 		reference = new String(refToQuery);
 		//System.out.println("the ref clicked was: "+ str);
-		Toast.makeText(context, refToQuery, Toast.LENGTH_LONG).show();
 		placeTask pt = new placeTask();
 		pt.execute();
 

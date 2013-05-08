@@ -111,7 +111,6 @@ public class ConfirmReview extends Activity {
 					response.getEntity().writeTo(out);
 					out.close();
 					responseString = out.toString();
-					System.out.println("response: " + responseString);
 				} else {
 					//Closes the connection.
 					System.out.println("Status: " + response.getStatusLine().getStatusCode());
@@ -126,7 +125,6 @@ public class ConfirmReview extends Activity {
 		}
 
 		protected void onPostExecute(Boolean callsubmit) {
-			System.out.println("callsubmit: " + callsubmit);
 			if (callsubmit) {
 				submitFinished();
 			}
@@ -179,7 +177,6 @@ public class ConfirmReview extends Activity {
 		}
 
 		protected void onPostExecute(Integer id) {
-			System.out.println("dish id: " + id);
 			addReview(id);
 		}
 	}
@@ -239,7 +236,6 @@ public class ConfirmReview extends Activity {
 		}
 
 		protected void onPostExecute(Integer id) {
-			System.out.println("THis is the id: " + id);
 			confirm2(id);
 		}
 	}

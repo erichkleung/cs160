@@ -4,11 +4,42 @@
     android:layout_height="match_parent"
     tools:context=".Settings" >
 
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/settings_textView_user"
+        android:layout_centerHorizontal="true"
+        android:orientation="vertical" >
+
+        <Button
+            android:id="@+id/settings_button_changePass"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:text="Change Password" />
+
+        <Button
+            android:id="@+id/settings_button_changeAllergies"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Edit Allergies" />
+
+        <Button
+            android:id="@+id/settings_button_logout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Sign Out" />
+    </LinearLayout>
+
     <TextView
+        android:id="@+id/settings_textView_user"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:text="@string/hello_world" />
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="41dp"
+        android:text="Hello, username."
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 
 </RelativeLayout>
