@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:layout_below="@+id/ratingBar1"
     android:layout_toRightOf="@+id/button2"
-    android:background="#009ae7"
+    android:background="@drawable/background_review_low"
     android:overScrollMode="always" >
 
     <RelativeLayout
@@ -15,134 +15,152 @@
         android:layout_height="fill_parent"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
-        tools:context=".ReviewHome"
-        android:background="#009ae7" >
+        tools:context=".ReviewHome" >
 
-        <TextView
-            android:id="@+id/textView1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="20dp"
-            android:text="Restaurant"
-            android:shadowColor="#000000"
-			android:shadowRadius="1"
-            android:textSize="20sp"
-            android:textColor="#000000" />
-        
-		<AutoCompleteTextView
-            android:id="@+id/editTextRestaurant"
+        <RelativeLayout
+            android:id="@+id/innerRelative"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/textView1"
-            android:ems="10"
-            android:imeActionLabel="Done"
-            android:singleLine="true"
-            android:background="@drawable/textboxbg"
-            android:textColor="#000000"
-            android:hint="Enter restaurant name" />
-
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/textView1"
-            android:layout_below="@+id/editTextRestaurant"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
             android:layout_marginTop="20dp"
-            android:text="Dish Name"
-			android:shadowColor="#000000"
-			android:shadowRadius="1"
-            android:textSize="20sp"
-            android:textColor="#000000" />
+            android:background="@drawable/rounded_rect" >
 
-        <EditText
-            android:id="@+id/editTextName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/textView2"
-            android:ems="10"
-            android:imeActionLabel="Done"
-            android:singleLine="true"
-            android:background="@drawable/textboxbg"
-            android:textColor="#000000"
-            android:hint="Enter dish name" />
-        
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:text="Restaurant"
+                android:textColor="#000000"
+                android:textSize="20sp" />
+
+            <AutoCompleteTextView
+                android:id="@+id/editTextRestaurant"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textView1"
+                android:ems="10"
+                android:hint="Enter restaurant name"
+                android:imeActionLabel="Done"
+                android:singleLine="true"
+                android:textColor="#000000" />
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/textView1"
+                android:layout_below="@+id/editTextRestaurant"
+                android:layout_marginTop="20dp"
+                android:text="Dish Name"
+                android:textColor="#000000"
+                android:textSize="20sp" />
+
+            <EditText
+                android:id="@+id/editTextName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textView2"
+                android:ems="10"
+                android:hint="Enter dish name"
+                android:imeActionLabel="Done"
+                android:singleLine="true"
+                android:textColor="#000000" />
+        </RelativeLayout>
+
         <ImageButton
             android:id="@+id/imageView1"
-            android:src="@drawable/cameraicon1"
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="400dp"
-            android:layout_below="@+id/editTextName"
+            android:layout_below="@+id/innerRelative"
             android:layout_centerHorizontal="true"
+            android:layout_marginRight="30dp"
             android:layout_marginTop="27dp"
             android:adjustViewBounds="false"
+            android:background="#ffffff"
             android:onClick="addImage"
-            android:background="#ffffff" />
+            android:src="@drawable/image_button_states" />
 
-        <RatingBar
-            android:id="@+id/ratingBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/textView3"
-            android:layout_marginBottom="-18dp"
-            android:layout_marginLeft="10dp"
-            android:layout_toRightOf="@+id/textView3" />
-
-        <TextView
-            android:id="@+id/textView3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/textView2"
-            android:layout_below="@+id/imageView1"
-            android:layout_marginTop="27dp"
-            android:text="Your Rating"
-            android:shadowColor="#000000"
-            android:shadowRadius="1"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="#000000" />
-
-        <TextView
-            android:id="@+id/textView4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/textView3"
-            android:layout_below="@+id/ratingBar"
-            android:layout_marginTop="25dp"
-            android:text="Comments"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="#000000" />
-
-        <EditText
-            android:id="@+id/editTextComments"
+        <RelativeLayout
+            android:id="@+id/innerRelative2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/textView4"
-            android:layout_below="@+id/textView4"
-            android:ems="10"
-            android:inputType="textMultiLine"
-            android:lines="5"
-			android:gravity="top"
-            android:background="@drawable/textboxbg"
-            android:textColor="#000000"
-            android:hint="Enter your comments here (optional)" />
+            android:layout_below="@+id/imageView1"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="27dp"
+            android:background="@drawable/rounded_rect" >
+
+            <RatingBar
+                android:id="@+id/ratingBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/textView3"
+                android:layout_marginBottom="-18dp"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@+id/textView3" />
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/textView2"
+                android:layout_below="@+id/imageView1"
+                android:layout_marginTop="12dp"
+                android:text="Your Rating"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="#000000" />
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/textView3"
+                android:layout_below="@+id/ratingBar"
+                android:layout_marginTop="25dp"
+                android:text="Comments"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="#000000" />
+
+            <EditText
+                android:id="@+id/editTextComments"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/textView4"
+                android:layout_below="@+id/textView4"
+                android:background="@drawable/textboxbg"
+                android:ems="10"
+                android:gravity="top"
+                android:hint="Enter your comments here (optional)"
+                android:inputType="textMultiLine"
+                android:lines="5"
+                android:textColor="#000000" />
+        </RelativeLayout>
 
         <Button
             android:id="@+id/buttonDone"
-            android:layout_width="200dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignRight="@+id/editTextComments"
-            android:layout_below="@+id/editTextComments"
+            android:layout_alignRight="@+id/innerRelative2"
+            android:layout_alignLeft="@+id/innerRelative2"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="30dp"
+            android:layout_below="@+id/innerRelative2"
+            android:background="@drawable/button_states"
+            android:textColor="#000000"
             android:text="Done" />
-        
-        <!--  <Button
+
+        <!--
+              <Button
             android:id="@+id/buttonMap"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_alignRight="@+id/editTextComments"
             android:layout_below="@+id/buttonDone"
             android:text="Show me a map"
-            android:onClick="showMap" />-->
+            android:onClick="showMap" />
+        -->
 
     </RelativeLayout>
 
