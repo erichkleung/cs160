@@ -4,52 +4,55 @@
     android:layout_height="match_parent"
     android:background="#ffffff"
     tools:context=".ViewDish" >
-    
-    <LinearLayout
-        android:layout_width="fill_parent"
+
+    <RelativeLayout
+        android:id="@+id/rl1"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/dish_header" >
+        android:background="#282828" >
 
         <TextView
             android:id="@+id/dish_header_text"
             android:layout_width="1000dp"
             android:layout_height="wrap_content"
             android:background="#282828" />
-        <!--  <Button
-        android:id="@+id/mapButtonView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/dish_location"
-        android:layout_above="@+id/horizontalScrollView1"
-        android:layout_centerHorizontal="true"
-        android:text="map" />-->
 
-    </LinearLayout>
+        <Button
+            android:id="@+id/mapButtonView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/horizontalScrollView1"
+            android:layout_below="@+id/dish_header_text"
+            android:layout_alignParentLeft="true"
+            android:text="view on map" 
+             android:layout_marginLeft="20dp"/>
+    </RelativeLayout>
 
     <ScrollView
         android:id="@+id/scrollView1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/rl1"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/dish_header"
+        
         android:layout_centerHorizontal="true" >
 
         <RelativeLayout
             android:id="@+id/RelativeLayout1"
             android:layout_width="match_parent"
-            android:layout_marginTop="-4dp"
-            android:layout_height="800dp" >
-            
+            android:layout_height="800dp"
+            android:layout_marginTop="-4dp" >
+
             <HorizontalScrollView
                 android:id="@+id/horizontalScrollView1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fadeScrollbars="false"
                 android:layout_marginLeft="-4dp"
                 android:layout_marginRight="-5dp"
-                android:background="@drawable/background_dropshadow" >
+                android:background="@drawable/background_dropshadow"
+                android:fadeScrollbars="false" >
 
                 <LinearLayout
                     android:id="@+id/image_linear"
@@ -58,41 +61,40 @@
                     android:background="#00333333"
                     android:orientation="horizontal" >
                 </LinearLayout>
-                
             </HorizontalScrollView>
-            
-			<TextView
+
+            <TextView
                 android:id="@+id/rating_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingLeft="30dp"
-                android:layout_marginTop="10dp"
                 android:layout_below="@+id/horizontalScrollView1"
+                android:layout_marginTop="10dp"
+                android:paddingLeft="30dp"
                 android:shadowColor="#000000"
                 android:shadowRadius="1"
-                android:textColor="#000000"
-                android:textSize="20sp"
                 android:text="Your Rating "
-                android:textAppearance="?android:attr/textAppearanceLarge" />
-			
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="#000000"
+                android:textSize="20sp" />
+
             <RatingBar
                 android:id="@+id/ratingBar1"
-                android:layout_marginTop="3dp"
+                style="?android:attr/ratingBarStyleIndicator"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:isIndicator="false"
-                style="?android:attr/ratingBarStyleIndicator"
                 android:layout_below="@+id/rating_text"
-                android:layout_marginLeft="25dp" />
-            
+                android:layout_marginLeft="25dp"
+                android:layout_marginTop="3dp"
+                android:isIndicator="false" />
+
             <Button
                 android:id="@+id/add_review_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignRight="@+id/relcomment1"
                 android:layout_below="@+id/rating_text"
-                android:layout_marginTop="45dp"
                 android:layout_marginRight="30dp"
+                android:layout_marginTop="45dp"
                 android:text="Add/Modify Review" />
 
             <TextView
@@ -105,18 +107,18 @@
                 android:paddingLeft="30dp"
                 android:shadowColor="#000000"
                 android:shadowRadius="1"
-                android:textColor="#000000"
                 android:text="Comments"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="#000000" />
 
             <RelativeLayout
                 android:id="@+id/relcomment1"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/detailbackgroundwhite"
-				android:layout_alignLeft="@+id/dish_header_text"
-				android:layout_below="@+id/comment_text" >
-                
+                android:layout_alignLeft="@+id/dish_header_text"
+                android:layout_below="@+id/comment_text"
+                android:background="@drawable/detailbackgroundwhite" >
+
                 <TextView
                     android:id="@+id/author_name"
                     android:layout_width="wrap_content"
@@ -133,12 +135,12 @@
                     style="?android:attr/ratingBarStyleIndicator"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/author_name"
+                    android:rating="4"
                     android:scaleX="0.60"
                     android:scaleY="0.60"
                     android:translationX="-30dp"
-                    android:translationY="-2dp"
-                    android:layout_toRightOf="@+id/author_name"
-                    android:rating="4" />
+                    android:translationY="-2dp" />
 
                 <TextView
                     android:id="@+id/textView1"
@@ -150,24 +152,23 @@
                     android:text="I think the wings were really wing-y. They were also quite buffalo-y. I think this place makes pretty decent buffalo wings. 4 stars."
                     android:textColor="#000000"
                     android:textSize="17sp" />
-
             </RelativeLayout>
-            
-			<RelativeLayout
+
+            <RelativeLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/detailbackgroundwhite"
-				android:layout_alignLeft="@+id/dish_header_text"
-				android:layout_below="@+id/relcomment1" >
-                
+                android:layout_alignLeft="@+id/dish_header_text"
+                android:layout_below="@+id/relcomment1"
+                android:background="@drawable/detailbackgroundwhite" >
+
                 <TextView
                     android:id="@+id/author_name2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="30dp"
-					android:text="Billy Joel"
                     android:shadowColor="#000000"
                     android:shadowRadius="1"
+                    android:text="Billy Joel"
                     android:textColor="#000000"
                     android:textSize="20sp" />
 
@@ -176,12 +177,12 @@
                     style="?android:attr/ratingBarStyleIndicator"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/author_name2"
+                    android:rating="3"
                     android:scaleX="0.60"
                     android:scaleY="0.60"
-					android:translationX="-30dp"
-                    android:translationY="-2dp"
-                    android:layout_toRightOf="@+id/author_name2"
-                    android:rating="3" />
+                    android:translationX="-30dp"
+                    android:translationY="-2dp" />
 
                 <TextView
                     android:id="@+id/textView1_2"
@@ -209,24 +210,22 @@
                     LOREM IPSUM "
                     android:textColor="#000000"
                     android:textSize="17sp" />
-
             </RelativeLayout>
-
         </RelativeLayout>
     </ScrollView>
 
     <RatingBar
         android:id="@+id/ratingBar2"
+        style="?android:attr/ratingBarStyleIndicator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/scrollView1"
         android:layout_alignBaseline="@+id/dish_header"
         android:layout_alignParentRight="true"
-        android:isIndicator="true"
         android:layout_marginBottom="10dp"
         android:layout_marginRight="30dp"
+        android:isIndicator="true"
         android:maxWidth="20dp"
-        style="?android:attr/ratingBarStyleIndicator"
         android:rating="3.5" />
 
     <ImageButton

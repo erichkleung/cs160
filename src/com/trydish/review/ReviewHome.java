@@ -37,6 +37,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -61,6 +62,7 @@ import android.widget.Toast;
 import android.widget.ImageButton;
 
 import com.trydish.main.R;
+import com.trydish.main.global;
 
 public class ReviewHome extends Fragment implements OnClickListener, OnItemClickListener {
 
@@ -461,6 +463,10 @@ private void updateClosest(Document doc) {
 	}
 
 }
+
+
+
+
 
 
 
