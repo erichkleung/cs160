@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -50,6 +51,12 @@ public class global {
 		/*public SQLiteDatabase getDB(){
 			return this.getWritableDatabase();
 		}*/
+		
+		public String getAllergyName(int id) {
+			SQLiteDatabase db = this.getWritableDatabase();
+			Cursor c = db.query("allergies", new String[] {"name"}, "id=?", new String[] { String.valueOf(id) }, null, null, null, null);
+			return c.getString(0);
+		}
 
 		public void dropTables(){
 			SQLiteDatabase db = this.getWritableDatabase();
