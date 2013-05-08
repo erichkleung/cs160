@@ -30,14 +30,9 @@ public class MapActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.map_activity);
 		
-		//latitude = com.trydish.find.FindHome.getLat();
-		//longitude = com.trydish.find.FindHome.getLong();
-		
 		latitude = com.trydish.find.ViewDish.getLat();
 		longitude = com.trydish.find.ViewDish.getLong();
-		//System.out.println("this is the latitude: " + latitude);
-		//System.out.println("this is the longitude: " + longitude);
-
+		
 		//following code based off of http://wptrafficanalyzer.in/blog/showing-current-location-in-google-maps-using-api-v2-with-supportmapfragment/
 		// and http://stackoverflow.com/questions/14074129/google-maps-v2-set-both-my-location-and-zoom-in
 		// Getting Google Play availability status

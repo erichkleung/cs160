@@ -87,7 +87,6 @@ public class ViewDish extends Fragment implements OnClickListener {
 		screenHeight = getResources().getDisplayMetrics().heightPixels;
 		screenWidth = getResources().getDisplayMetrics().widthPixels;
 		imageDimension = (int) Math.round(screenWidth / 1.5 - 10);
-		System.out.println(screenWidth + " " + imageDimension);
 		Bitmap.Config conf = Bitmap.Config.ARGB_8888;
 		mPlaceHolderBitmap = Bitmap.createBitmap(screenWidth, imageDimension, conf);
 

@@ -80,7 +80,6 @@ public class ReviewHome extends Fragment implements OnClickListener, OnItemClick
 		View view = inflater.inflate(R.layout.activity_review_home,
 				container, false);
 		myView = view;
-		//context = getApplicationContext();
 		context = view.getContext();
 
 		((Button)(view.findViewById(R.id.buttonDone))).setOnClickListener(this);
@@ -93,21 +92,11 @@ public class ReviewHome extends Fragment implements OnClickListener, OnItemClick
 		e.addTextChangedListener(new TextWatcher() {
 
 			@Override
-			public void afterTextChanged(Editable s) {
-				// TODO Auto-generated method stub
-
-			}
-
+			public void afterTextChanged(Editable s) { }
 			@Override
-			public void beforeTextChanged(CharSequence arg0, int arg1,
-					int arg2, int arg3) {
-
-			}
-
+			public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) { }
 			@Override
-			public void onTextChanged(CharSequence s, int start, int before,
-					int count) {
-			}
+			public void onTextChanged(CharSequence s, int start, int before, int count) { }
 
 		});
 
@@ -147,12 +136,10 @@ public class ReviewHome extends Fragment implements OnClickListener, OnItemClick
 			} else if (requestCode == intentId) {
 				//Using http://www.pocketmagic.net/2011/02/android-photopicker-using-intents-and-gallery/#.UXyyYCugkSQ as a model
 				if (data != null) {
-					//Log.d("trydish", "idButSelPic Photopicker: " + data.getDataString());
 					Cursor cursor = getContext().getContentResolver().query(data.getData(), null, null, null, null);
 					cursor.moveToFirst();  //if not doing this, 01-22 19:17:04.564: ERROR/AndroidRuntime(26264): Caused by: android.database.CursorIndexOutOfBoundsException: Index -1 requested, with a size of 1
 					int idx = cursor.getColumnIndex(ImageColumns.DATA);
 					String fileSrc = cursor.getString(idx); 
-					//Log.d("trydish", "Picture:" + fileSrc);
 
 					Bitmap bitmapPreview = BitmapFactory.decodeFile(fileSrc); //load preview image
 					BitmapDrawable bmpDrawable = new BitmapDrawable(Resources.getSystem(), bitmapPreview);
@@ -163,9 +150,6 @@ public class ReviewHome extends Fragment implements OnClickListener, OnItemClick
 					byte[] array = stream.toByteArray();
 					encodedImage = Base64.encodeToString(array, Base64.DEFAULT);
 					
-				}
-				else {
-					Log.d("trydish", "idButSelPic Photopicker canceled");
 				}
 			}
 			//else do nothing
@@ -255,8 +239,6 @@ public class ReviewHome extends Fragment implements OnClickListener, OnItemClick
 
 	//task to grab restaurant details including location coordinates, id, address
 	private class placeTask extends AsyncTask<Void, Void, ArrayList<String>> {
-
-		private Document xmlDocument;
 
 		ArrayList<String> resultList = null;
 		HttpURLConnection conn = null;

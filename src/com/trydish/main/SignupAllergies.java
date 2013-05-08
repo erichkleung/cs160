@@ -83,14 +83,6 @@ public class SignupAllergies extends Activity {
 		AutoCompleteTextView textView = (AutoCompleteTextView) findViewById(R.id.add_new_allergy_box);
 		textView.setThreshold(1);
 		textView.setAdapter(adapter);
-		
-//		for (String str : allergies) {
-//			System.out.println(str);
-//		}
-		
-		// getting allergies
-//		GatherAllergies gaTask = new GatherAllergies();
-//		gaTask.execute();
 	}
 	
 	// used to add allergies on-the-fly
@@ -157,37 +149,7 @@ public class SignupAllergies extends Activity {
 	    super.onBackPressed();
 	    overridePendingTransition( R.anim.slide_in_right, R.anim.slide_out_right );
 	}
-	
-//	private class GatherAllergies extends AsyncTask<Context, Void, ArrayList<String>> {
-//
-//		@Override
-//		protected ArrayList<String> doInBackground(Context... params) {
-//			// TODO Auto-generated method stub
-//			ArrayList<String> allergies = new ArrayList<String>();
-//			String query = "SELECT * FROM allergies";
-//			
-//			DatabaseHandler dbHandler = new global.DatabaseHandler(params[0]);
-//			SQLiteDatabase db = dbHandler.getDB();
-//			
-//			Cursor cursor = db.rawQuery(query, null);
-//			
-//			if (cursor.moveToFirst()) {
-//				do {
-//					allergies.add(cursor.getString(1));
-//				} while (cursor.moveToNext());
-//			}
-//			
-//			return allergies;
-//		}
-//		
-//		@Override
-//		protected void onPostExecute(ArrayList<String> arr) {
-//			allergies = arr;
-//		}
-//		
-//	}
 
-	
 	private class AddAllergiesTask extends AsyncTask<ArrayList<String>, Void, Void> {
 
 		@Override

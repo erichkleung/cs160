@@ -1,10 +1,6 @@
 package com.trydish.main;
 
 import java.io.ByteArrayOutputStream;
-import java.io.UnsupportedEncodingException;
-import java.math.BigInteger;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +24,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -196,7 +191,6 @@ public class LoginHome extends Activity {
 				} else{
 					//Closes the connection.
 					response.getEntity().getContent().close();
-//					System.out.println("status: " + response.getStatusLine().getStatusCode());
 					return null;
 				}
 			} catch (Exception e) {

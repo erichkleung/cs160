@@ -104,7 +104,6 @@ public class FindHome extends Fragment implements OnClickListener {
 		distanceSpinner.setOnItemSelectedListener(listener);
 
 		//Grab the buttons and set their onClickListeners to be this Fragment
-//		ImageButton ib = (ImageButton) view.findViewById(R.id.search);
 		Button b = (Button) view.findViewById(R.id.my_location);
 		b.setOnClickListener(this);
 
@@ -114,7 +113,6 @@ public class FindHome extends Fragment implements OnClickListener {
 		if (getSome != null) {
 			String str = getSome.getStringExtra("searchQuery");
 			if (str != null) {
-				System.out.println(str);
 				// start fragment for search in here...
 			} else {
 				GridView gridview = (GridView) view.findViewById(R.id.food_images);
@@ -168,7 +166,6 @@ public class FindHome extends Fragment implements OnClickListener {
 		} else {
 			latitude = location.getLatitude();
 			longitude = location.getLongitude();
-			System.out.println("latitude and longitude is: " + latitude + " " + longitude);
 
 			try {
 				ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -264,7 +261,6 @@ public class FindHome extends Fragment implements OnClickListener {
 		        Address location = address.get(0);
 
 		        Log.d("trydish", "Address Latitude : "+ location.getLatitude() + "Address Longitude : "+ location.getLongitude());
-		        System.out.println("latitude and longitude is: " + location.getLatitude() + " " + location.getLongitude());
 		        
 		        return location;
 		        
