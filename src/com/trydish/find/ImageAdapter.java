@@ -18,7 +18,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
@@ -270,10 +269,12 @@ public class ImageAdapter extends BaseAdapter {
 		private int data = 0;
 		private int width = 0;
 		private int height = 0;
+		private Resources resource;
 		
 		public BitmapWorkerTask(ImageView imageView) {
 			// user WeakReference to ensure the ImageView can be garbage collected
 			imageViewReference = new WeakReference<ImageView>(imageView);
+			this.resource = imageViewReference.get().getContext().getResources();
 		}
 		
 		// Decode image in background
@@ -282,8 +283,7 @@ public class ImageAdapter extends BaseAdapter {
 			data = params[0];
 			width = params[1];
 			height = params[2];
-			final Bitmap bitmap = decodeSampledBitmapFromResource(imageViewReference.get().getContext().getResources(),
-					data, width, height);
+			final Bitmap bitmap = decodeSampledBitmapFromResource(resource, data, width, height);
 			addBitmapToMemoryCache(String.valueOf(params[0]), bitmap);
 			return bitmap;
 		}

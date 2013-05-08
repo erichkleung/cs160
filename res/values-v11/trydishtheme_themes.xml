@@ -7,10 +7,18 @@
 
     <item name="android:editTextBackground">@drawable/edit_text_holo_dark</item>
     
+    <item name="android:checkboxStyle">@style/CheckBoxAppTheme</item>
+    
     <item name="android:textCursorDrawable">@null</item>
 
     <item name="android:autoCompleteTextViewStyle">@style/AutoCompleteTextViewtrydishtheme</item>
-
+    
+    <item name="android:actionBarTabTextStyle">@style/StyledActionBarTabText</item>
+    
+    <item name="android:actionBarTabStyle">@style/ActionBarTabStyle</item>
+    
+    <item name="android:actionBarStyle">@style/ActionBarStyle</item>
+    
     <item name="android:dropDownSpinnerStyle">@style/Spinnertrydishtheme</item>
 
   </style>

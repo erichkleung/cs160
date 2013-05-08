@@ -46,9 +46,9 @@ public class ConfirmReview extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_confirm_review);
 		intent = getIntent();
-
-		((TextView)findViewById(R.id.textViewRestaurant)).setText("Restaurant: " + intent.getStringExtra("restaurant"));
-		((TextView)findViewById(R.id.textViewName)).setText("Dish Name: " + (intent.getStringExtra("name")));
+		
+		((TextView)findViewById(R.id.textViewRestaurant)).setText(intent.getStringExtra("restaurant"));
+		((TextView)findViewById(R.id.textViewDish)).setText(intent.getStringExtra("name"));
 		
 		System.out.println("working");
 		
@@ -111,7 +111,7 @@ public class ConfirmReview extends Activity {
 	}
 
 	public void confirm2(int id) {
-		if (intent.getIntExtra("dishID",-1) != -1) {
+		if (intent.getIntExtra("dishID", -1) != -1) {
 			addReview(intent.getIntExtra("dishID",-1));
 		} else {
 			AddDishTask addDish = new AddDishTask();
@@ -289,6 +289,7 @@ public class ConfirmReview extends Activity {
 		}
 
 		AddReviewTask submit = new AddReviewTask();
+		
 		submit.execute("" + id,
 					   "" + global.userID,
 					   "" + (intent.getDoubleExtra("rating", 0)*2), 

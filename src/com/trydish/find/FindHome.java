@@ -19,6 +19,7 @@ import android.app.FragmentTransaction;
 import android.app.SearchManager;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
 import android.location.Address;
 import android.location.Criteria;
 import android.location.Geocoder;
@@ -40,7 +41,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
@@ -106,48 +106,40 @@ public class FindHome extends Fragment implements OnClickListener {
 		//Grab the buttons and set their onClickListeners to be this Fragment
 //		ImageButton ib = (ImageButton) view.findViewById(R.id.search);
 		Button b = (Button) view.findViewById(R.id.my_location);
-//		ib.setOnClickListener(this);
 		b.setOnClickListener(this);
 
-		GridView gridview = (GridView) view.findViewById(R.id.food_images);
-		gridview.setAdapter(new ImageAdapter(view.getContext(), ImageAdapter.HALF));
+		// PROCESS SEARCH!
+		Intent getSome = getActivity().getIntent();
+		
+		if (getSome != null) {
+			String str = getSome.getStringExtra("searchQuery");
+			if (str != null) {
+				System.out.println(str);
+				// start fragment for search in here...
+			} else {
+				GridView gridview = (GridView) view.findViewById(R.id.food_images);
+				gridview.setAdapter(new ImageAdapter(view.getContext(), ImageAdapter.HALF));
 
-		gridview.setOnItemClickListener(new OnItemClickListener() {
-			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-//				InputMethodManager imm = (InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
-//				SearchView et = (SearchView) myView.findViewById(R.id.search_box);
-//				imm.hideSoftInputFromWindow(et.getWindowToken(), 0);
-				
-				Fragment view_dish = new ViewDish();
-				FragmentTransaction trans = getFragmentManager().beginTransaction();
+				gridview.setOnItemClickListener(new OnItemClickListener() {
+					public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+						InputMethodManager imm = (InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
+						SearchView et = (SearchView) myView.findViewById(R.id.search_box);
+						imm.hideSoftInputFromWindow(et.getWindowToken(), 0);
 
-				trans.replace(((ViewGroup) myView.getParent()).getId(), view_dish);
-				trans.addToBackStack(null);
-				trans.commit();
+						Fragment view_dish = new ViewDish();
+						FragmentTransaction trans = getFragmentManager().beginTransaction();
+
+						trans.replace(((ViewGroup) myView.getParent()).getId(), view_dish);
+						trans.addToBackStack(null);
+						trans.commit();
+					}
+				});
 			}
-		});
+		}
 
 		//Hide keyboard
 		getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-
-		//define the behavior of the "DONE" key on the keyboard
-		/*
-	    EditText et = (EditText) myView.findViewById(R.id.search_box);
-	    et.setOnEditorActionListener(new EditText.OnEditorActionListener() {
-	        @Override
-	        public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-	            if (actionId == EditorInfo.IME_ACTION_DONE){
-	                    //Do your stuff here
-	            		Log.d("FindHome","DONE pressed");
-	            		donePressed();
-	            		return true;
-	                } else {
-	                	return false;
-	                }
-	            } }); 
-		 */
-
-		//
+		
 		manager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
 		if (myLocationChanged == false) {
 			setLocation();
@@ -200,17 +192,6 @@ public class FindHome extends Fragment implements OnClickListener {
 		}
 	}
 
-	//Called when search icon is clicked
-//	public void searchClicked(View v) {
-//		//EditText et = (EditText) myView.findViewById(R.id.search_box);
-//		//et.setLayoutParams(new TableLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, 1f));
-//		//hideSoftKeyboard(myView);
-//		Log.d("Find Home", "search clicked");
-//		InputMethodManager imm = (InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
-//		EditText et = (EditText) myView.findViewById(R.id.search_box);
-//		imm.hideSoftInputFromWindow(et.getWindowToken(), 0);
-//	}
-
 	//Called when the My Location button is clicked to change location
 	//PopupWindow usage modeled after http://www.mobilemancer.com/2011/01/08/popup-window-in-android/ 
 	public void myLocationClicked(View v) {
@@ -256,21 +237,13 @@ public class FindHome extends Fragment implements OnClickListener {
 	public void onClick(View arg0) {
 		switch(arg0.getId()) {
 		//search button clicked
-//		case R.id.search:
-//			searchClicked(arg0);
-//			break;
-			//my location button clicked
-		//uncomment next
+
 		case R.id.my_location:
 			myLocationClicked(arg0);
 			break;
 		}
 
 	}
-
-//	public void donePressed() {
-//		searchClicked(myView);
-//	}
 	
 	
 	
