@@ -50,6 +50,7 @@ import com.trydish.review.MapActivity;
 public class ViewDish extends Fragment implements OnClickListener {
 
 	private int dishID = 5;
+	private String distanceString;
 	
 	private static double latDoub;
 	private static double lngDoub;
@@ -320,9 +321,10 @@ public class ViewDish extends Fragment implements OnClickListener {
 		}
 	}
 
-	private class getDishLocationTask extends AsyncTask<Integer, Void, Void> {
+	private class getDishLocationTask extends AsyncTask<Integer, Void, String> {
 
-		protected Void doInBackground(Integer... dishID) {			
+		String toReturn;
+		protected String doInBackground(Integer... dishID) {			
 			String url = "http://trydish.pythonanywhere.com/get_location/" + dishID[0];
 
 			HttpResponse response;
@@ -344,6 +346,16 @@ public class ViewDish extends Fragment implements OnClickListener {
 					String lng = latAndLong.getString("long");
 					latDoub = Double.parseDouble(lat);
 					lngDoub = Double.parseDouble(lng);
+					double distLat = com.trydish.find.FindHome.getLat();
+					double distLng = com.trydish.find.FindHome.getLong();
+					System.out.println("current lat/long is :" + distLat + " " + distLng);
+					System.out.println("other lat/long is :" + latDoub + " " + lngDoub);
+					float[] results = new float[3];
+					android.location.Location.distanceBetween(distLat, distLng, latDoub, lngDoub, results);
+					float distance = results[0];
+					float toMiles = distance * (float)0.000621371;
+					System.out.println("distance in miles is:" +toMiles);
+					toReturn = Float.toString(toMiles);
 
 
 
@@ -355,10 +367,18 @@ public class ViewDish extends Fragment implements OnClickListener {
 			} catch (Exception e) {
 				return null;
 			}
-			return null;
+			return toReturn;
+		}
+		@Override
+		protected void onPostExecute(String result) {
+			updateDistance(result);
 		}
 	}
 	
+	
+	public void updateDistance(String distance) {
+		distanceString = distance;
+	}
 	
 	private class getDishInformationTask extends AsyncTask<Integer, Void, JSONObject> {
 
@@ -447,6 +467,8 @@ public class ViewDish extends Fragment implements OnClickListener {
 					dish_name = result.getString("dish_name");
 					JSONObject reviewDict = result.getJSONObject("reviews");
 					
+					
+					
 					System.out.println(avg_rating);
 					System.out.println(lat);
 					System.out.println(lng);
@@ -513,7 +535,7 @@ public class ViewDish extends Fragment implements OnClickListener {
 		System.out.println("part of  the way" + text);
 		text.setText(Html.fromHtml("<h2>" + params[0] + "</h2>" +
 				"<small>from</small>"+ " "+ params[1]+"<br />" + 
-				"10.5 <small>miles away</small>"));
+			distanceString +" <small>miles away</small>"));
 		//text.setText(rest_name);
 		//text.postInvalidate();
 		System.out.println("all the way");
