@@ -60,7 +60,6 @@ import android.widget.EditText;
 import android.widget.RatingBar;
 import android.widget.Toast;
 import android.widget.ImageButton;
-
 import com.trydish.main.R;
 import com.trydish.main.global;
 import com.trydish.main.global.DatabaseHandler;
@@ -502,7 +501,6 @@ public class ReviewHome extends Fragment implements OnClickListener, OnItemClick
 			storeAllergyDB(db);
 		}
 	}
-
 
 	private void storeAllergyDB(SQLiteDatabase db) {
 		global.allergyDB = db;
