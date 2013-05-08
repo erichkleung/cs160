@@ -94,6 +94,8 @@ public class ConfirmReview extends Activity {
 				postParameters.add(new BasicNameValuePair("author", params[1]));
 				postParameters.add(new BasicNameValuePair("rating", params[2]));
 				postParameters.add(new BasicNameValuePair("comment", params[3]));
+				postParameters.add(new BasicNameValuePair("encodedImage", params[4]));
+
 				
 				UrlEncodedFormEntity entity = new UrlEncodedFormEntity(postParameters);
 				post.setEntity(entity);
@@ -187,7 +189,11 @@ public class ConfirmReview extends Activity {
 		}
 		
 		AddReviewTask submit = new AddReviewTask();
-		submit.execute("" + id, "" + global.userID, "" + (intent.getDoubleExtra("rating", 0)*2), intent.getStringExtra("comments"));
+		submit.execute("" + id,
+					   "" + global.userID,
+					   "" + (intent.getDoubleExtra("rating", 0)*2), 
+					   intent.getStringExtra("comments"),
+					   intent.getStringExtra("encodedImage"));
 	}
 	
 	private void submitFinished() {

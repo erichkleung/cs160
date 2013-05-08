@@ -1,5 +1,8 @@
 package com.trydish.review;
 
+import java.io.ByteArrayOutputStream;
+import java.nio.ByteBuffer;
+
 import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -14,6 +17,7 @@ import android.os.Bundle;
 import android.provider.MediaStore.Images.ImageColumns;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,8 +40,9 @@ public class ReviewHome extends Fragment implements OnClickListener, OnItemClick
 	private ActionBar actionBar;
 	private static Context context;
 	private int intentId = 800;
-	
-	
+	private String encodedImage = "";
+
+
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
 		View view = inflater.inflate(R.layout.activity_review_home,
@@ -45,10 +50,10 @@ public class ReviewHome extends Fragment implements OnClickListener, OnItemClick
 		myView = view;
 		//context = getApplicationContext();
 		context = view.getContext();
-		
+
 		((Button)(view.findViewById(R.id.buttonDone))).setOnClickListener(this);
 		((ImageButton)(view.findViewById(R.id.imageView1))).setOnClickListener(this);
-		
+
 		/*Button b = (Button) myView.findViewById(R.id.buttonMap);
 		b.setOnClickListener(new OnClickListener() {
 			@Override
@@ -58,53 +63,50 @@ public class ReviewHome extends Fragment implements OnClickListener, OnItemClick
 			    startActivity(intent); 
 			}
 		});*/
-		
+
 		EditText e = (EditText) myView.findViewById(R.id.editTextRestaurant);
 		e.addTextChangedListener(new TextWatcher() {
-		
+
 			@Override
 			public void afterTextChanged(Editable s) {
-				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 			@Override
 			public void beforeTextChanged(CharSequence arg0, int arg1,
 					int arg2, int arg3) {
-				// TODO Auto-generated method stub
-				
+
 			}
 
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before,
 					int count) {
-				// TODO Auto-generated method stub
-				
+
 			}
 
 		});
-		
+
 		//for autocomplete google API
 		AutoCompleteTextView autoCompView = (AutoCompleteTextView) view.findViewById(R.id.editTextRestaurant);
-	    autoCompView.setAdapter(new PlacesAutoCompleteAdapter(context, R.layout.list_item));
-	    autoCompView.setOnItemClickListener(this);
-		
+		autoCompView.setAdapter(new PlacesAutoCompleteAdapter(context, R.layout.list_item));
+		autoCompView.setOnItemClickListener(this);
+
 		return view;
 
 	}
-	
+
 	public void done(View button) {
 		EditText rText = (EditText)(myView.findViewById(R.id.editTextRestaurant));
 		EditText nText = (EditText)(myView.findViewById(R.id.editTextName));
 		EditText cText = (EditText)(myView.findViewById(R.id.editTextComments));
 		RatingBar ratingBar = (RatingBar)(myView.findViewById(R.id.ratingBar));
-		
+
 		String restaurant = rText.getText().toString();
 		String name = nText.getText().toString();
 		String comments = cText.getText().toString();
 		double rating = ratingBar.getRating();
-		
-		
+
+
 		if (restaurant.equals("")) {
 			Toast toast = Toast.makeText(getActivity(), "Please enter a restaurant.", Toast.LENGTH_SHORT);
 			toast.show();
@@ -118,7 +120,7 @@ public class ReviewHome extends Fragment implements OnClickListener, OnItemClick
 			toast.show();
 			return;
 		}
-		
+
 		Intent intent = new Intent(getActivity(), ConfirmReview.class);
 		intent.putExtra("restaurant", restaurant);
 		intent.putExtra("name", name);
@@ -126,11 +128,11 @@ public class ReviewHome extends Fragment implements OnClickListener, OnItemClick
 		intent.putExtra("rating", rating);
 		intent.putExtra("dishID", -1);
 		intent.putExtra("restaurantID", 1);
-		//TODO: Image?
-		
+		intent.putExtra("encodedImage", encodedImage);
+
 		startActivityForResult(intent, 1);
 	}
-	
+
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		//added call to super for compatibility 
@@ -166,6 +168,14 @@ public class ReviewHome extends Fragment implements OnClickListener, OnItemClick
 					Bitmap bitmapPreview = BitmapFactory.decodeFile(fileSrc); //load preview image
 					BitmapDrawable bmpDrawable = new BitmapDrawable(Resources.getSystem(), bitmapPreview);
 					((ImageButton)(myView.findViewById(R.id.imageView1))).setImageDrawable(bmpDrawable);
+
+
+
+					ByteArrayOutputStream stream = new ByteArrayOutputStream();
+					bitmapPreview.compress(Bitmap.CompressFormat.PNG, 100, stream);
+					byte[] array = stream.toByteArray();
+					encodedImage = Base64.encodeToString(array, Base64.DEFAULT);
+
 				}
 				else {
 					Log.d("trydish", "idButSelPic Photopicker canceled");
@@ -175,7 +185,7 @@ public class ReviewHome extends Fragment implements OnClickListener, OnItemClick
 		}
 
 	}
-	
+
 	@Override
 	public void onClick(View view) {
 		if (view == myView.findViewById(R.id.buttonDone)) {
@@ -185,34 +195,43 @@ public class ReviewHome extends Fragment implements OnClickListener, OnItemClick
 			addImage(view);
 		}
 	}
-	
+
 	public void onResume(View view) {
-		
+
 	}
-	
+
 	public static Context getContext() {
 		return context;
 	}
 
-	
+
 	@Override
 	public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-		// TODO Auto-generated method stub
 		String str = (String) adapterView.getItemAtPosition(position);
 		//String refToQuery = (String) PlacesAutoCompleteAdapter.getRef(position);
 		String refToQuery = (String) ((PlacesAutoCompleteAdapter)adapterView.getAdapter()).getRef(position);
 		System.out.println("the ref clicked was: "+ str);
-        Toast.makeText(context, refToQuery, Toast.LENGTH_LONG).show();
+		Toast.makeText(context, refToQuery, Toast.LENGTH_LONG).show();
 	}
-	
+
 	public void addImage(View v) {
 		//Log.d("yo", "picture clicked");
 		Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
 		photoPickerIntent.setType("image/*");
 		startActivityForResult(photoPickerIntent, intentId);
 	}
-	
-	
-	
+
+	public static Bitmap scaleDownBitmap(Bitmap photo, int newHeight, Context context) {
+
+		final float densityMultiplier = context.getResources().getDisplayMetrics().density;        
+
+		int h= (int) (newHeight*densityMultiplier);
+		int w= (int) (h * photo.getWidth()/((double) photo.getHeight()));
+
+		photo=Bitmap.createScaledBitmap(photo, w, h, true);
+
+		return photo;
+	}
+
 
 }
