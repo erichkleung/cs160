@@ -32,12 +32,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -358,10 +361,15 @@ public class ViewDish extends Fragment implements OnClickListener {
 	}
 	
 	
-	private class getDishInformationTask extends AsyncTask<Integer, Void, String> {
+	private class getDishInformationTask extends AsyncTask<Integer, Void, JSONObject> {
 
 		String rest_name;
-		protected String doInBackground(Integer... dishID) {			
+		JSONObject result;
+		String avg_rating;
+		String lng;
+		String lat;
+		String dish_name;
+		protected JSONObject doInBackground(Integer... dishID) {			
 			String url = "http://trydish.pythonanywhere.com/get_dish_info/" + dishID[0];
 
 			HttpResponse response;
@@ -370,20 +378,26 @@ public class ViewDish extends Fragment implements OnClickListener {
 			try {
 				response = httpclient.execute(new HttpGet(url));
 				if(response.getStatusLine().getStatusCode() == HttpStatus.SC_OK){
+					System.out.println("response was ok");
 					ByteArrayOutputStream out = new ByteArrayOutputStream();
 					response.getEntity().writeTo(out);
 
+					
 					String responseString = out.toString();
-					out.close(); 
-					JSONObject result = new JSONObject(responseString);
+					out.close();
+					System.out.println(responseString);
+					result = new JSONObject(responseString);
+					System.out.println("object is " + result);
 
 					//JSONArray jArray = result.getJSONArray("id");
 					//JSONObject latAndLong = jArray.getJSONObject(0);
-					String avg_rating = result.getString("avg_rating");
-					String lng = result.getString("long");
-					String lat = result.getString("lat");
-					 rest_name = result.getString("rest_name");
-					String dish_name = result.getString("dish_name");
+					
+					/*
+					avg_rating = result.getString("avg_rating");
+					lng = result.getString("long");
+					lat = result.getString("lat");
+					rest_name = result.getString("rest_name");
+					dish_name = result.getString("dish_name");
 					JSONObject reviewDict = result.getJSONObject("reviews");
 					
 					System.out.println(avg_rating);
@@ -396,18 +410,19 @@ public class ViewDish extends Fragment implements OnClickListener {
 					
 					
 					
-					
+					View currentSetBelow = (TextView) myView.findViewById(R.id.comment_text);
 					Iterator<?> keys = reviewDict.keys();
 			        while( keys.hasNext() ){
 			            String key = (String)keys.next();
 			            if( reviewDict.get(key) instanceof JSONObject ){
 			            	numReviews++;
 			            	System.out.println(reviewDict.get(key));
+			            	//RelativeLayout relativeLayout = new RelativeLayout(getApplicationContext());
 			            }
 			        }
 					
 
-
+					 */
 
 				} else{
 					//Closes the connection.
@@ -416,22 +431,89 @@ public class ViewDish extends Fragment implements OnClickListener {
 					return null;
 				}
 			} catch (Exception e) {
+				System.out.println(e);
 				return null;
 			}
-			return rest_name;
+			
+			return result;
 		}
 		@Override
-		protected void onPostExecute(String rest_name) {
-			updateFields(rest_name);
+		protected void onPostExecute(JSONObject result) {
+			try {
+				
+					avg_rating = result.getString("avg_rating");
+					lng = result.getString("long");
+					lat = result.getString("lat");
+					rest_name = result.getString("rest_name");
+					dish_name = result.getString("dish_name");
+					JSONObject reviewDict = result.getJSONObject("reviews");
+					
+					System.out.println(avg_rating);
+					System.out.println(lat);
+					System.out.println(lng);
+					System.out.println(rest_name);
+					System.out.println(dish_name);
+					//System.out.println(reviewDict);
+					
+					RatingBar rb = (RatingBar) myView.findViewById(R.id.ratingBar2);
+					rb.setRating(Float.parseFloat(avg_rating));
+					
+					
+					View currentSetBelow = (TextView) myView.findViewById(R.id.comment_text);
+					RelativeLayout scroll = (RelativeLayout) myView.findViewById(R.id.RelativeLayout1);
+					RelativeLayout format = (RelativeLayout) myView.findViewById(R.id.relative_format);
+					Iterator<?> keys = reviewDict.keys();
+			        while( keys.hasNext() ){
+			            String key = (String)keys.next();
+			            if( reviewDict.get(key) instanceof JSONObject ){
+			            	numReviews++;
+			            	System.out.println(reviewDict.get(key));
+			            	
+			            	addViews(currentSetBelow, scroll, format);
+			            	//RelativeLayout relativeLayout = new RelativeLayout(getApplicationContext());
+			            }
+			        }
+
+				
+			} catch (Exception e) {
+				System.out.println(e);
+			}
+			updateFields(dish_name, rest_name);
 		}
 	}
 	
-	public void updateFields(String rest_name) {
-		System.out.println("getting here?" + " rest name is : " + rest_name);
+	public void addViews(View currentSetBelow, RelativeLayout scroll, RelativeLayout format) {
+		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(format.getLayoutParams());
+    	lp.addRule(RelativeLayout.BELOW, currentSetBelow.getId());
+    	RelativeLayout layout = new RelativeLayout(com.trydish.find.FindHome.getContext());
+    	layout.setLayoutParams(lp);
+    	
+    	TextView first = new TextView(com.trydish.find.FindHome.getContext());
+        TextView second = new TextView(com.trydish.find.FindHome.getContext());
+
+        first.setText("First");
+        first.setId(1);
+
+        second.setText("Second");
+        second.setId(2);
+
+        RelativeLayout.LayoutParams lpSecond = new RelativeLayout.LayoutParams(
+            LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+        layout.addView(second, lpSecond);
+
+        RelativeLayout.LayoutParams lpFirst = new RelativeLayout.LayoutParams(
+            LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+        lpFirst.addRule(RelativeLayout.RIGHT_OF, second.getId());
+        layout.addView(first, lpFirst);
+    	scroll.addView(layout, lp);
+	}
+	
+	public void updateFields(String... params) {
+		System.out.println("getting here?" + " rest name is : " + params[0]);
 		//text = (TextView) myView.findViewById(R.id.dish_header_text);
 		System.out.println("part of  the way" + text);
-		text.setText(Html.fromHtml("<h2>" + rest_name + "</h2>" +
-				"<small>from</small> Buffalo Wild Wings<br />" + 
+		text.setText(Html.fromHtml("<h2>" + params[0] + "</h2>" +
+				"<small>from</small>"+ " "+ params[1]+"<br />" + 
 				"10.5 <small>miles away</small>"));
 		//text.setText(rest_name);
 		//text.postInvalidate();
