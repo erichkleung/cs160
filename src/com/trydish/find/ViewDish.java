@@ -2,6 +2,7 @@ package com.trydish.find;
 
 import java.io.ByteArrayOutputStream;
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.apache.http.HttpResponse;
@@ -33,13 +34,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
-import android.view.ViewGroup.MarginLayoutParams;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -50,7 +50,7 @@ import com.trydish.review.MapActivity;
 
 public class ViewDish extends Fragment implements OnClickListener {
 
-	private int dishID = 27;
+	private int dishID = 35;
 	private String distanceString;
 	
 	private static double latDoub;
@@ -69,6 +69,7 @@ public class ViewDish extends Fragment implements OnClickListener {
 	private Integer[] mThumbIds = {
 			R.drawable.wings, R.drawable.wings2, R.drawable.wings3,
 	};
+	private ArrayList<String> encodedImages;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -77,6 +78,8 @@ public class ViewDish extends Fragment implements OnClickListener {
 		
 		myView = view;
 		((ImageButton)(view.findViewById(R.id.flagButton))).setOnClickListener(this);
+		
+		encodedImages = new ArrayList<String>();
 
 		Button b = (Button) view.findViewById(R.id.mapButtonView);
 		b.setOnClickListener(new OnClickListener() {
@@ -119,17 +122,9 @@ public class ViewDish extends Fragment implements OnClickListener {
 				return bitmap.getByteCount() / 1024;
 			}
 		};
-
-		LinearLayout imageHolder = (LinearLayout) view.findViewById(R.id.image_linear);
-
-		for (int i = 0; i < mThumbIds.length; i++) {
-			ImageView imageView = new ImageView(imageHolder.getContext());
-			imageView.setLayoutParams(new LinearLayout.LayoutParams(screenWidth, imageDimension)); // 255, 200
-			imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-			imageView.setPadding(1, 0, 0, 0);
-			loadBitmap(mThumbIds[i], imageView);
-			imageHolder.addView(imageView, i);
-		}
+		
+		ProgressBar progress = (ProgressBar)myView.findViewById(R.id.viewDish_progressbar);
+		progress.setVisibility(View.VISIBLE);
 
 		getDishLocationTask dl = new getDishLocationTask();
 		dl.execute(dishID);
@@ -187,28 +182,28 @@ public class ViewDish extends Fragment implements OnClickListener {
 		return mMemoryCache.get(key);
 	}
 
-	public void loadBitmap(int resId, ImageView imageView) {
-		if (cancelPotentialWork(resId, imageView)) {
-			final String imageKey = String.valueOf(resId);
+	public void loadBitmap(String encoding, ImageView imageView) {
+		if (cancelPotentialWork(encoding, imageView)) {
+			final String imageKey = encoding;
 			final Bitmap bitmap = getBitmapFromMemCache(imageKey);
 			if (bitmap != null) {
 				imageView.setImageBitmap(bitmap);
 			} else {
-				final BitmapWorkerTask task = new BitmapWorkerTask(imageView);
+				final BitmapWorkerTask task = new BitmapWorkerTask(encoding, imageView);
 				final AsyncDrawable asyncDrawable =
 						new AsyncDrawable(this.getResources(), mPlaceHolderBitmap, task);
 				imageView.setImageDrawable(asyncDrawable);
-				task.execute(resId, screenWidth, imageDimension);
+				task.execute(screenWidth, imageDimension);
 			}
 		}
 	}
 
-	public boolean cancelPotentialWork(int data, ImageView imageView) {
+	public boolean cancelPotentialWork(String encoding, ImageView imageView) {
 		final BitmapWorkerTask bitmapWorkerTask = getBitmapWorkerTask(imageView);
 
 		if (bitmapWorkerTask != null) {
-			final int bitmapData = bitmapWorkerTask.getData();
-			if (bitmapData != data) {
+			final String bitmapData = bitmapWorkerTask.getData();
+			if (!bitmapData.equals(encoding)) {
 				// cancel previous task
 				bitmapWorkerTask.cancel(true);
 			} else {
@@ -234,44 +229,45 @@ public class ViewDish extends Fragment implements OnClickListener {
 
 	class BitmapWorkerTask extends AsyncTask<Integer, Void, Bitmap> {
 		private final WeakReference<ImageView> imageViewReference;
-		private int data = 0;
+//		private int data = 0;
 		private int width = 0;
 		private int height = 0;
+		private String encoding;
 
-		public BitmapWorkerTask(ImageView imageView) {
+		public BitmapWorkerTask(String encoding, ImageView imageView) {
 			// user WeakReference to ensure the ImageView can be garbage collected
+			this.encoding = encoding;
 			imageViewReference = new WeakReference<ImageView>(imageView);
 		}
 
 		// Decode image in background
 		@Override
 		protected Bitmap doInBackground(Integer... params) {
-			data = params[0];
-			width = params[1];
-			height = params[2];
+//			data = params[0];
+			width = params[0];
+			height = params[1];
 			final Bitmap bitmap = decodeSampledBitmapFromResource(imageViewReference.get().getContext().getResources(),
-					data, width, height);
-			addBitmapToMemoryCache(String.valueOf(params[0]), bitmap);
+					encoding, width, height);
+			addBitmapToMemoryCache(encoding, bitmap);
 			return bitmap;
 		}
 
 		@Override
 		protected void onPostExecute(Bitmap bitmap) {
-			//			if (isCancelled()) {
-			//				bitmap = null;
-			//			}
+			if (isCancelled()) {
+				bitmap = null;
+			}
 			if (imageViewReference != null && bitmap != null) {
 				final ImageView imageView = imageViewReference.get();
 				final BitmapWorkerTask bitmapWorkerTask = getBitmapWorkerTask(imageView);
-				//				if (imageView != null) {
 				if (this == bitmapWorkerTask && imageView != null) {
 					imageView.setImageBitmap(bitmap);
 				}
 			}
 		}
 
-		public int getData() {
-			return data;
+		public String getData() {
+			return encoding;
 		}
 
 		public int calculateInSampleSize(BitmapFactory.Options options, 
@@ -293,20 +289,22 @@ public class ViewDish extends Fragment implements OnClickListener {
 			return sampleSize;
 		}
 
-		public Bitmap decodeSampledBitmapFromResource(Resources res, int resId, 
+		public Bitmap decodeSampledBitmapFromResource(Resources res, String encoding, 
 				int reqWidth, int reqHeight) {
 
 			// First decode with inJustDecodeBounds=true to check dimensions
 			final BitmapFactory.Options options = new BitmapFactory.Options();
-			options.inJustDecodeBounds = true;
-			BitmapFactory.decodeResource(res, resId, options);
+//			options.inJustDecodeBounds = true;
+//			BitmapFactory.decodeResource(res, resId, options);
+			byte[] decodedByte = Base64.decode(encoding, 0);
+		    Bitmap bm = BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.length, options);
 
 			// Calculate inSampleSize
 			options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
 
 			// Decode bitmap with inSampleSize set
 			options.inJustDecodeBounds = false;
-			return BitmapFactory.decodeResource(res, resId, options);
+			return BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.length, options);
 		}
 	}
 
@@ -352,13 +350,13 @@ public class ViewDish extends Fragment implements OnClickListener {
 					lngDoub = Double.parseDouble(lng);
 					double distLat = com.trydish.find.FindHome.getLat();
 					double distLng = com.trydish.find.FindHome.getLong();
-					System.out.println("current lat/long is :" + distLat + " " + distLng);
-					System.out.println("other lat/long is :" + latDoub + " " + lngDoub);
+//					System.out.println("current lat/long is :" + distLat + " " + distLng);
+//					System.out.println("other lat/long is :" + latDoub + " " + lngDoub);
 					float[] results = new float[3];
 					android.location.Location.distanceBetween(distLat, distLng, latDoub, lngDoub, results);
 					float distance = results[0];
 					float toMiles = distance * (float)0.000621371;
-					System.out.println("distance in miles is:" +toMiles);
+//					System.out.println("distance in miles is:" +toMiles);
 					toReturn = Float.toString(toMiles);
 
 
@@ -401,16 +399,16 @@ public class ViewDish extends Fragment implements OnClickListener {
 			try {
 				response = httpclient.execute(new HttpGet(url));
 				if(response.getStatusLine().getStatusCode() == HttpStatus.SC_OK){
-					System.out.println("response was ok");
+//					System.out.println("response was ok");
 					ByteArrayOutputStream out = new ByteArrayOutputStream();
 					response.getEntity().writeTo(out);
 
 					
 					String responseString = out.toString();
 					out.close();
-					System.out.println(responseString);
+//					System.out.println(responseString);
 					result = new JSONObject(responseString);
-					System.out.println("object is " + result);
+//					System.out.println("object is " + result);
 
 					//JSONArray jArray = result.getJSONArray("id");
 					//JSONObject latAndLong = jArray.getJSONObject(0);
@@ -450,7 +448,7 @@ public class ViewDish extends Fragment implements OnClickListener {
 				} else{
 					//Closes the connection.
 					response.getEntity().getContent().close();
-					System.out.println("connection closed");
+//					System.out.println("connection closed");
 					return null;
 				}
 			} catch (Exception e) {
@@ -471,12 +469,15 @@ public class ViewDish extends Fragment implements OnClickListener {
 					dish_name = result.getString("dish_name");
 					JSONObject reviewDict = result.getJSONObject("reviews");
 					
+					// Process and display images
 					JSONArray picArray = result.getJSONArray("photos");
 					String tempString;
 					for(int i = 0; i < picArray.length(); i++) {
 						tempString = (String) picArray.get(i);
-						decodeImage(tempString);
+						encodedImages.add(tempString);
 					}
+					// Now we call the method to actually display images
+					displayImages();
 					
 					System.out.println(avg_rating);
 					System.out.println(lat);
@@ -522,10 +523,21 @@ public class ViewDish extends Fragment implements OnClickListener {
 		}
 	}
 	
-	public void decodeImage(String image) {
-		byte[] decodedByte = Base64.decode(image, 0);
-	    Bitmap bm = BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.length);
-	    
+	private void displayImages() {
+		LinearLayout imageHolder = (LinearLayout) myView.findViewById(R.id.image_linear);
+
+		for (int i = 0; i < encodedImages.size(); i++) {
+			String encoding = encodedImages.get(i);
+			ImageView imageView = new ImageView(imageHolder.getContext());
+			imageView.setLayoutParams(new LinearLayout.LayoutParams(screenWidth, imageDimension)); // 255, 200
+			imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+			imageView.setPadding(1, 0, 0, 0);
+			loadBitmap(encoding, imageView);
+			imageHolder.addView(imageView, i);
+		}
+		
+		ProgressBar progress = (ProgressBar)myView.findViewById(R.id.viewDish_progressbar);
+		progress.setVisibility(View.INVISIBLE);
 	}
 	
 	public void addViews(String username, String comment, int ratingNum) {

@@ -48,8 +48,8 @@ public class LoginHome extends Activity {
 
 		context_login = getBaseContext();
 
-		AllergyDBTask allergysync = new AllergyDBTask();
-		allergysync.execute();
+		RestaurantDBTask allSync = new RestaurantDBTask();
+		allSync.execute();
 	}
 
 	public void loginCheck(View view) {

@@ -129,5 +129,16 @@
         android:layout_marginRight="30dp"
         android:layout_marginTop="6dp"
         android:background="@drawable/report" />
+    
+    <ProgressBar
+        android:id="@+id/viewDish_progressbar"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="300dp"
+        android:indeterminate="true"
+        android:visibility="invisible" />
 
 </RelativeLayout>
