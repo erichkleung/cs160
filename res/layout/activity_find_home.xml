@@ -60,25 +60,20 @@
     	
     	
 	</LinearLayout>
-	
-    
-        <GridView
-    	android:id="@+id/food_images"
-    	android:layout_marginLeft="1dp"
-    	android:layout_marginRight="1dp"
-    	android:layout_marginTop="0dp"
-    	android:layout_marginBottom="0dp"
-    	android:layout_width="fill_parent" 
-    	android:layout_height="fill_parent"
-    	android:columnWidth="390dp"
-    	android:numColumns="1"
-    	android:verticalSpacing="2dp"
-    	android:horizontalSpacing="5dp"
-    	android:stretchMode="columnWidth"
-    	android:gravity="center"
-		/>
-
-        
-       
+	    	
+    	<GridView
+            android:id="@+id/food_images"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginBottom="1dp"
+            android:layout_marginLeft="1dp"
+            android:layout_marginRight="1dp"
+            android:layout_marginTop="1dp"
+            android:columnWidth="390dp"
+            android:gravity="center"
+            android:horizontalSpacing="5dp"
+            android:numColumns="1"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="2dp" />
 
 </LinearLayout>

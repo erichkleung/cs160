@@ -96,13 +96,16 @@ public class ImageAdapter extends BaseAdapter {
 		if (convertView == null) {
 			// Setting up the parent RelativeLayout
 			rLayout = new RelativeLayout(mContext);
-			rLayout.setLayoutParams(new GridView.LayoutParams(screenWidth, imageDimension));
+			GridView.LayoutParams rParams = new GridView.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+			rLayout.setLayoutParams(rParams);
 		} else {
 			rLayout = (RelativeLayout) convertView;
 		}
 		// Setting up our ImageView
 		imageView = new ImageView(mContext);
-		imageView.setLayoutParams(new GridView.LayoutParams(screenWidth, imageDimension)); // 255, 200
+		RelativeLayout.LayoutParams rParams = new RelativeLayout.LayoutParams(screenWidth, imageDimension);
+//		rParams.setMargins(10, 20, 20, 0);
+		imageView.setLayoutParams(rParams); // 255, 200
 		imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
 		loadBitmap(mThumbIds[position], imageView);
 		
@@ -147,28 +150,6 @@ public class ImageAdapter extends BaseAdapter {
 		text.setBackgroundColor(Color.argb(100, 0, 0, 0));
 		text.setTextAlignment(TextView.TEXT_ALIGNMENT_TEXT_END);
 		text.setText(Html.fromHtml(location + " <i><small>miles away</small></i>"));
-		text.setTextColor(Color.WHITE);                            
-		text.setTypeface(Typeface.DEFAULT_BOLD);
-		text.setTextSize(20);
-		
-		return text;
-	}
-	
-	@SuppressLint("NewApi")
-	public TextView restaurantText(String restaurant) {
-		// Setting the RelativeLayout parameters for the Food Name TextView
-		TextView text = new TextView(mContext);
-		RelativeLayout.LayoutParams tParams = new RelativeLayout.LayoutParams
-				(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-		tParams.setMargins(0, 0, 0, 52);
-		tParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
-		tParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, RelativeLayout.TRUE);
-		text.setLayoutParams(tParams);
-		// These are TextView specific parameters (we're done messing with RelativeLayout here)
-		text.setPadding(10, 5, 10, 5);
-		text.setBackgroundColor(Color.argb(100, 0, 0, 0));
-		text.setTextAlignment(TextView.TEXT_ALIGNMENT_TEXT_END);
-		text.setText(Html.fromHtml("<i><small>from</small></i> " + restaurant));
 		text.setTextColor(Color.WHITE);                            
 		text.setTypeface(Typeface.DEFAULT_BOLD);
 		text.setTextSize(20);
