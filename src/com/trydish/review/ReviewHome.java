@@ -70,9 +70,10 @@ public class ReviewHome extends Fragment implements OnClickListener, OnItemClick
 	private static Context context;
 	private int intentId = 800;
 	private String reference;
-	private ArrayList<String> resultsFromPlaces = new ArrayList();
+	private ArrayList<String> resultsFromPlaces;
 	private String encodedImage = "";
 
+	private boolean autocompleted = false;
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -106,13 +107,11 @@ public class ReviewHome extends Fragment implements OnClickListener, OnItemClick
 			@Override
 			public void beforeTextChanged(CharSequence arg0, int arg1,
 					int arg2, int arg3) {
-				// TODO Auto-generated method stub
 			}
 
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before,
 					int count) {
-				// TODO Auto-generated method stub
 			}
 
 		});
@@ -214,6 +213,8 @@ public class ReviewHome extends Fragment implements OnClickListener, OnItemClick
 		intent.putExtra("restaurantID", 1);
 		intent.putExtra("encodedImage", encodedImage);
 
+		intent.putStringArrayListExtra("results from Places autocomplete detail request", resultsFromPlaces);
+		
 		System.out.println(encodedImage);
 
 		startActivityForResult(intent, 1);
@@ -305,6 +306,8 @@ public class ReviewHome extends Fragment implements OnClickListener, OnItemClick
 				JSONObject jsonObj = new JSONObject(jsonResults.toString());
 				JSONObject result = jsonObj.getJSONObject("result");
 
+				resultsFromPlaces = new ArrayList();
+				
 				//use
 				String name = result.getString("name");
 				resultsFromPlaces.add(name);
