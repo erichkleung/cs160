@@ -408,9 +408,7 @@ public class ReviewHome extends Fragment implements OnClickListener, OnItemClick
 	}
 	
 	
-	private void storeRestDB(SQLiteDatabase db) {
-		global.restDB = db;
-		
+	private void storeRestDB(SQLiteDatabase db) {		
 		DishDBTask task = new DishDBTask();
 		task.execute();
 	}
@@ -455,9 +453,7 @@ public class ReviewHome extends Fragment implements OnClickListener, OnItemClick
 	}
 	
 	
-	private void storeDishDB(SQLiteDatabase db) {
-		global.dishDB = db;
-		
+	private void storeDishDB(SQLiteDatabase db) {		
 		AllergyDBTask task = new AllergyDBTask();
 		task.execute();
 	}
@@ -498,13 +494,7 @@ public class ReviewHome extends Fragment implements OnClickListener, OnItemClick
 
 		@Override
 		protected void onPostExecute(SQLiteDatabase db) {
-			storeAllergyDB(db);
 		}
 	}
 
-	private void storeAllergyDB(SQLiteDatabase db) {
-		global.allergyDB = db;
-		
-		System.out.println("End of chain!");
-	}
 }

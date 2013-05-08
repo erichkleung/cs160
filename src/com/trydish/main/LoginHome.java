@@ -39,7 +39,7 @@ import android.widget.Toast;
 
 public class LoginHome extends Activity {
 
-	boolean nocheck = false;
+	boolean nocheck = true;
 	Context context_login;
 
 	@Override
@@ -196,7 +196,7 @@ public class LoginHome extends Activity {
 				} else{
 					//Closes the connection.
 					response.getEntity().getContent().close();
-					System.out.println("status: " + response.getStatusLine().getStatusCode());
+//					System.out.println("status: " + response.getStatusLine().getStatusCode());
 					return null;
 				}
 			} catch (Exception e) {
@@ -207,13 +207,7 @@ public class LoginHome extends Activity {
 
 		@Override
 		protected void onPostExecute(SQLiteDatabase db) {
-			storeDB(db);
 		}
-	}
-
-
-	private void storeDB(SQLiteDatabase db) {
-		global.allergyDB = db;
 	}
 	
 	private class LoadAllergiesTask extends AsyncTask<String, Void, Void> {
