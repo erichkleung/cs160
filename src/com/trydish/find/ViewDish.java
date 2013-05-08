@@ -157,7 +157,9 @@ public class ViewDish extends Fragment implements OnClickListener {
 
 	@Override
 	public void onClick(View button) {
-		report(button);
+		if (button.getId() == R.id.flagButton) {
+			report(button);
+		}
 	}
 
 	public void addBitmapToMemoryCache(String key, Bitmap bitmap) {

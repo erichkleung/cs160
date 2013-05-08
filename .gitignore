@@ -9,3 +9,4 @@ bin/
 gen/
 
 local.properties
+project.properties

@@ -47,7 +47,7 @@ public class global {
 			String[] result = commands.split(";");
 
 			for (String stmt : result) {
-				System.out.println(stmt);
+				//System.out.println(stmt);
 				db.execSQL(stmt);
 			}
 		}

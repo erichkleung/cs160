@@ -72,30 +72,11 @@
                 android:paddingLeft="30dp"
                 android:shadowColor="#000000"
                 android:shadowRadius="1"
-                android:text="Your Rating "
-                android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="#000000"
-                android:textSize="20sp" />
-
-            <RatingBar
-                android:id="@+id/ratingBar1"
-                style="?android:attr/ratingBarStyleIndicator"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/rating_text"
-                android:layout_marginLeft="25dp"
-                android:layout_marginTop="3dp"
-                android:isIndicator="false" />
-
-            <Button
-                android:id="@+id/add_review_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignRight="@+id/relcomment1"
-                android:layout_below="@+id/rating_text"
-                android:layout_marginRight="30dp"
-                android:layout_marginTop="45dp"
-                android:text="Add/Modify Review" />
+                android:textSize="20sp"
+                android:text=""
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+			
 
             <TextView
                 android:id="@+id/comment_text"
@@ -103,7 +84,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignLeft="@+id/dish_header_text"
                 android:layout_below="@+id/rating_text"
-                android:layout_marginTop="60dp"
+                android:layout_marginTop="-20dp"
                 android:paddingLeft="30dp"
                 android:shadowColor="#000000"
                 android:shadowRadius="1"

@@ -52,7 +52,7 @@ public class ConfirmReview extends Activity {
 		
 		System.out.println("working");
 		
-		if (global.allergy_ids != null) {
+		if (global.allergy_ids != null && global.allergy_ids.size() != 0) {
 			for (String allergyID : global.allergy_ids) {
 				System.out.println("allergyID: " + allergyID);
 				String allergyName = global.DatabaseHandler.getAllergyName(allergyID);
@@ -63,16 +63,20 @@ public class ConfirmReview extends Activity {
 		    	CheckBox allergy = new CheckBox(this);
 		    	allergy.setText(allergyName);
 		    	allergy.setChecked(true);
-		    	allergy.setTextColor(Color.WHITE);
+		    	allergy.setTextColor(Color.BLACK);
 		    	allergy.setTextSize(20);
 		    	allergiesList.addView(allergy, params);
 			}
 		} else {
 			LinearLayout allergiesList = (LinearLayout) findViewById(R.id.Layout);
-			TextView noAllergies = new TextView(this);
-			noAllergies.setTextColor(Color.WHITE);
+			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+	    	params.setMargins(13, 13, 13, 13);
+			CheckBox noAllergies = new CheckBox(this);
+			noAllergies.setChecked(false);
+			noAllergies.setEnabled(false);
+			noAllergies.setTextColor(Color.BLACK);
 			noAllergies.setTextSize(20);
-			noAllergies.setText("(no known allergies)");
+			noAllergies.setText("You have no allergies, hooray!");
 			allergiesList.addView(noAllergies);
 		}
 	}
@@ -281,7 +285,7 @@ public class ConfirmReview extends Activity {
 
 	private void addReview(int id) {
 		if (id == -1) {	
-			Toast toast = Toast.makeText(this, "Something broke, review not sumbitted!.", Toast.LENGTH_LONG);
+			Toast toast = Toast.makeText(this, "Something broke, review not sumbitted!", Toast.LENGTH_LONG);
 			toast.setGravity(Gravity.TOP|Gravity.CENTER_HORIZONTAL, 0, 400);
 			toast.show();
 			ProgressBar progress = (ProgressBar)findViewById(R.id.review_progressbar);

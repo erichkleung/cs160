@@ -77,22 +77,6 @@
             android:layout_below="@+id/textView3"
             android:layout_marginTop="15dp"
             android:orientation="vertical" >
-
-            <CheckBox
-                android:id="@+id/checkBox1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="true"
-                android:text="Peanuts"
-                android:textColor="#000000" />
-
-            <CheckBox
-                android:id="@+id/checkBox2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="true"
-                android:text="Mango"
-                android:textColor="#000000" />
         </LinearLayout>
     </RelativeLayout>
 
