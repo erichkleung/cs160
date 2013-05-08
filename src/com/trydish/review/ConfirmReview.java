@@ -39,13 +39,13 @@ public class ConfirmReview extends Activity {
 	Intent intent;
 	ActivityResult actResult;
 	String restaurant, dish;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_confirm_review);
 		intent = getIntent();
-		
+
 		((TextView)findViewById(R.id.textViewRestaurant)).setText("Restaurant: " + intent.getStringExtra("restaurant"));
 		((TextView)findViewById(R.id.textViewName)).setText("Dish Name: " + intent.getStringExtra("name"));
 	}
@@ -56,29 +56,35 @@ public class ConfirmReview extends Activity {
 		getMenuInflater().inflate(R.menu.activity_confirm_review, menu);
 		return true;
 	}
-	
+
 	public void cancel(View view) {
 		Intent result = new Intent();
 		result.putExtra("confirm", false);
 		setResult(Activity.RESULT_OK, result);
 		finish();
 	}
-	
+
 	public void confirm(View view) {
 		ProgressBar progress = (ProgressBar)findViewById(R.id.review_progressbar);
 		progress.setVisibility(View.VISIBLE);
+
+		AddRestaurantTask addRestaurant = new AddRestaurantTask();
+		ArrayList<String> placesStuff = intent.getStringArrayListExtra("results from Places autocomplete detail request");
+		addRestaurant.execute(placesStuff.get(0), placesStuff.get(1),placesStuff.get(2),placesStuff.get(3),placesStuff.get(4),placesStuff.get(5),placesStuff.get(6),placesStuff.get(7),placesStuff.get(8),placesStuff.get(9),placesStuff.get(10));
 		
+	}
+
+	public void confirm2(int id) {
 		if (intent.getIntExtra("dishID",-1) != -1) {
 			addReview(intent.getIntExtra("dishID",-1));
 		} else {
 			AddDishTask addDish = new AddDishTask();
-			addDish.execute(intent.getStringExtra("name"), "" + intent.getIntExtra("restaurantID", -1));
+			addDish.execute(intent.getStringExtra("name"), ""+id);
 		}
 	}
-	
-	
+
 	private class AddReviewTask extends AsyncTask<String, Void, Boolean> {
-		
+
 		//params: dish (id), user (id), rating, comment
 		@Override
 		protected Boolean doInBackground(String... params) {
@@ -86,7 +92,7 @@ public class ConfirmReview extends Activity {
 			String responseString;
 
 			HttpClient httpclient = new DefaultHttpClient();
-			
+
 			HttpPost post = new HttpPost(url);
 			try {
 				List<NameValuePair> postParameters = new ArrayList<NameValuePair>();
@@ -94,40 +100,41 @@ public class ConfirmReview extends Activity {
 				postParameters.add(new BasicNameValuePair("author", params[1]));
 				postParameters.add(new BasicNameValuePair("rating", params[2]));
 				postParameters.add(new BasicNameValuePair("comment", params[3]));
-				
+				//postParameters.add(new BasicNameValuePair("allergy", "3"));
+
 				UrlEncodedFormEntity entity = new UrlEncodedFormEntity(postParameters);
 				post.setEntity(entity);
-	            HttpResponse response = httpclient.execute(post);
-	            
-	            if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-	                ByteArrayOutputStream out = new ByteArrayOutputStream();
-	                response.getEntity().writeTo(out);
-	                out.close();
-	                responseString = out.toString();
-	                System.out.println("response: " + responseString);
-	            } else {
-	                //Closes the connection.
-	            	System.out.println("Status: " + response.getStatusLine().getStatusCode());
-	                response.getEntity().getContent().close();
-	                return false;
-	            }
-	        } catch (Exception e) {
-	        	return false;
-	        }
-			
+				HttpResponse response = httpclient.execute(post);
+
+				if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+					ByteArrayOutputStream out = new ByteArrayOutputStream();
+					response.getEntity().writeTo(out);
+					out.close();
+					responseString = out.toString();
+					System.out.println("response: " + responseString);
+				} else {
+					//Closes the connection.
+					System.out.println("Status: " + response.getStatusLine().getStatusCode());
+					response.getEntity().getContent().close();
+					return false;
+				}
+			} catch (Exception e) {
+				return false;
+			}
+
 			return true;
-    	}
-		
+		}
+
 		protected void onPostExecute(Boolean callsubmit) {
 			System.out.println("callsubmit: " + callsubmit);
 			if (callsubmit) {
 				submitFinished();
 			}
 		}
-    }
-	
+	}
+
 	private class AddDishTask extends AsyncTask<String, Void, Integer> {
-		
+
 		//params: dish (id), user (id), rating, comment
 		@Override
 		protected Integer doInBackground(String... params) {
@@ -136,64 +143,124 @@ public class ConfirmReview extends Activity {
 			String responseString;
 
 			HttpClient httpclient = new DefaultHttpClient();
-			
+
 			HttpPost post = new HttpPost(url);
 			try {
 				List<NameValuePair> postParameters = new ArrayList<NameValuePair>();
 				postParameters.add(new BasicNameValuePair("name", params[0]));
-				postParameters.add(new BasicNameValuePair("restaurant_id", params[1]));
-				
+				postParameters.add(new BasicNameValuePair("restaurant", params[1]));
+
 				UrlEncodedFormEntity entity = new UrlEncodedFormEntity(postParameters);
 				post.setEntity(entity);
-	            HttpResponse response = httpclient.execute(post);
-	            
-	            if(response.getStatusLine().getStatusCode() == HttpStatus.SC_OK){
-	                ByteArrayOutputStream out = new ByteArrayOutputStream();
-	                response.getEntity().writeTo(out);
-	                out.close();
-	                responseString = out.toString();
-	                result = new JSONObject(responseString);
-	            } else {
-	                //Closes the connection.
-	            	System.out.println("Status: " + response.getStatusLine().getStatusCode());
-	                response.getEntity().getContent().close();
-	                return -1;
-	            }
-	        } catch (Exception e) {
-	        	return -1;
-	        }
-			
+				HttpResponse response = httpclient.execute(post);
+
+				if(response.getStatusLine().getStatusCode() == HttpStatus.SC_OK){
+					ByteArrayOutputStream out = new ByteArrayOutputStream();
+					response.getEntity().writeTo(out);
+					out.close();
+					responseString = out.toString();
+					result = new JSONObject(responseString);
+				} else {
+					//Closes the connection.
+					System.out.println("Status: " + response.getStatusLine().getStatusCode());
+					response.getEntity().getContent().close();
+					return -1;
+				}
+			} catch (Exception e) {
+				return -1;
+			}
+
 			try {
 				return (Integer) result.get("id");
 			} catch (JSONException e) {
 				e.printStackTrace();
 				return -1;
 			}
-    	}
-		
+		}
+
 		protected void onPostExecute(Integer id) {
 			System.out.println("dish id: " + id);
 			addReview(id);
 		}
-    }
+	}
+
+	private class AddRestaurantTask extends AsyncTask<String, Void, Integer> {
+
+		//params: dish (id), user (id), rating, comment
+		@Override
+		protected Integer doInBackground(String... params) {
+			JSONObject result;
+			String url = "http://trydish.pythonanywhere.com/add_restaurant";
+			String responseString;
+
+			HttpClient httpclient = new DefaultHttpClient();
+
+			HttpPost post = new HttpPost(url);
+			try {
+				List<NameValuePair> postParameters = new ArrayList<NameValuePair>();
+				postParameters.add(new BasicNameValuePair("name", params[0]));
+				postParameters.add(new BasicNameValuePair("lat", params[1]));
+				postParameters.add(new BasicNameValuePair("long", params[2]));
+				postParameters.add(new BasicNameValuePair("address_line_1", params[3]));
+				postParameters.add(new BasicNameValuePair("address_line_2", params[4]));
+				postParameters.add(new BasicNameValuePair("address_line_3", params[5]));
+				postParameters.add(new BasicNameValuePair("city", params[6]));
+				postParameters.add(new BasicNameValuePair("state", params[7]));
+				postParameters.add(new BasicNameValuePair("zip", params[8]));
+				postParameters.add(new BasicNameValuePair("phone_number", params[9]));
+				postParameters.add(new BasicNameValuePair("google_id", params[10]));
+				
+				UrlEncodedFormEntity entity = new UrlEncodedFormEntity(postParameters);
+				post.setEntity(entity);
+				HttpResponse response = httpclient.execute(post);
+
+				if(response.getStatusLine().getStatusCode() == HttpStatus.SC_OK){
+					ByteArrayOutputStream out = new ByteArrayOutputStream();
+					response.getEntity().writeTo(out);
+					out.close();
+					responseString = out.toString();
+					result = new JSONObject(responseString);
+				} else {
+					//Closes the connection.
+					System.out.println("Status: " + response.getStatusLine().getStatusCode());
+					response.getEntity().getContent().close();
+					return -1;
+				}
+			} catch (Exception e) {
+				return -1;
+			}
+
+			try {
+				return (Integer) result.get("id");
+			} catch (JSONException e) {
+				e.printStackTrace();
+				return -1;
+			}
+		}
+
+		protected void onPostExecute(Integer id) {
+			System.out.println("THis is the id: " + id);
+			confirm2(id);
+		}
+	}
 
 	private void addReview(int id) {
-		if (id == -1) {
+		if (id == -1) {	
 			Toast toast = Toast.makeText(this, "Something broke, review not sumbitted!.", Toast.LENGTH_LONG);
 			toast.setGravity(Gravity.TOP|Gravity.CENTER_HORIZONTAL, 0, 400);
 			toast.show();
 			ProgressBar progress = (ProgressBar)findViewById(R.id.review_progressbar);
 			progress.setVisibility(View.INVISIBLE);
 		}
-		
+
 		AddReviewTask submit = new AddReviewTask();
 		submit.execute("" + id, "" + global.userID, "" + (intent.getDoubleExtra("rating", 0)*2), intent.getStringExtra("comments"));
 	}
-	
+
 	private void submitFinished() {
 		ProgressBar progress = (ProgressBar)findViewById(R.id.review_progressbar);
 		progress.setVisibility(View.INVISIBLE);
-		
+
 		Intent result = new Intent();
 		result.putExtra("confirm", true);
 		setResult(Activity.RESULT_OK, result);

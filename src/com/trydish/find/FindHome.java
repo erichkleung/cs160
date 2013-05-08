@@ -95,7 +95,7 @@ public class FindHome extends Fragment implements OnClickListener {
 		b.setOnClickListener(this);
 
 		GridView gridview = (GridView) view.findViewById(R.id.food_images);
-		gridview.setAdapter(new ImageAdapter(view.getContext(), ImageAdapter.REGULAR));
+		gridview.setAdapter(new ImageAdapter(view.getContext(), ImageAdapter.HALF));
 
 		gridview.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
