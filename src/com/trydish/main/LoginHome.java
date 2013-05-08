@@ -196,7 +196,7 @@ public class LoginHome extends Activity {
 				} else{
 					//Closes the connection.
 					response.getEntity().getContent().close();
-					System.out.println("status: " + response.getStatusLine().getStatusCode());
+//					System.out.println("status: " + response.getStatusLine().getStatusCode());
 					return null;
 				}
 			} catch (Exception e) {

@@ -170,7 +170,7 @@
             android:layout_margin="20dp"
             android:baselineAligned="false" >
 
-            <EditText
+            <AutoCompleteTextView
                 android:id="@+id/add_new_allergy_box"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"

@@ -20,6 +20,8 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -33,6 +35,7 @@ public class SignupAllergies extends Activity {
 	
 	private int leftRight = 0;
 	private String user, pass;
+	private ArrayList<String> allergies;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +61,16 @@ public class SignupAllergies extends Activity {
 		
 		AlertDialog dialog = builder.create();
 		dialog.show();
+		
+		String query = "SELECT * FROM allergies";
+		if (global.allergyDB != null) {
+			System.out.println("THIS SHIT RUNNING???");
+			Cursor c = global.allergyDB.rawQuery(query, null);
+		}
+		
+		// getting allergies
+//		GatherAllergies gaTask = new GatherAllergies();
+//		gaTask.execute();
 	}
 	
 	// used to add allergies on-the-fly
@@ -123,6 +136,34 @@ public class SignupAllergies extends Activity {
 	public void onBackPressed() {
 	    super.onBackPressed();
 	    overridePendingTransition( R.anim.slide_in_right, R.anim.slide_out_right );
+	}
+	
+	private class GatherAllergies extends AsyncTask<Void, Void, ArrayList<String>> {
+
+		@Override
+		protected ArrayList<String> doInBackground(Void... params) {
+			// TODO Auto-generated method stub
+			ArrayList<String> allergies = new ArrayList<String>();
+			String query = "SELECT * FROM allergies";
+			
+			SQLiteDatabase db = global.allergyDB;
+			
+			Cursor cursor = db.rawQuery(query, null);
+			
+			if (cursor.moveToFirst()) {
+				do {
+					allergies.add(cursor.getString(1));
+				} while (cursor.moveToNext());
+			}
+			
+			return allergies;
+		}
+		
+		@Override
+		protected void onPostExecute(ArrayList<String> arr) {
+			allergies = arr;
+		}
+		
 	}
 
 	

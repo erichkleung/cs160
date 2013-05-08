@@ -126,7 +126,6 @@ public class PlacesAutoCompleteAdapter extends ArrayAdapter<String> implements F
 			//}
 			sb.append("&types=establishment");
 			
-			
  
 			//Log.d("key is:", sb.toString());
 			

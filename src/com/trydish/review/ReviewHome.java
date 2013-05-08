@@ -218,8 +218,6 @@ public class ReviewHome extends Fragment implements OnClickListener, OnItemClick
 		intent.putExtra("encodedImage", encodedImage);
 		
 		intent.putStringArrayListExtra("results from Places autocomplete detail request", resultsFromPlaces);
-		
-		System.out.println(encodedImage);
 
 		startActivityForResult(intent, 1);
 	}
