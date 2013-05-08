@@ -68,9 +68,11 @@ public class ReviewHome extends Fragment implements OnClickListener, OnItemClick
 	private static Context context;
 	private int intentId = 800;
 	private String reference;
-	private ArrayList<String> resultsFromPlaces = new ArrayList();
 
+	private ArrayList<String> resultsFromPlaces;
+	private String encodedImage = "";
 
+	private boolean autocompleted = false;
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -105,15 +107,12 @@ public class ReviewHome extends Fragment implements OnClickListener, OnItemClick
 			@Override
 			public void beforeTextChanged(CharSequence arg0, int arg1,
 					int arg2, int arg3) {
-				// TODO Auto-generated method stub
 
 			}
 
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before,
 					int count) {
-				// TODO Auto-generated method stub
-
 			}
 
 		});
@@ -127,46 +126,7 @@ public class ReviewHome extends Fragment implements OnClickListener, OnItemClick
 
 	}
 
-	public void done(View button) {
-		EditText rText = (EditText)(myView.findViewById(R.id.editTextRestaurant));
-		EditText nText = (EditText)(myView.findViewById(R.id.editTextName));
-		EditText cText = (EditText)(myView.findViewById(R.id.editTextComments));
-		RatingBar ratingBar = (RatingBar)(myView.findViewById(R.id.ratingBar));
 
-		String restaurant = rText.getText().toString();
-		String name = nText.getText().toString();
-		String comments = cText.getText().toString();
-		double rating = ratingBar.getRating();
-
-
-		if (restaurant.equals("")) {
-			Toast toast = Toast.makeText(getActivity(), "Please enter a restaurant.", Toast.LENGTH_SHORT);
-			toast.show();
-			return;
-		} else if (name.equals("")) {
-			Toast toast = Toast.makeText(getActivity(), "Please enter a dish name.", Toast.LENGTH_SHORT);
-			toast.show();
-			return;
-		} else if (rating == 0) {
-			Toast toast = Toast.makeText(getActivity(), "Please enter a rating.", Toast.LENGTH_SHORT);
-			toast.show();
-			return;
-		}
-
-		Intent intent = new Intent(getActivity(), ConfirmReview.class);
-		intent.putExtra("restaurant", restaurant);
-		intent.putExtra("name", name);
-		intent.putExtra("comments", comments);
-		intent.putExtra("rating", rating);
-		intent.putExtra("dishID", -1);
-		intent.putExtra("restaurantID", 1);
-		//TODO: Image?
-		
-		
-		intent.putStringArrayListExtra("results from Places autocomplete detail request", resultsFromPlaces);
-
-		startActivityForResult(intent, 1);
-	}
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -211,6 +171,48 @@ public class ReviewHome extends Fragment implements OnClickListener, OnItemClick
 			//else do nothing
 		}
 
+	}
+
+	public void done(View button) {
+		EditText rText = (EditText)(myView.findViewById(R.id.editTextRestaurant));
+		EditText nText = (EditText)(myView.findViewById(R.id.editTextName));
+		EditText cText = (EditText)(myView.findViewById(R.id.editTextComments));
+		RatingBar ratingBar = (RatingBar)(myView.findViewById(R.id.ratingBar));
+
+		String restaurant = rText.getText().toString();
+		String name = nText.getText().toString();
+		String comments = cText.getText().toString();
+		double rating = ratingBar.getRating();
+
+
+		if (restaurant.equals("")) {
+			Toast toast = Toast.makeText(getActivity(), "Please enter a restaurant.", Toast.LENGTH_SHORT);
+			toast.show();
+			return;
+		} else if (name.equals("")) {
+			Toast toast = Toast.makeText(getActivity(), "Please enter a dish name.", Toast.LENGTH_SHORT);
+			toast.show();
+			return;
+		} else if (rating == 0) {
+			Toast toast = Toast.makeText(getActivity(), "Please enter a rating.", Toast.LENGTH_SHORT);
+			toast.show();
+			return;
+		}
+
+		Intent intent = new Intent(getActivity(), ConfirmReview.class);
+		intent.putExtra("restaurant", restaurant);
+		intent.putExtra("name", name);
+		intent.putExtra("comments", comments);
+		intent.putExtra("rating", rating);
+		intent.putExtra("dishID", -1);
+		intent.putExtra("restaurantID", 1);
+		intent.putExtra("encodedImage", encodedImage);
+
+		intent.putStringArrayListExtra("results from Places autocomplete detail request", resultsFromPlaces);
+		
+		System.out.println(encodedImage);
+
+		startActivityForResult(intent, 1);
 	}
 
 	@Override
@@ -302,6 +304,8 @@ public class ReviewHome extends Fragment implements OnClickListener, OnItemClick
 				// Create a JSON object hierarchy from the results
 				JSONObject jsonObj = new JSONObject(jsonResults.toString());
 				JSONObject result = jsonObj.getJSONObject("result");
+
+				resultsFromPlaces = new ArrayList();
 				
 				//use
 				String name = result.getString("name");
