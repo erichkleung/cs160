@@ -45,6 +45,7 @@ import android.os.Bundle;
 import android.provider.MediaStore.Images.ImageColumns;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -161,6 +162,12 @@ public class ReviewHome extends Fragment implements OnClickListener, OnItemClick
 					Bitmap bitmapPreview = BitmapFactory.decodeFile(fileSrc); //load preview image
 					BitmapDrawable bmpDrawable = new BitmapDrawable(Resources.getSystem(), bitmapPreview);
 					((ImageButton)(myView.findViewById(R.id.imageView1))).setImageDrawable(bmpDrawable);
+					
+					ByteArrayOutputStream stream = new ByteArrayOutputStream();
+					bitmapPreview.compress(Bitmap.CompressFormat.JPEG, 80, stream);
+					byte[] array = stream.toByteArray();
+					encodedImage = Base64.encodeToString(array, Base64.DEFAULT);
+					
 				}
 				else {
 					Log.d("trydish", "idButSelPic Photopicker canceled");
@@ -209,7 +216,7 @@ public class ReviewHome extends Fragment implements OnClickListener, OnItemClick
 		intent.putExtra("dishID", -1);
 		intent.putExtra("restaurantID", 1);
 		intent.putExtra("encodedImage", encodedImage);
-
+		
 		intent.putStringArrayListExtra("results from Places autocomplete detail request", resultsFromPlaces);
 		
 		System.out.println(encodedImage);

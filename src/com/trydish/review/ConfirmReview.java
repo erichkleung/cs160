@@ -101,7 +101,7 @@ public class ConfirmReview extends Activity {
 	}
 
 	public void confirm2(int id) {
-		if (intent.getIntExtra("dishID",-1) != -1) {
+		if (intent.getIntExtra("dishID", -1) != -1) {
 			addReview(intent.getIntExtra("dishID",-1));
 		} else {
 			AddDishTask addDish = new AddDishTask();
@@ -276,6 +276,7 @@ public class ConfirmReview extends Activity {
 		}
 
 		AddReviewTask submit = new AddReviewTask();
+		
 		submit.execute("" + id,
 					   "" + global.userID,
 					   "" + (intent.getDoubleExtra("rating", 0)*2), 
