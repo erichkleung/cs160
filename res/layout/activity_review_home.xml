@@ -1,9 +1,11 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/scrollView1"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:layout_below="@+id/ratingBar1"
-    android:layout_toRightOf="@+id/button2" >
+    android:layout_toRightOf="@+id/button2"
+    android:background="#ffffff"
+    android:overScrollMode="always" >
 
     <RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -11,7 +13,10 @@
         android:id="@+id/review_form"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:context=".ReviewHome" >
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        tools:context=".ReviewHome"
+        android:background="#ffffff" >
 
         <TextView
             android:id="@+id/textView1"
@@ -19,44 +24,61 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:layout_marginLeft="15dp"
             android:layout_marginTop="20dp"
-            android:text="Restaurant:"
-            android:textSize="20dp" />
+            android:text="Restaurant"
+            android:shadowColor="#000000"
+			android:shadowRadius="1"
+            android:textSize="20sp"
+            android:textColor="#000000" />
+        
+		<AutoCompleteTextView
+            android:id="@+id/editTextRestaurant"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textView1"
+            android:ems="10"
+            android:imeActionLabel="Done"
+            android:singleLine="true"
+            android:background="@drawable/textboxbg"
+            android:textColor="#000000"
+            android:hint="Enter restaurant name" />
 
         <TextView
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/textView1"
-            android:layout_below="@+id/textView1"
+            android:layout_below="@+id/editTextRestaurant"
             android:layout_marginTop="20dp"
-            android:text="Dish Name:"
-            android:textSize="20dp" />
+            android:text="Dish Name"
+			android:shadowColor="#000000"
+			android:shadowRadius="1"
+            android:textSize="20sp"
+            android:textColor="#000000" />
 
         <EditText
             android:id="@+id/editTextName"
-            android:layout_width="450dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/textView2"
-            android:layout_alignParentRight="true"
-            android:layout_marginBottom="-8dp"
-            android:layout_marginRight="15dp"
+            android:layout_below="@+id/textView2"
             android:ems="10"
             android:imeActionLabel="Done"
-            android:singleLine="true" />
-
-        <AutoCompleteTextView
-            android:id="@+id/editTextRestaurant"
-            android:layout_width="450dp"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/textView1"
-            android:layout_alignParentRight="true"
-            android:layout_marginBottom="-8dp"
-            android:layout_marginRight="15dp"
-            android:ems="10"
-            android:imeActionLabel="Done"
-            android:singleLine="true" />
+            android:singleLine="true"
+            android:background="@drawable/textboxbg"
+            android:textColor="#000000"
+            android:hint="Enter dish name" />
+        
+        <ImageButton
+            android:id="@+id/imageView1"
+            android:src="@drawable/cameraicon1"
+            android:layout_width="fill_parent"
+            android:layout_height="400dp"
+            android:layout_below="@+id/editTextName"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="27dp"
+            android:adjustViewBounds="false"
+            android:onClick="addImage"
+            android:background="#ffffff" />
 
         <RatingBar
             android:id="@+id/ratingBar"
@@ -67,17 +89,6 @@
             android:layout_marginLeft="10dp"
             android:layout_toRightOf="@+id/textView3" />
 
-        <ImageButton
-            android:id="@+id/imageView1"
-            android:src="@drawable/cameraicon1"
-            android:layout_width="500dp"
-            android:layout_height="400dp"
-            android:layout_below="@+id/editTextName"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="27dp"
-            android:adjustViewBounds="false"
-            android:onClick="addImage" />
-
         <TextView
             android:id="@+id/textView3"
             android:layout_width="wrap_content"
@@ -85,8 +96,11 @@
             android:layout_alignLeft="@+id/textView2"
             android:layout_below="@+id/imageView1"
             android:layout_marginTop="27dp"
-            android:text="Your Rating:"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:text="Your Rating"
+            android:shadowColor="#000000"
+            android:shadowRadius="1"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="#000000" />
 
         <TextView
             android:id="@+id/textView4"
@@ -95,18 +109,23 @@
             android:layout_alignLeft="@+id/textView3"
             android:layout_below="@+id/ratingBar"
             android:layout_marginTop="25dp"
-            android:text="Comments:"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:text="Comments"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="#000000" />
 
         <EditText
             android:id="@+id/editTextComments"
-            android:layout_width="550dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/textView4"
             android:layout_below="@+id/textView4"
             android:ems="10"
-            android:inputType="textMultiLine" >
-        </EditText>
+            android:inputType="textMultiLine"
+            android:lines="5"
+			android:gravity="top"
+            android:background="@drawable/textboxbg"
+            android:textColor="#000000"
+            android:hint="Enter your comments here (optional)" />
 
         <Button
             android:id="@+id/buttonDone"
