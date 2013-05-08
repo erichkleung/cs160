@@ -2,7 +2,6 @@ package com.trydish.find;
 
 import java.io.ByteArrayOutputStream;
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.apache.http.HttpResponse;
@@ -15,6 +14,7 @@ import org.json.JSONObject;
 
 import android.app.AlertDialog;
 import android.app.Fragment;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -33,9 +33,9 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
+import android.view.ViewGroup.MarginLayoutParams;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -57,6 +57,8 @@ public class ViewDish extends Fragment implements OnClickListener {
 	private View myView;
 	private TextView text;
 	private int numReviews = 0;
+	
+	Context context;
 
 	private LruCache<String, Bitmap> mMemoryCache;
 	private int screenHeight;
@@ -70,6 +72,7 @@ public class ViewDish extends Fragment implements OnClickListener {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.activity_view_dish, container, false);
+		context = view.getContext();
 		
 		myView = view;
 		((ImageButton)(view.findViewById(R.id.flagButton))).setOnClickListener(this);
@@ -504,29 +507,32 @@ public class ViewDish extends Fragment implements OnClickListener {
 	}
 	
 	public void addViews(View currentSetBelow, RelativeLayout scroll, RelativeLayout format) {
-		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(format.getLayoutParams());
-    	lp.addRule(RelativeLayout.BELOW, currentSetBelow.getId());
-    	RelativeLayout layout = new RelativeLayout(com.trydish.find.FindHome.getContext());
-    	layout.setLayoutParams(lp);
+		LinearLayout layout = (LinearLayout) myView.findViewById(R.id.Layout);
     	
-    	TextView first = new TextView(com.trydish.find.FindHome.getContext());
-        TextView second = new TextView(com.trydish.find.FindHome.getContext());
-
-        first.setText("First");
-        first.setId(1);
-
+		LinearLayout newLayout = new LinearLayout(context);
+		layout.addView(newLayout);
+		
+    	TextView first = new TextView(context);
+    	first.setText("Author");
+    	first.setTextSize(20);
+    	first.setTextColor(Color.BLACK);
+    	newLayout.addView(first);
+    	
+    	RatingBar rating = new RatingBar(context, null, android.R.attr.ratingBarStyleSmall);
+    	LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+    		     LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+    	layoutParams.setMargins(10, 6, 0, 0);  //left, top, right, bottom
+    	rating.setRating(3);
+    	newLayout.addView(rating, layoutParams);
+    	
+        TextView second = new TextView(context);
         second.setText("Second");
-        second.setId(2);
-
-        RelativeLayout.LayoutParams lpSecond = new RelativeLayout.LayoutParams(
-            LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-        layout.addView(second, lpSecond);
-
-        RelativeLayout.LayoutParams lpFirst = new RelativeLayout.LayoutParams(
-            LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-        lpFirst.addRule(RelativeLayout.RIGHT_OF, second.getId());
-        layout.addView(first, lpFirst);
-    	scroll.addView(layout, lp);
+        second.setTextColor(Color.BLACK);
+        first.setTextSize(17);
+        LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(
+   		     LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        layoutParams2.setMargins(0, 0, 0, 20);
+        layout.addView(second, layoutParams2);
 	}
 	
 	public void updateFields(String... params) {
