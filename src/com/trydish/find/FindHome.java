@@ -7,9 +7,13 @@ import java.util.Locale;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
+import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -431,47 +435,50 @@ public class FindHome extends Fragment implements OnClickListener {
 	}
 
 	
-	private class getDishesTask extends AsyncTask<Integer, Void, JSONArray> {
+	private class getDishesTask extends AsyncTask<String, Void, JSONArray> {
 
 		JSONArray jArray;
-		protected JSONArray doInBackground(Integer... dishID) {			
+		protected JSONArray doInBackground(String... params) {			
 			String url = "http://trydish.pythonanywhere.com/get_dishes_by_location/";
 
-			HttpResponse response;
+			String responseString;
+			JSONObject result;
+
 			HttpClient httpclient = new DefaultHttpClient();
-			
+
+			HttpPost post = new HttpPost(url);
 			try {
-				response = httpclient.execute(new HttpGet(url));
+				//List<NameValuePair> postParameters = new ArrayList<NameValuePair>();
+				//postParameters.add(new BasicNameValuePair("username", params[0]));
+				//postParameters.add(new BasicNameValuePair("password", global.hash_pw(params[1])));
+				//UrlEncodedFormEntity entity = new UrlEncodedFormEntity(postParameters);
+				//post.setEntity(entity);
+				HttpResponse response = httpclient.execute(post);
+
 				if(response.getStatusLine().getStatusCode() == HttpStatus.SC_OK){
 					ByteArrayOutputStream out = new ByteArrayOutputStream();
 					response.getEntity().writeTo(out);
-
-					String responseString = out.toString();
-					out.close(); 
-					JSONObject result = new JSONObject(responseString);
-
-					jArray = result.getJSONArray("dish_list");
-					JSONObject dish;
-					for(int i=0;i<jArray.length(); i++) {
-						 dish = jArray.getJSONObject(i);
-					}
+					out.close();
+					responseString = out.toString();
+					result = new JSONObject(responseString);
 					
-				} else{
+					jArray = result.getJSONArray("dish_list");
+				} else {
 					//Closes the connection.
-					System.out.println("close connection");
 					response.getEntity().getContent().close();
+					System.out.println("connection closed!");
 					return null;
 				}
 			} catch (Exception e) {
-				System.out.println("Error with jArray: " + e);
+				System.out.println(e);
 				return null;
 			}
-			System.out.println("the jArray is: "+jArray);
 			return jArray;
 		}
 		@Override
 		protected void onPostExecute(JSONArray result) {
-			
+			//do whatever with dish_list
+			System.out.println(result);
 		}
 	}
 
