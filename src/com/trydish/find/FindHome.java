@@ -10,6 +10,8 @@ import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
@@ -175,6 +177,9 @@ public class FindHome extends Fragment implements OnClickListener {
 
 		DishDBTask dbTask = new DishDBTask();
 		dbTask.execute();
+		
+		getDishesTask dt = new getDishesTask();
+		dt.execute();
 		
 		return view;
 
@@ -422,6 +427,50 @@ public class FindHome extends Fragment implements OnClickListener {
 		textView.setThreshold(1);
 		textView.setAdapter(adapter);
 	}
+
 	
+	private class getDishesTask extends AsyncTask<Integer, Void, JSONArray> {
+
+		JSONArray jArray;
+		protected JSONArray doInBackground(Integer... dishID) {			
+			String url = "http://trydish.pythonanywhere.com/get_dishes_by_location/";
+
+			HttpResponse response;
+			HttpClient httpclient = new DefaultHttpClient();
+			
+			try {
+				response = httpclient.execute(new HttpGet(url));
+				if(response.getStatusLine().getStatusCode() == HttpStatus.SC_OK){
+					ByteArrayOutputStream out = new ByteArrayOutputStream();
+					response.getEntity().writeTo(out);
+
+					String responseString = out.toString();
+					out.close(); 
+					JSONObject result = new JSONObject(responseString);
+
+					jArray = result.getJSONArray("dish_list");
+					JSONObject dish;
+					for(int i=0;i<jArray.length(); i++) {
+						 dish = jArray.getJSONObject(i);
+					}
+					
+				} else{
+					//Closes the connection.
+					System.out.println("close connection");
+					response.getEntity().getContent().close();
+					return null;
+				}
+			} catch (Exception e) {
+				System.out.println("Error with jArray: " + e);
+				return null;
+			}
+			System.out.println("the jArray is: "+jArray);
+			return jArray;
+		}
+		@Override
+		protected void onPostExecute(JSONArray result) {
+			
+		}
+	}
 
 }

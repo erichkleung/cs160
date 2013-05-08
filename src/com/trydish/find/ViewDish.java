@@ -52,13 +52,13 @@ public class ViewDish extends Fragment implements OnClickListener {
 
 	private int dishID = 27;
 	private String distanceString;
-	
+
 	private static double latDoub;
 	private static double lngDoub;
 	private View myView;
 	private TextView text;
 	private int numReviews = 0;
-	
+
 	Context context;
 
 	private LruCache<String, Bitmap> mMemoryCache;
@@ -74,7 +74,7 @@ public class ViewDish extends Fragment implements OnClickListener {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.activity_view_dish, container, false);
 		context = view.getContext();
-		
+
 		myView = view;
 		((ImageButton)(view.findViewById(R.id.flagButton))).setOnClickListener(this);
 
@@ -95,7 +95,7 @@ public class ViewDish extends Fragment implements OnClickListener {
 		text.setTypeface(Typeface.SANS_SERIF);
 		text.setText(Html.fromHtml("<h2>Buffalo Wings</h2>" +
 				"<small>from</small> Buffalo Wild Wings<br />" + 
-			"10.5 <small>miles away</small>"));
+				"10.5 <small>miles away</small>"));
 
 		screenHeight = getResources().getDisplayMetrics().heightPixels;
 		screenWidth = getResources().getDisplayMetrics().widthPixels;
@@ -133,7 +133,7 @@ public class ViewDish extends Fragment implements OnClickListener {
 
 		getDishLocationTask dl = new getDishLocationTask();
 		dl.execute(dishID);
-		
+
 		getDishInformationTask di = new getDishInformationTask();
 		di.execute(dishID);
 
@@ -378,12 +378,12 @@ public class ViewDish extends Fragment implements OnClickListener {
 			updateDistance(result);
 		}
 	}
-	
-	
+
+
 	public void updateDistance(String distance) {
 		distanceString = distance;
 	}
-	
+
 	private class getDishInformationTask extends AsyncTask<Integer, Void, JSONObject> {
 
 		String rest_name;
@@ -405,7 +405,7 @@ public class ViewDish extends Fragment implements OnClickListener {
 					ByteArrayOutputStream out = new ByteArrayOutputStream();
 					response.getEntity().writeTo(out);
 
-					
+
 					String responseString = out.toString();
 					out.close();
 					System.out.println(responseString);
@@ -414,7 +414,7 @@ public class ViewDish extends Fragment implements OnClickListener {
 
 					//JSONArray jArray = result.getJSONArray("id");
 					//JSONObject latAndLong = jArray.getJSONObject(0);
-					
+
 					/*
 					avg_rating = result.getString("avg_rating");
 					lng = result.getString("long");
@@ -422,17 +422,17 @@ public class ViewDish extends Fragment implements OnClickListener {
 					rest_name = result.getString("rest_name");
 					dish_name = result.getString("dish_name");
 					JSONObject reviewDict = result.getJSONObject("reviews");
-					
+
 					System.out.println(avg_rating);
 					System.out.println(lat);
 					System.out.println(lng);
 					System.out.println(rest_name);
 					System.out.println(dish_name);
 					//System.out.println(reviewDict);
-					
-					
-					
-					
+
+
+
+
 					View currentSetBelow = (TextView) myView.findViewById(R.id.comment_text);
 					Iterator<?> keys = reviewDict.keys();
 			        while( keys.hasNext() ){
@@ -443,7 +443,7 @@ public class ViewDish extends Fragment implements OnClickListener {
 			            	//RelativeLayout relativeLayout = new RelativeLayout(getApplicationContext());
 			            }
 			        }
-					
+
 
 					 */
 
@@ -457,111 +457,114 @@ public class ViewDish extends Fragment implements OnClickListener {
 				System.out.println(e);
 				return null;
 			}
-			
+
 			return result;
 		}
 		@Override
 		protected void onPostExecute(JSONObject result) {
 			try {
-				
-					avg_rating = result.getString("avg_rating");
-					lng = result.getString("long");
-					lat = result.getString("lat");
-					rest_name = result.getString("rest_name");
-					dish_name = result.getString("dish_name");
-					JSONObject reviewDict = result.getJSONObject("reviews");
-					
-					JSONArray picArray = result.getJSONArray("photos");
-					String tempString;
-					for(int i = 0; i < picArray.length(); i++) {
-						tempString = (String) picArray.get(i);
-						decodeImage(tempString);
-					}
-					
-					System.out.println(avg_rating);
-					System.out.println(lat);
-					System.out.println(lng);
-					System.out.println(rest_name);
-					System.out.println(dish_name);
-					//System.out.println(reviewDict);
-					
-					RatingBar rb = (RatingBar) myView.findViewById(R.id.ratingBar2);
-					rb.setRating(Float.parseFloat(avg_rating));
-					
-					
-					View currentSetBelow = (TextView) myView.findViewById(R.id.comment_text);
-					RelativeLayout scroll = (RelativeLayout) myView.findViewById(R.id.RelativeLayout1);
-					RelativeLayout format = (RelativeLayout) myView.findViewById(R.id.relative_format);
-					
-					JSONObject temp = null;
-					String username = "";
-					String comment = "";
-					int rating = 0;
-					Iterator<?> keys = reviewDict.keys();
-			        while( keys.hasNext() ){
-			            String key = (String)keys.next();
-			            
-			            if( reviewDict.get(key) instanceof JSONObject ){
-			            	numReviews++;
-			            	System.out.println("this is a review: " + reviewDict.get(key));
-			            	temp = (JSONObject) reviewDict.get(key);
-			            	username = temp.getString("username");
-			            	comment = temp.getString("comment");
-			            	rating  = temp.getInt("rating");
-			            
-			            	addViews(username, comment, rating);
-			            	//RelativeLayout relativeLayout = new RelativeLayout(getApplicationContext());
-			            }
-			        }
 
-				
+				avg_rating = result.getString("avg_rating");
+				lng = result.getString("long");
+				lat = result.getString("lat");
+				rest_name = result.getString("rest_name");
+				dish_name = result.getString("dish_name");
+				JSONObject reviewDict = result.getJSONObject("reviews");
+
+				JSONArray picArray = result.getJSONArray("photos");
+				String tempString;
+				for(int i = 0; i < picArray.length(); i++) {
+					tempString = (String) picArray.get(i);
+					decodeImage(tempString);
+				}
+
+				System.out.println(avg_rating);
+				System.out.println(lat);
+				System.out.println(lng);
+				System.out.println(rest_name);
+				System.out.println(dish_name);
+				//System.out.println(reviewDict);
+
+				RatingBar rb = (RatingBar) myView.findViewById(R.id.ratingBar2);
+				rb.setRating(Float.parseFloat(avg_rating));
+
+
+				View currentSetBelow = (TextView) myView.findViewById(R.id.comment_text);
+				RelativeLayout scroll = (RelativeLayout) myView.findViewById(R.id.RelativeLayout1);
+				RelativeLayout format = (RelativeLayout) myView.findViewById(R.id.relative_format);
+
+				JSONObject temp = null;
+				String username = "";
+				String comment = "";
+				int rating = 0;
+				Iterator<?> keys = reviewDict.keys();
+				while( keys.hasNext() ){
+					String key = (String)keys.next();
+
+					if( reviewDict.get(key) instanceof JSONObject ){
+						numReviews++;
+						System.out.println("this is a review: " + reviewDict.get(key));
+						temp = (JSONObject) reviewDict.get(key);
+						username = temp.getString("username");
+						comment = temp.getString("comment");
+						rating  = temp.getInt("rating");
+
+						addViews(username, comment, rating);
+						//RelativeLayout relativeLayout = new RelativeLayout(getApplicationContext());
+					}
+				}
+
+
 			} catch (Exception e) {
 				System.out.println(e);
 			}
 			updateFields(dish_name, rest_name);
 		}
 	}
-	
+
 	public void decodeImage(String image) {
 		byte[] decodedByte = Base64.decode(image, 0);
-	    Bitmap bm = BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.length);
-	    
+		Bitmap bm = BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.length);
+
 	}
-	
+
 	public void addViews(String username, String comment, int ratingNum) {
 		LinearLayout layout = (LinearLayout) myView.findViewById(R.id.Layout);
-    	
+
 		LinearLayout newLayout = new LinearLayout(context);
 		layout.addView(newLayout);
-		
-    	TextView first = new TextView(context);
-    	first.setText(username);
-    	first.setTextSize(20);
-    	first.setTextColor(Color.BLACK);
-    	newLayout.addView(first);
-    	
-    	RatingBar rating = new RatingBar(context, null, android.R.attr.ratingBarStyleSmall);
-    	LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-    		     LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-    	layoutParams.setMargins(10, 6, 0, 0);  //left, top, right, bottom
-    	rating.setRating((float) (ratingNum/2.0));
-    	newLayout.addView(rating, layoutParams);
-    	
-        TextView second = new TextView(context);
-        second.setText(comment);
-        second.setTextColor(Color.BLACK);
-        first.setTextSize(17);
-        LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(
-   		     LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        layoutParams2.setMargins(0, 0, 0, 20);
-        layout.addView(second, layoutParams2);
+
+		TextView first = new TextView(context);
+		first.setText(username);
+		first.setTextSize(20);
+		first.setTextColor(Color.BLACK);
+		newLayout.addView(first);
+
+		RatingBar rating = new RatingBar(context, null, android.R.attr.ratingBarStyleSmall);
+		LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+				LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+		layoutParams.setMargins(10, 6, 0, 0);  //left, top, right, bottom
+		rating.setRating((float) (ratingNum/2.0));
+		newLayout.addView(rating, layoutParams);
+
+		TextView second = new TextView(context);
+		second.setText(comment);
+		second.setTextColor(Color.BLACK);
+		first.setTextSize(17);
+		LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(
+				LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+		layoutParams2.setMargins(0, 0, 0, 20);
+		layout.addView(second, layoutParams2);
 	}
-	
+
 	public void updateFields(String... params) {
 		text.setText(Html.fromHtml("<h2>" + params[0] + "</h2>" +
 				"<small>from</small>"+ " "+ params[1]+"<br />" + 
-			distanceString +" <small>miles away</small>"));
+				distanceString +" <small>miles away</small>"));
 	}
+
+	
+
 
 	public static double getLat() {
 		return latDoub;
