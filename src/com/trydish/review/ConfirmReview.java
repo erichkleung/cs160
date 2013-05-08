@@ -1,14 +1,12 @@
 package com.trydish.review;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
@@ -20,17 +18,19 @@ import org.json.JSONObject;
 import android.app.Activity;
 import android.app.Instrumentation.ActivityResult;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.View;
-import android.widget.EditText;
+import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.trydish.main.PostLoginHome;
 import com.trydish.main.R;
 import com.trydish.main.global;
 
@@ -39,15 +39,42 @@ public class ConfirmReview extends Activity {
 	Intent intent;
 	ActivityResult actResult;
 	String restaurant, dish;
+	ArrayList<String> safe_allergies;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_confirm_review);
 		intent = getIntent();
-
+		
 		((TextView)findViewById(R.id.textViewRestaurant)).setText(intent.getStringExtra("restaurant"));
 		((TextView)findViewById(R.id.textViewDish)).setText(intent.getStringExtra("name"));
+		
+		System.out.println("working");
+		
+		if (global.allergy_ids != null) {
+			for (String allergyID : global.allergy_ids) {
+				System.out.println("allergyID: " + allergyID);
+				String allergyName = global.DatabaseHandler.getAllergyName(allergyID);
+				
+				LinearLayout allergiesList = (LinearLayout) findViewById(R.id.Layout);
+				LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+		    	params.setMargins(13, 13, 13, 13);
+		    	CheckBox allergy = new CheckBox(this);
+		    	allergy.setText(allergyName);
+		    	allergy.setChecked(true);
+		    	allergy.setTextColor(Color.WHITE);
+		    	allergy.setTextSize(20);
+		    	allergiesList.addView(allergy, params);
+			}
+		} else {
+			LinearLayout allergiesList = (LinearLayout) findViewById(R.id.Layout);
+			TextView noAllergies = new TextView(this);
+			noAllergies.setTextColor(Color.WHITE);
+			noAllergies.setTextSize(20);
+			noAllergies.setText("(no known allergies)");
+			allergiesList.addView(noAllergies);
+		}
 	}
 
 	@Override
@@ -67,6 +94,15 @@ public class ConfirmReview extends Activity {
 	public void confirm(View view) {
 		ProgressBar progress = (ProgressBar)findViewById(R.id.review_progressbar);
 		progress.setVisibility(View.VISIBLE);
+		
+		safe_allergies = new ArrayList<String>();
+		LinearLayout allergiesList = (LinearLayout) findViewById(R.id.Layout);
+		for (int i=0; i < allergiesList.getChildCount(); i++) {
+		      CheckBox v = (CheckBox)allergiesList.getChildAt(i);
+		      if (v.isChecked()) {
+		    	  safe_allergies.add(v.getText().toString().toLowerCase());
+		      }
+		}
 
 		AddRestaurantTask addRestaurant = new AddRestaurantTask();
 		ArrayList<String> placesStuff = intent.getStringArrayListExtra("results from Places autocomplete detail request");
@@ -75,7 +111,7 @@ public class ConfirmReview extends Activity {
 	}
 
 	public void confirm2(int id) {
-		if (intent.getIntExtra("dishID",-1) != -1) {
+		if (intent.getIntExtra("dishID", -1) != -1) {
 			addReview(intent.getIntExtra("dishID",-1));
 		} else {
 			AddDishTask addDish = new AddDishTask();
@@ -85,7 +121,6 @@ public class ConfirmReview extends Activity {
 
 	private class AddReviewTask extends AsyncTask<String, Void, Boolean> {
 
-		//params: dish (id), user (id), rating, comment
 		@Override
 		protected Boolean doInBackground(String... params) {
 			String url = "http://trydish.pythonanywhere.com/add_review";
@@ -100,8 +135,12 @@ public class ConfirmReview extends Activity {
 				postParameters.add(new BasicNameValuePair("author", params[1]));
 				postParameters.add(new BasicNameValuePair("rating", params[2]));
 				postParameters.add(new BasicNameValuePair("comment", params[3]));
-				//postParameters.add(new BasicNameValuePair("allergy", "3"));
 				postParameters.add(new BasicNameValuePair("encodedImage", params[4]));
+				
+				for (int i = 0; i < safe_allergies.size(); i++) {
+					postParameters.add(new BasicNameValuePair("not_present", safe_allergies.get(i)));
+				}
+				
 				UrlEncodedFormEntity entity = new UrlEncodedFormEntity(postParameters);
 				post.setEntity(entity);
 				HttpResponse response = httpclient.execute(post);
@@ -250,6 +289,7 @@ public class ConfirmReview extends Activity {
 		}
 
 		AddReviewTask submit = new AddReviewTask();
+		
 		submit.execute("" + id,
 					   "" + global.userID,
 					   "" + (intent.getDoubleExtra("rating", 0)*2), 
