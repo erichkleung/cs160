@@ -27,6 +27,7 @@ import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Html;
+import android.util.Base64;
 import android.util.LruCache;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,7 +50,7 @@ import com.trydish.review.MapActivity;
 
 public class ViewDish extends Fragment implements OnClickListener {
 
-	private int dishID = 5;
+	private int dishID = 27;
 	private String distanceString;
 	
 	private static double latDoub;
@@ -470,7 +471,12 @@ public class ViewDish extends Fragment implements OnClickListener {
 					dish_name = result.getString("dish_name");
 					JSONObject reviewDict = result.getJSONObject("reviews");
 					
-					
+					JSONArray picArray = result.getJSONArray("photos");
+					String tempString;
+					for(int i = 0; i < picArray.length(); i++) {
+						tempString = (String) picArray.get(i);
+						decodeImage(tempString);
+					}
 					
 					System.out.println(avg_rating);
 					System.out.println(lat);
@@ -514,6 +520,12 @@ public class ViewDish extends Fragment implements OnClickListener {
 			}
 			updateFields(dish_name, rest_name);
 		}
+	}
+	
+	public void decodeImage(String image) {
+		byte[] decodedByte = Base64.decode(image, 0);
+	    Bitmap bm = BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.length);
+	    
 	}
 	
 	public void addViews(String username, String comment, int ratingNum) {
