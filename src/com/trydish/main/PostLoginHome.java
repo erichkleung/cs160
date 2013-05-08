@@ -1,26 +1,33 @@
 package com.trydish.main;
 
+import java.io.ByteArrayOutputStream;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.GridView;
 
-import com.trydish.find.ImageAdapter;
-import com.trydish.find.ViewDish;
+import com.trydish.main.global.DatabaseHandler;
 import com.trydish.review.MapActivity;
 
 public class PostLoginHome extends Activity {
+	
+	private static Context context;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +57,7 @@ public class PostLoginHome extends Activity {
 				.setTabListener(new TabListener<Settings>(
 						this, "settings", Settings.class));
 		actionBar.addTab(tab);
+		
 	}
 	
 	public void changeLocation(View v) {
@@ -66,5 +74,6 @@ public class PostLoginHome extends Activity {
 		Intent intent = new Intent(com.trydish.find.FindHome.getContext(), MapActivity.class);
 	    startActivity(intent);
 	}
+
 
 }
