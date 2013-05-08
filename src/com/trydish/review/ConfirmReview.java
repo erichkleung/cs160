@@ -18,7 +18,7 @@ import org.json.JSONObject;
 import android.app.Activity;
 import android.app.Instrumentation.ActivityResult;
 import android.content.Intent;
-import android.database.Cursor;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -48,7 +48,32 @@ public class ConfirmReview extends Activity {
 
 		((TextView)findViewById(R.id.textViewRestaurant)).setText("Restaurant: " + intent.getStringExtra("restaurant"));
 		((TextView)findViewById(R.id.textViewName)).setText("Dish Name: " + (intent.getStringExtra("name")));
-
+		
+		System.out.println("working");
+		
+		if (global.allergy_ids != null) {
+			for (String allergyID : global.allergy_ids) {
+				System.out.println("allergyID: " + allergyID);
+				String allergyName = global.DatabaseHandler.getAllergyName(allergyID);
+				
+				LinearLayout allergiesList = (LinearLayout) findViewById(R.id.Layout);
+				LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+		    	params.setMargins(13, 13, 13, 13);
+		    	CheckBox allergy = new CheckBox(this);
+		    	allergy.setText(allergyName);
+		    	allergy.setChecked(true);
+		    	allergy.setTextColor(Color.WHITE);
+		    	allergy.setTextSize(20);
+		    	allergiesList.addView(allergy, params);
+			}
+		} else {
+			LinearLayout allergiesList = (LinearLayout) findViewById(R.id.Layout);
+			TextView noAllergies = new TextView(this);
+			noAllergies.setTextColor(Color.WHITE);
+			noAllergies.setTextSize(20);
+			noAllergies.setText("(no known allergies)");
+			allergiesList.addView(noAllergies);
+		}
 	}
 
 	@Override
