@@ -6,7 +6,7 @@
     android:background="@drawable/background_review_low"
     android:isScrollContainer="false"
     tools:context=".ReviewHome" >
-
+    
     <RelativeLayout
         android:id="@+id/review_form"
         android:layout_width="fill_parent"

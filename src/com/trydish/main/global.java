@@ -16,7 +16,6 @@ public class global {
 	public static int userID = -1;
 	public static String username = "";
 	public static ArrayList<String> allergy_ids;
-	public static SQLiteDatabase allergyDB;
 	
 	public static class DatabaseHandler extends SQLiteOpenHelper {
 		private static final int DATABASE_VERSION = 1;
@@ -53,9 +52,9 @@ public class global {
 			}
 		}
 
-		/*public SQLiteDatabase getDB(){
+		public SQLiteDatabase getDB(){
 			return this.getWritableDatabase();
-		}*/
+		}
 		
 		public static String getAllergyName(String id) {
 			Cursor c = db.query("allergies", new String[] {"name"}, "id=?", new String[] { id }, null, null, null, null);
