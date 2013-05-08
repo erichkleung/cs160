@@ -2,6 +2,7 @@ package com.trydish.find;
 
 import java.io.ByteArrayOutputStream;
 import java.lang.ref.WeakReference;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -355,8 +356,9 @@ public class ViewDish extends Fragment implements OnClickListener {
 					android.location.Location.distanceBetween(distLat, distLng, latDoub, lngDoub, results);
 					float distance = results[0];
 					float toMiles = distance * (float)0.000621371;
+					float formattedNumber = Float.parseFloat(new DecimalFormat("#.##").format(toMiles));
 //					System.out.println("distance in miles is:" +toMiles);
-					toReturn = Float.toString(toMiles);
+					toReturn = Float.toString(formattedNumber);
 
 
 
@@ -485,7 +487,7 @@ public class ViewDish extends Fragment implements OnClickListener {
 					//System.out.println(reviewDict);
 					
 					RatingBar rb = (RatingBar) myView.findViewById(R.id.ratingBar2);
-					rb.setRating(Float.parseFloat(avg_rating));
+					rb.setRating((float) (Float.parseFloat(avg_rating)/2.0));
 					
 					
 					View currentSetBelow = (TextView) myView.findViewById(R.id.comment_text);
