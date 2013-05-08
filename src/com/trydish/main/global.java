@@ -1,5 +1,9 @@
 package com.trydish.main;
 
+import java.io.UnsupportedEncodingException;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,5 +69,23 @@ public class global {
 			db.execSQL("DROP TABLE IF EXISTS dishes");
 			db.execSQL("DROP TABLE IF EXISTS restaurants");
 		}
+	}
+	
+	public static String hash_pw(String password) {
+		String hashed_pw = "";
+		try {
+			MessageDigest md = MessageDigest.getInstance("SHA-256");
+			String text = password;
+
+			md.update(text.getBytes("UTF-8")); // Change this to "UTF-16" if needed
+			byte[] digest = md.digest();
+			BigInteger bigInt = new BigInteger(1, digest);
+	        hashed_pw = bigInt.toString(16);
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		return hashed_pw;
 	}
 }

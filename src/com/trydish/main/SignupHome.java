@@ -1,6 +1,10 @@
 package com.trydish.main;
 
 import java.io.ByteArrayOutputStream;
+import java.io.UnsupportedEncodingException;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -144,7 +148,7 @@ public class SignupHome extends Activity {
 			global.username = ((EditText)findViewById(R.id.signup_username)).getText().toString();
 			Intent intent = new Intent(this, SignupAllergies.class);
 			intent.putExtra("user", user);
-			intent.putExtra("pass", pass);
+			intent.putExtra("pass", global.hash_pw(pass));
 			startActivity(intent);
 			overridePendingTransition( R.anim.slide_in_left, R.anim.slide_out_left);
 		} else {

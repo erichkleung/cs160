@@ -1,6 +1,10 @@
 package com.trydish.main;
 
 import java.io.ByteArrayOutputStream;
+import java.io.UnsupportedEncodingException;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -105,7 +109,7 @@ public class LoginHome extends Activity {
 			try {
 				List<NameValuePair> postParameters = new ArrayList<NameValuePair>();
 				postParameters.add(new BasicNameValuePair("username", params[0]));
-				postParameters.add(new BasicNameValuePair("password", params[1]));
+				postParameters.add(new BasicNameValuePair("password", global.hash_pw(params[1])));
 				UrlEncodedFormEntity entity = new UrlEncodedFormEntity(postParameters);
 				post.setEntity(entity);
 				HttpResponse response = httpclient.execute(post);
