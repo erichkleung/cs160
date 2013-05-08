@@ -42,22 +42,7 @@
         android:layout_alignLeft="@+id/textView3"
         android:layout_below="@+id/textView3"
         android:layout_marginTop="6dp"
-        android:orientation="vertical" >
-
-        <CheckBox
-        	android:id="@+id/checkBox1"
-        	android:layout_width="wrap_content"
-        	android:layout_height="wrap_content"
-        	android:text="Peanuts"
-        	android:checked="true"/>
-        
-        <CheckBox
-            android:id="@+id/checkBox2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Mango"
-            android:checked="true"/>
-        
+        android:orientation="vertical" >    
     </LinearLayout>
 
     <Button
