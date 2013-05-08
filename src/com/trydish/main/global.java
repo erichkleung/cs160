@@ -17,6 +17,8 @@ public class global {
 	public static String username = "";
 	public static ArrayList<String> allergy_ids;
 	public static SQLiteDatabase allergyDB;
+	public static SQLiteDatabase restDB;
+	public static SQLiteDatabase dishDB;
 	
 	public static class DatabaseHandler extends SQLiteOpenHelper {
 		private static final int DATABASE_VERSION = 1;
@@ -48,7 +50,7 @@ public class global {
 			String[] result = commands.split(";");
 
 			for (String stmt : result) {
-				System.out.println(stmt);
+				//System.out.println(stmt);
 				db.execSQL(stmt);
 			}
 		}

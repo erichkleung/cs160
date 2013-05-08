@@ -37,6 +37,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -61,6 +62,8 @@ import android.widget.Toast;
 import android.widget.ImageButton;
 
 import com.trydish.main.R;
+import com.trydish.main.global;
+import com.trydish.main.global.DatabaseHandler;
 
 public class ReviewHome extends Fragment implements OnClickListener, OnItemClickListener {
 
@@ -83,16 +86,9 @@ public class ReviewHome extends Fragment implements OnClickListener, OnItemClick
 
 		((Button)(view.findViewById(R.id.buttonDone))).setOnClickListener(this);
 		((ImageButton)(view.findViewById(R.id.imageView1))).setOnClickListener(this);
-
-		/*Button b = (Button) myView.findViewById(R.id.buttonMap);
-		b.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				//get rid of popup window
-				Intent intent = new Intent(com.trydish.find.FindHome.getContext(), MapActivity.class);
-			    startActivity(intent); 
-			}
-		});*/
+		
+		RestaurantDBTask task = new RestaurantDBTask();
+		task.execute();
 
 		EditText e = (EditText) myView.findViewById(R.id.editTextRestaurant);
 		e.addTextChangedListener(new TextWatcher() {
@@ -218,8 +214,6 @@ public class ReviewHome extends Fragment implements OnClickListener, OnItemClick
 		intent.putExtra("encodedImage", encodedImage);
 		
 		intent.putStringArrayListExtra("results from Places autocomplete detail request", resultsFromPlaces);
-		
-		System.out.println(encodedImage);
 
 		startActivityForResult(intent, 1);
 	}
@@ -245,20 +239,15 @@ public class ReviewHome extends Fragment implements OnClickListener, OnItemClick
 
 	@Override
 	public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-		// TODO Auto-generated method stub
 		String str = (String) adapterView.getItemAtPosition(position);
-		//String refToQuery = (String) PlacesAutoCompleteAdapter.getRef(position);
 		String refToQuery = (String) ((PlacesAutoCompleteAdapter)adapterView.getAdapter()).getRef(position);
 		reference = new String(refToQuery);
-		//System.out.println("the ref clicked was: "+ str);
-		//Toast.makeText(context, refToQuery, Toast.LENGTH_LONG).show();
 		placeTask pt = new placeTask();
 		pt.execute();
 
 	}
 
 	public void addImage(View v) {
-		//Log.d("yo", "picture clicked");
 		Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
 		photoPickerIntent.setType("image/*");
 		startActivityForResult(photoPickerIntent, intentId);
@@ -280,12 +269,6 @@ public class ReviewHome extends Fragment implements OnClickListener, OnItemClick
 		public ArrayList<String> doInBackground(Void... params)
 		{
 
-			/*HttpClient httpclient = new DefaultHttpClient();
-				HttpResponse response;
-				String responseString = null;*/
-
-
-
 			try {
 				URL url = new URL(endPoint);
 				conn = (HttpURLConnection) url.openConnection();
@@ -296,7 +279,6 @@ public class ReviewHome extends Fragment implements OnClickListener, OnItemClick
 				while ((read = in.read(buff)) != -1) {
 					jsonResults.append(buff, 0, read);
 				}
-				//System.out.println("The results from the autocomplete were"+jsonResults.toString());
 			} catch (MalformedURLException e) {
 				Log.e("trydish", "Error processing Places API URL", e);
 				return resultList;
@@ -376,40 +358,6 @@ public class ReviewHome extends Fragment implements OnClickListener, OnItemClick
 				String id = result.getString("id");
 				resultsFromPlaces.add(formatted_phone_number);
 				resultsFromPlaces.add(id);
-				
-				
-				//double latitude = latLong.getDouble(0);
-				//double longitude = latLong.getDouble(1);
-				//System.out.println(latitude);
-				//System.out.println(longitude);
-				///System.out.println("formatted address is: " + formatted_address);
-				
-				//System.out.println("formatted address line1 is: " + line1);
-				//System.out.println("formatted address line2 is: " + line2);
-				//System.out.println("formatted address line3 is: " + line3);
-				
-				//JSONArray predsJsonArray = result.getJSONArray("result");
-				//Log.d("**JSON results", jsonResults.toString());
-				//System.out.println(predsJsonArray);
-				
-				/*for (int i = 0; i < predsJsonArray.length(); ++i) {
-				    JSONObject rec = predsJsonArray.getJSONObject(i);
-				    //int id = rec.getInt("id");
-				    System.out.println("this is the array item: " + rec);
-				    // ...
-				}*/
-				
-				//Log.d("yooyoyoyoyoy", jsonObj.getString("formatted address"));
-
-				// Extract the Place descriptions from the results
-				//resultList = new ArrayList<String>(predsJsonArray.length());
-				//for (int i = 0; i < predsJsonArray.length(); i++) {
-					//resultList.add(predsJsonArray.getJSONObject(i).getString("description"));
-				//}
-			//	for (int i = 0; i < predsJsonArray.length(); i++) {
-					//resultList.add(predsJsonArray.getJSONObject(i).getString("description"));
-				//	refList.add(predsJsonArray.getJSONObject(i).getString("id"));
-				//}
 			} catch (JSONException e) {
 				System.out.println("catch");
 				Log.e("trydish", "Cannot process JSON results", e);
@@ -418,52 +366,147 @@ public class ReviewHome extends Fragment implements OnClickListener, OnItemClick
 			return resultList;
 			
 	}
+}
 
-	//@Override
-	protected void onPostExecute(String results)
-	{       
-		if(results != null)
-
-		{   
+	private class RestaurantDBTask extends AsyncTask<Void, Void, SQLiteDatabase> {
+	
+		protected SQLiteDatabase doInBackground(Void...arg0) {			
+			String url = "http://trydish.pythonanywhere.com/sync_restaurants";
+			SQLiteDatabase db = null;
+	
+			HttpResponse response;
+			HttpClient httpclient = new DefaultHttpClient();
+	
 			try {
-				//DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-				//DocumentBuilder builder = factory.newDocumentBuilder();
-				//InputSource is = new InputSource(new StringReader(results));
-				//xmlDocument = builder.parse(is); 
-				//if (xmlDocument != null) {
-				//	updateClosest(xmlDocument);
-				//}
+				response = httpclient.execute(new HttpGet(url));
+				if(response.getStatusLine().getStatusCode() == HttpStatus.SC_OK){
+					ByteArrayOutputStream out = new ByteArrayOutputStream();
+					response.getEntity().writeTo(out);
+	
+					final String databaseCommands = out.toString();
+					out.close(); 
+	
+					DatabaseHandler db_handler = new DatabaseHandler(context);
+					db_handler.dropTables();
+					db_handler.execSQL(databaseCommands);
+	
+				} else{
+					//Closes the connection.
+					response.getEntity().getContent().close();
+					System.out.println("status: " + response.getStatusLine().getStatusCode());
+					return null;
+				}
+			} catch (Exception e) {
+				return null;
 			}
-			catch (Exception ex) {
-				//do something
+			return db;
+		}
+	
+		@Override
+		protected void onPostExecute(SQLiteDatabase db) {
+			storeRestDB(db);
+		}
+	}
+	
+	
+	private void storeRestDB(SQLiteDatabase db) {
+		global.restDB = db;
+		
+		DishDBTask task = new DishDBTask();
+		task.execute();
+	}
+	
+	private class DishDBTask extends AsyncTask<Void, Void, SQLiteDatabase> {
+		
+		protected SQLiteDatabase doInBackground(Void...arg0) {			
+			String url = "http://trydish.pythonanywhere.com/sync_dishes";
+			SQLiteDatabase db = null;
+	
+			HttpResponse response;
+			HttpClient httpclient = new DefaultHttpClient();
+	
+			try {
+				response = httpclient.execute(new HttpGet(url));
+				if(response.getStatusLine().getStatusCode() == HttpStatus.SC_OK){
+					ByteArrayOutputStream out = new ByteArrayOutputStream();
+					response.getEntity().writeTo(out);
+	
+					final String databaseCommands = out.toString();
+					out.close(); 
+	
+					DatabaseHandler db_handler = new DatabaseHandler(context);
+					db_handler.execSQL(databaseCommands);
+	
+				} else{
+					//Closes the connection.
+					response.getEntity().getContent().close();
+					System.out.println("status: " + response.getStatusLine().getStatusCode());
+					return null;
+				}
+			} catch (Exception e) {
+				return null;
 			}
+			return db;
+		}
+	
+		@Override
+		protected void onPostExecute(SQLiteDatabase db) {
+			storeDishDB(db);
+		}
+	}
+	
+	
+	private void storeDishDB(SQLiteDatabase db) {
+		global.dishDB = db;
+		
+		AllergyDBTask task = new AllergyDBTask();
+		task.execute();
+	}
+
+
+	private class AllergyDBTask extends AsyncTask<Void, Void, SQLiteDatabase> {
+
+		protected SQLiteDatabase doInBackground(Void...arg0) {			
+			String url = "http://trydish.pythonanywhere.com/sync_allergies";
+			SQLiteDatabase db = null;
+
+			HttpResponse response;
+			HttpClient httpclient = new DefaultHttpClient();
+
+			try {
+				response = httpclient.execute(new HttpGet(url));
+				if(response.getStatusLine().getStatusCode() == HttpStatus.SC_OK){
+					ByteArrayOutputStream out = new ByteArrayOutputStream();
+					response.getEntity().writeTo(out);
+
+					final String databaseCommands = out.toString();
+					out.close(); 
+
+					DatabaseHandler db_handler = new DatabaseHandler(context);
+					db_handler.execSQL(databaseCommands);
+
+				} else{
+					//Closes the connection.
+					response.getEntity().getContent().close();
+					System.out.println("status: " + response.getStatusLine().getStatusCode());
+					return null;
+				}
+			} catch (Exception e) {
+				return null;
+			}
+			return db;
+		}
+
+		@Override
+		protected void onPostExecute(SQLiteDatabase db) {
+			storeAllergyDB(db);
 		}
 	}
 
-}
 
-
-private void updateClosest(Document doc) {
-	//XPathFactory xPathfactory = XPathFactory.newInstance();
-	//XPath xpath = xPathfactory.newXPath();
-	try {
-		//create xpath expressions to pull out the data we want from the XML response from wunderground
-		//XPathExpression time = xpath.compile("/root/station/edt/estimate/minutes");
-		//Object timeResult = time.evaluate(doc, XPathConstants.NODESET);
-		//NodeList timeNodes = (NodeList) timeResult;
-		//for (int i = 0; i < timeNodes.getLength(); i++) {
-		//	String s = doc.getElementsByTagName("minutes").item(i).getTextContent();
-			//departingTimes += s + "\n";
-		//}
-		//updateTimes();
-
-	} catch (Exception ex) {
-		ex.printStackTrace();
-
+	private void storeAllergyDB(SQLiteDatabase db) {
+		global.allergyDB = db;
+		
+		System.out.println("End of chain!");
 	}
-
-}
-
-
-
 }
