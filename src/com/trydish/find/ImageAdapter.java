@@ -96,16 +96,14 @@ public class ImageAdapter extends BaseAdapter {
 		if (convertView == null) {
 			// Setting up the parent RelativeLayout
 			rLayout = new RelativeLayout(mContext);
-			GridView.LayoutParams rParams = new GridView.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+			GridView.LayoutParams rParams = new GridView.LayoutParams(screenWidth, imageDimension);
 			rLayout.setLayoutParams(rParams);
 		} else {
 			rLayout = (RelativeLayout) convertView;
 		}
 		// Setting up our ImageView
 		imageView = new ImageView(mContext);
-		RelativeLayout.LayoutParams rParams = new RelativeLayout.LayoutParams(screenWidth, imageDimension);
-//		rParams.setMargins(10, 20, 20, 0);
-		imageView.setLayoutParams(rParams); // 255, 200
+		imageView.setLayoutParams(new GridView.LayoutParams(screenWidth, imageDimension)); // 255, 200
 		imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
 		loadBitmap(mThumbIds[position], imageView);
 		
@@ -292,13 +290,12 @@ public class ImageAdapter extends BaseAdapter {
 		
 		@Override
 		protected void onPostExecute(Bitmap bitmap) {
-//			if (isCancelled()) {
-//				bitmap = null;
-//			}
+			if (isCancelled()) {
+				bitmap = null;
+			}
 			if (imageViewReference != null && bitmap != null) {
 				final ImageView imageView = imageViewReference.get();
 				final BitmapWorkerTask bitmapWorkerTask = getBitmapWorkerTask(imageView);
-//				if (imageView != null) {
 				if (this == bitmapWorkerTask && imageView != null) {
 					imageView.setImageBitmap(bitmap);
 				}
