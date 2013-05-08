@@ -29,7 +29,6 @@ import org.json.JSONObject;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
-import java.nio.ByteBuffer;
 
 import android.app.ActionBar;
 import android.app.Fragment;
@@ -46,7 +45,6 @@ import android.os.Bundle;
 import android.provider.MediaStore.Images.ImageColumns;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -71,7 +69,7 @@ public class ReviewHome extends Fragment implements OnClickListener, OnItemClick
 	private int intentId = 800;
 	private String reference;
 	private ArrayList<String> resultsFromPlaces = new ArrayList();
-	private String encodedImage = "";
+
 
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -101,18 +99,21 @@ public class ReviewHome extends Fragment implements OnClickListener, OnItemClick
 			@Override
 			public void afterTextChanged(Editable s) {
 				// TODO Auto-generated method stub
+
 			}
 
 			@Override
 			public void beforeTextChanged(CharSequence arg0, int arg1,
 					int arg2, int arg3) {
 				// TODO Auto-generated method stub
+
 			}
 
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before,
 					int count) {
 				// TODO Auto-generated method stub
+
 			}
 
 		});
@@ -124,6 +125,47 @@ public class ReviewHome extends Fragment implements OnClickListener, OnItemClick
 
 		return view;
 
+	}
+
+	public void done(View button) {
+		EditText rText = (EditText)(myView.findViewById(R.id.editTextRestaurant));
+		EditText nText = (EditText)(myView.findViewById(R.id.editTextName));
+		EditText cText = (EditText)(myView.findViewById(R.id.editTextComments));
+		RatingBar ratingBar = (RatingBar)(myView.findViewById(R.id.ratingBar));
+
+		String restaurant = rText.getText().toString();
+		String name = nText.getText().toString();
+		String comments = cText.getText().toString();
+		double rating = ratingBar.getRating();
+
+
+		if (restaurant.equals("")) {
+			Toast toast = Toast.makeText(getActivity(), "Please enter a restaurant.", Toast.LENGTH_SHORT);
+			toast.show();
+			return;
+		} else if (name.equals("")) {
+			Toast toast = Toast.makeText(getActivity(), "Please enter a dish name.", Toast.LENGTH_SHORT);
+			toast.show();
+			return;
+		} else if (rating == 0) {
+			Toast toast = Toast.makeText(getActivity(), "Please enter a rating.", Toast.LENGTH_SHORT);
+			toast.show();
+			return;
+		}
+
+		Intent intent = new Intent(getActivity(), ConfirmReview.class);
+		intent.putExtra("restaurant", restaurant);
+		intent.putExtra("name", name);
+		intent.putExtra("comments", comments);
+		intent.putExtra("rating", rating);
+		intent.putExtra("dishID", -1);
+		intent.putExtra("restaurantID", 1);
+		//TODO: Image?
+		
+		
+		intent.putStringArrayListExtra("results from Places autocomplete detail request", resultsFromPlaces);
+
+		startActivityForResult(intent, 1);
 	}
 
 	@Override
@@ -161,14 +203,6 @@ public class ReviewHome extends Fragment implements OnClickListener, OnItemClick
 					Bitmap bitmapPreview = BitmapFactory.decodeFile(fileSrc); //load preview image
 					BitmapDrawable bmpDrawable = new BitmapDrawable(Resources.getSystem(), bitmapPreview);
 					((ImageButton)(myView.findViewById(R.id.imageView1))).setImageDrawable(bmpDrawable);
-
-
-
-					ByteArrayOutputStream stream = new ByteArrayOutputStream();
-					bitmapPreview.compress(Bitmap.CompressFormat.JPEG, 80, stream);
-					byte[] array = stream.toByteArray();
-					encodedImage = Base64.encodeToString(array, Base64.DEFAULT);
-
 				}
 				else {
 					Log.d("trydish", "idButSelPic Photopicker canceled");
@@ -177,46 +211,6 @@ public class ReviewHome extends Fragment implements OnClickListener, OnItemClick
 			//else do nothing
 		}
 
-	}
-
-	public void done(View button) {
-		EditText rText = (EditText)(myView.findViewById(R.id.editTextRestaurant));
-		EditText nText = (EditText)(myView.findViewById(R.id.editTextName));
-		EditText cText = (EditText)(myView.findViewById(R.id.editTextComments));
-		RatingBar ratingBar = (RatingBar)(myView.findViewById(R.id.ratingBar));
-
-		String restaurant = rText.getText().toString();
-		String name = nText.getText().toString();
-		String comments = cText.getText().toString();
-		double rating = ratingBar.getRating();
-
-
-		if (restaurant.equals("")) {
-			Toast toast = Toast.makeText(getActivity(), "Please enter a restaurant.", Toast.LENGTH_SHORT);
-			toast.show();
-			return;
-		} else if (name.equals("")) {
-			Toast toast = Toast.makeText(getActivity(), "Please enter a dish name.", Toast.LENGTH_SHORT);
-			toast.show();
-			return;
-		} else if (rating == 0) {
-			Toast toast = Toast.makeText(getActivity(), "Please enter a rating.", Toast.LENGTH_SHORT);
-			toast.show();
-			return;
-		}
-
-		Intent intent = new Intent(getActivity(), ConfirmReview.class);
-		intent.putExtra("restaurant", restaurant);
-		intent.putExtra("name", name);
-		intent.putExtra("comments", comments);
-		intent.putExtra("rating", rating);
-		intent.putExtra("dishID", -1);
-		intent.putExtra("restaurantID", 1);
-		intent.putExtra("encodedImage", encodedImage);
-
-		System.out.println(encodedImage);
-
-		startActivityForResult(intent, 1);
 	}
 
 	@Override
@@ -240,13 +234,16 @@ public class ReviewHome extends Fragment implements OnClickListener, OnItemClick
 
 	@Override
 	public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+		// TODO Auto-generated method stub
 		String str = (String) adapterView.getItemAtPosition(position);
 		//String refToQuery = (String) PlacesAutoCompleteAdapter.getRef(position);
 		String refToQuery = (String) ((PlacesAutoCompleteAdapter)adapterView.getAdapter()).getRef(position);
 		reference = new String(refToQuery);
 		//System.out.println("the ref clicked was: "+ str);
+		Toast.makeText(context, refToQuery, Toast.LENGTH_LONG).show();
 		placeTask pt = new placeTask();
 		pt.execute();
+
 	}
 
 	public void addImage(View v) {
@@ -255,6 +252,7 @@ public class ReviewHome extends Fragment implements OnClickListener, OnItemClick
 		photoPickerIntent.setType("image/*");
 		startActivityForResult(photoPickerIntent, intentId);
 	}
+
 
 	//task to grab restaurant details including location coordinates, id, address
 	private class placeTask extends AsyncTask<Void, Void, ArrayList<String>> {
@@ -299,34 +297,34 @@ public class ReviewHome extends Fragment implements OnClickListener, OnItemClick
 					conn.disconnect();
 				}
 			}
-
+			
 			try {
 				// Create a JSON object hierarchy from the results
 				JSONObject jsonObj = new JSONObject(jsonResults.toString());
 				JSONObject result = jsonObj.getJSONObject("result");
-
+				
 				//use
 				String name = result.getString("name");
 				resultsFromPlaces.add(name);
-
+				
 				JSONObject latLongJson = result.getJSONObject("geometry");
 				JSONObject latLong = latLongJson.getJSONObject("location");
 				String latitude = latLong.getString("lat");
 				String longitude = latLong.getString("lng");
 				resultsFromPlaces.add(latitude);
 				resultsFromPlaces.add(longitude);
-
+				
 				//use
 				Double latDouble =  Double.parseDouble(latitude);
 				Double lngDouble =  Double.parseDouble(longitude);
-
+				
 				JSONArray addressJsonArray = result.getJSONArray("address_components");
-
+				
 				//use
 				String cityName = "";
 				String stateName = "";
 				String zip = "";
-
+				
 				String temp;
 				for (int i = 0; i < addressJsonArray.length(); i++) {
 					temp = addressJsonArray.getJSONObject(i).getString("short_name");
@@ -337,9 +335,9 @@ public class ReviewHome extends Fragment implements OnClickListener, OnItemClick
 					} else if (i == 5) {
 						zip = temp;
 					}
-
+					
 				}
-
+				
 				String formatted_address = result.getString("formatted_address");
 				String[] separatedAddress = formatted_address.split(",");
 				//use
@@ -358,45 +356,45 @@ public class ReviewHome extends Fragment implements OnClickListener, OnItemClick
 				resultsFromPlaces.add(cityName);
 				resultsFromPlaces.add(stateName);
 				resultsFromPlaces.add(zip);
-
-
+				
+				
 				//use
 				String formatted_phone_number = result.getString("formatted_phone_number");
 				String id = result.getString("id");
 				resultsFromPlaces.add(formatted_phone_number);
 				resultsFromPlaces.add(id);
-
-
+				
+				
 				//double latitude = latLong.getDouble(0);
 				//double longitude = latLong.getDouble(1);
 				//System.out.println(latitude);
 				//System.out.println(longitude);
 				///System.out.println("formatted address is: " + formatted_address);
-
+				
 				//System.out.println("formatted address line1 is: " + line1);
 				//System.out.println("formatted address line2 is: " + line2);
 				//System.out.println("formatted address line3 is: " + line3);
-
+				
 				//JSONArray predsJsonArray = result.getJSONArray("result");
 				//Log.d("**JSON results", jsonResults.toString());
 				//System.out.println(predsJsonArray);
-
+				
 				/*for (int i = 0; i < predsJsonArray.length(); ++i) {
 				    JSONObject rec = predsJsonArray.getJSONObject(i);
 				    //int id = rec.getInt("id");
 				    System.out.println("this is the array item: " + rec);
 				    // ...
 				}*/
-
+				
 				//Log.d("yooyoyoyoyoy", jsonObj.getString("formatted address"));
 
 				// Extract the Place descriptions from the results
 				//resultList = new ArrayList<String>(predsJsonArray.length());
 				//for (int i = 0; i < predsJsonArray.length(); i++) {
-				//resultList.add(predsJsonArray.getJSONObject(i).getString("description"));
+					//resultList.add(predsJsonArray.getJSONObject(i).getString("description"));
 				//}
-				//	for (int i = 0; i < predsJsonArray.length(); i++) {
-				//resultList.add(predsJsonArray.getJSONObject(i).getString("description"));
+			//	for (int i = 0; i < predsJsonArray.length(); i++) {
+					//resultList.add(predsJsonArray.getJSONObject(i).getString("description"));
 				//	refList.add(predsJsonArray.getJSONObject(i).getString("id"));
 				//}
 			} catch (JSONException e) {
@@ -404,63 +402,53 @@ public class ReviewHome extends Fragment implements OnClickListener, OnItemClick
 			}
 
 			return resultList;
+			
+	}
 
-		}
+	//@Override
+	protected void onPostExecute(String results)
+	{       
+		if(results != null)
 
-		//@Override
-		protected void onPostExecute(String results)
-		{       
-			if(results != null)
-
-			{   
-				try {
-					//DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-					//DocumentBuilder builder = factory.newDocumentBuilder();
-					//InputSource is = new InputSource(new StringReader(results));
-					//xmlDocument = builder.parse(is); 
-					//if (xmlDocument != null) {
-					//	updateClosest(xmlDocument);
-					//}
-				}
-				catch (Exception ex) {
-					//do something
-				}
+		{   
+			try {
+				//DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+				//DocumentBuilder builder = factory.newDocumentBuilder();
+				//InputSource is = new InputSource(new StringReader(results));
+				//xmlDocument = builder.parse(is); 
+				//if (xmlDocument != null) {
+				//	updateClosest(xmlDocument);
+				//}
+			}
+			catch (Exception ex) {
+				//do something
 			}
 		}
-
 	}
 
+}
 
-	private void updateClosest(Document doc) {
-		//XPathFactory xPathfactory = XPathFactory.newInstance();
-		//XPath xpath = xPathfactory.newXPath();
-		try {
-			//create xpath expressions to pull out the data we want from the XML response from wunderground
-			//XPathExpression time = xpath.compile("/root/station/edt/estimate/minutes");
-			//Object timeResult = time.evaluate(doc, XPathConstants.NODESET);
-			//NodeList timeNodes = (NodeList) timeResult;
-			//for (int i = 0; i < timeNodes.getLength(); i++) {
-			//	String s = doc.getElementsByTagName("minutes").item(i).getTextContent();
+
+private void updateClosest(Document doc) {
+	//XPathFactory xPathfactory = XPathFactory.newInstance();
+	//XPath xpath = xPathfactory.newXPath();
+	try {
+		//create xpath expressions to pull out the data we want from the XML response from wunderground
+		//XPathExpression time = xpath.compile("/root/station/edt/estimate/minutes");
+		//Object timeResult = time.evaluate(doc, XPathConstants.NODESET);
+		//NodeList timeNodes = (NodeList) timeResult;
+		//for (int i = 0; i < timeNodes.getLength(); i++) {
+		//	String s = doc.getElementsByTagName("minutes").item(i).getTextContent();
 			//departingTimes += s + "\n";
-			//}
-			//updateTimes();
+		//}
+		//updateTimes();
 
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-
+	} catch (Exception ex) {
+		ex.printStackTrace();
 	}
 
-	public static Bitmap scaleDownBitmap(Bitmap photo, int newHeight, Context context) {
+}
 
-		final float densityMultiplier = context.getResources().getDisplayMetrics().density;        
 
-		int h= (int) (newHeight*densityMultiplier);
-		int w= (int) (h * photo.getWidth()/((double) photo.getHeight()));
-
-		photo=Bitmap.createScaledBitmap(photo, w, h, true);
-
-		return photo;
-	}
 
 }
