@@ -152,8 +152,8 @@ public class FindHome extends Fragment implements OnClickListener {
 		ComponentName cn = new ComponentName("com.trydish.main", "com.trydish.find.SearchableActivity");
 		searchView.setSearchableInfo(searchManager.getSearchableInfo(cn));
 
-		DishDBTask dbTask = new DishDBTask();
-		dbTask.execute();
+//		DishDBTask dbTask = new DishDBTask();
+//		dbTask.execute();
 		
 		return view;
 
