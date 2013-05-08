@@ -486,14 +486,24 @@ public class ViewDish extends Fragment implements OnClickListener {
 					View currentSetBelow = (TextView) myView.findViewById(R.id.comment_text);
 					RelativeLayout scroll = (RelativeLayout) myView.findViewById(R.id.RelativeLayout1);
 					RelativeLayout format = (RelativeLayout) myView.findViewById(R.id.relative_format);
+					
+					JSONObject temp = null;
+					String username = "";
+					String comment = "";
+					int rating = 0;
 					Iterator<?> keys = reviewDict.keys();
 			        while( keys.hasNext() ){
 			            String key = (String)keys.next();
+			            
 			            if( reviewDict.get(key) instanceof JSONObject ){
 			            	numReviews++;
-			            	System.out.println(reviewDict.get(key));
-			            	
-			            	addViews(currentSetBelow, scroll, format);
+			            	System.out.println("this is a review: " + reviewDict.get(key));
+			            	temp = (JSONObject) reviewDict.get(key);
+			            	username = temp.getString("username");
+			            	comment = temp.getString("comment");
+			            	rating  = temp.getInt("rating");
+			            
+			            	addViews(username, comment, rating);
 			            	//RelativeLayout relativeLayout = new RelativeLayout(getApplicationContext());
 			            }
 			        }
@@ -506,14 +516,14 @@ public class ViewDish extends Fragment implements OnClickListener {
 		}
 	}
 	
-	public void addViews(View currentSetBelow, RelativeLayout scroll, RelativeLayout format) {
+	public void addViews(String username, String comment, int ratingNum) {
 		LinearLayout layout = (LinearLayout) myView.findViewById(R.id.Layout);
     	
 		LinearLayout newLayout = new LinearLayout(context);
 		layout.addView(newLayout);
 		
     	TextView first = new TextView(context);
-    	first.setText("Author");
+    	first.setText(username);
     	first.setTextSize(20);
     	first.setTextColor(Color.BLACK);
     	newLayout.addView(first);
@@ -522,11 +532,11 @@ public class ViewDish extends Fragment implements OnClickListener {
     	LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
     		     LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
     	layoutParams.setMargins(10, 6, 0, 0);  //left, top, right, bottom
-    	rating.setRating(3);
+    	rating.setRating((float) (ratingNum/2.0));
     	newLayout.addView(rating, layoutParams);
     	
         TextView second = new TextView(context);
-        second.setText("Second");
+        second.setText(comment);
         second.setTextColor(Color.BLACK);
         first.setTextSize(17);
         LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(
@@ -536,15 +546,9 @@ public class ViewDish extends Fragment implements OnClickListener {
 	}
 	
 	public void updateFields(String... params) {
-		System.out.println("getting here?" + " rest name is : " + params[0]);
-		//text = (TextView) myView.findViewById(R.id.dish_header_text);
-		System.out.println("part of  the way" + text);
 		text.setText(Html.fromHtml("<h2>" + params[0] + "</h2>" +
 				"<small>from</small>"+ " "+ params[1]+"<br />" + 
 			distanceString +" <small>miles away</small>"));
-		//text.setText(rest_name);
-		//text.postInvalidate();
-		System.out.println("all the way");
 	}
 
 	public static double getLat() {
