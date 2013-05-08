@@ -49,6 +49,7 @@ import android.widget.SearchView;
 import android.widget.Spinner;
 
 import com.trydish.main.R;
+import com.trydish.main.global;
 
 
 

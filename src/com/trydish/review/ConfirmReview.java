@@ -39,6 +39,7 @@ public class ConfirmReview extends Activity {
 	Intent intent;
 	ActivityResult actResult;
 	String restaurant, dish;
+	ArrayList<String> safe_allergies;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -93,6 +94,15 @@ public class ConfirmReview extends Activity {
 	public void confirm(View view) {
 		ProgressBar progress = (ProgressBar)findViewById(R.id.review_progressbar);
 		progress.setVisibility(View.VISIBLE);
+		
+		safe_allergies = new ArrayList<String>();
+		LinearLayout allergiesList = (LinearLayout) findViewById(R.id.Layout);
+		for (int i=0; i < allergiesList.getChildCount(); i++) {
+		      CheckBox v = (CheckBox)allergiesList.getChildAt(i);
+		      if (v.isChecked()) {
+		    	  safe_allergies.add(v.getText().toString().toLowerCase());
+		      }
+		}
 
 		AddRestaurantTask addRestaurant = new AddRestaurantTask();
 		ArrayList<String> placesStuff = intent.getStringArrayListExtra("results from Places autocomplete detail request");
@@ -111,7 +121,6 @@ public class ConfirmReview extends Activity {
 
 	private class AddReviewTask extends AsyncTask<String, Void, Boolean> {
 
-		//params: dish (id), user (id), rating, comment
 		@Override
 		protected Boolean doInBackground(String... params) {
 			String url = "http://trydish.pythonanywhere.com/add_review";
@@ -126,8 +135,12 @@ public class ConfirmReview extends Activity {
 				postParameters.add(new BasicNameValuePair("author", params[1]));
 				postParameters.add(new BasicNameValuePair("rating", params[2]));
 				postParameters.add(new BasicNameValuePair("comment", params[3]));
-				//postParameters.add(new BasicNameValuePair("allergy", "3"));
 				postParameters.add(new BasicNameValuePair("encodedImage", params[4]));
+				
+				for (int i = 0; i < safe_allergies.size(); i++) {
+					postParameters.add(new BasicNameValuePair("not_present", safe_allergies.get(i)));
+				}
+				
 				UrlEncodedFormEntity entity = new UrlEncodedFormEntity(postParameters);
 				post.setEntity(entity);
 				HttpResponse response = httpclient.execute(post);

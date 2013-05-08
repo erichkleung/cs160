@@ -47,7 +47,7 @@ public class ViewDish extends Fragment implements OnClickListener {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.activity_view_dish, container, false);
-
+		
 		((ImageButton)(view.findViewById(R.id.flagButton))).setOnClickListener(this);
 		
 		Button b = (Button) view.findViewById(R.id.mapButtonView);

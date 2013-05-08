@@ -216,11 +216,10 @@ public class LoginHome extends Activity {
 		global.allergyDB = db;
 	}
 	
-	private class LoadAllergiesTask extends AsyncTask<String, Void, SQLiteDatabase> {
+	private class LoadAllergiesTask extends AsyncTask<String, Void, Void> {
 
-		protected SQLiteDatabase doInBackground(String... userID) {			
+		protected Void doInBackground(String... userID) {			
 			String url = "http://trydish.pythonanywhere.com/get_user_allergies/" + userID[0];
-			SQLiteDatabase db = null;
 
 			HttpResponse response;
 			HttpClient httpclient = new DefaultHttpClient();
@@ -251,12 +250,7 @@ public class LoginHome extends Activity {
 			} catch (Exception e) {
 				return null;
 			}
-			return db;
-		}
-
-		@Override
-		protected void onPostExecute(SQLiteDatabase db) {
-			storeDB(db);
+			return null;
 		}
 	}
 
