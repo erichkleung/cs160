@@ -55,7 +55,7 @@ public class LoginHome extends Activity {
 	public void loginCheck(View view) {
 		if (nocheck) {
 			try {
-				checkLogin(new JSONObject("{\"status\": 1}"));
+				checkLogin(new JSONObject("{'status': 1}"));
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
@@ -166,10 +166,10 @@ public class LoginHome extends Activity {
 	}
 
 
-	private class AllergyDBTask extends AsyncTask<Void, Void, SQLiteDatabase> {
+	private class RestaurantDBTask extends AsyncTask<Void, Void, SQLiteDatabase> {
 
 		protected SQLiteDatabase doInBackground(Void...arg0) {			
-			String url = "http://trydish.pythonanywhere.com/sync_allergies";
+			String url = "http://trydish.pythonanywhere.com/sync_restaurants";
 			SQLiteDatabase db = null;
 
 			HttpResponse response;
@@ -191,6 +191,98 @@ public class LoginHome extends Activity {
 				} else{
 					//Closes the connection.
 					response.getEntity().getContent().close();
+					System.out.println("status: " + response.getStatusLine().getStatusCode());
+					return null;
+				}
+			} catch (Exception e) {
+				return null;
+			}
+			return db;
+		}
+
+		@Override
+		protected void onPostExecute(SQLiteDatabase db) {
+			storeRestDB(db);
+		}
+	}
+
+
+	private void storeRestDB(SQLiteDatabase db) {		
+		DishDBTask task = new DishDBTask();
+		task.execute();
+	}
+
+	private class DishDBTask extends AsyncTask<Void, Void, SQLiteDatabase> {
+
+		protected SQLiteDatabase doInBackground(Void...arg0) {			
+			String url = "http://trydish.pythonanywhere.com/sync_dishes";
+			SQLiteDatabase db = null;
+
+			HttpResponse response;
+			HttpClient httpclient = new DefaultHttpClient();
+
+			try {
+				response = httpclient.execute(new HttpGet(url));
+				if(response.getStatusLine().getStatusCode() == HttpStatus.SC_OK){
+					ByteArrayOutputStream out = new ByteArrayOutputStream();
+					response.getEntity().writeTo(out);
+
+					final String databaseCommands = out.toString();
+					out.close(); 
+
+					DatabaseHandler db_handler = new DatabaseHandler(context_login);
+					db_handler.execSQL(databaseCommands);
+
+				} else{
+					//Closes the connection.
+					response.getEntity().getContent().close();
+					System.out.println("status: " + response.getStatusLine().getStatusCode());
+					return null;
+				}
+			} catch (Exception e) {
+				return null;
+			}
+			return db;
+		}
+
+		@Override
+		protected void onPostExecute(SQLiteDatabase db) {
+			storeDishDB(db);
+		}
+	}
+
+
+	private void storeDishDB(SQLiteDatabase db) {		
+		AllergyDBTask task = new AllergyDBTask();
+		task.execute();
+	}
+
+
+	private class AllergyDBTask extends AsyncTask<Void, Void, SQLiteDatabase> {
+
+		protected SQLiteDatabase doInBackground(Void...arg0) {			
+			String url = "http://trydish.pythonanywhere.com/sync_allergies";
+			SQLiteDatabase db = null;
+
+			HttpResponse response;
+			HttpClient httpclient = new DefaultHttpClient();
+
+			try {
+				response = httpclient.execute(new HttpGet(url));
+				if(response.getStatusLine().getStatusCode() == HttpStatus.SC_OK){
+					ByteArrayOutputStream out = new ByteArrayOutputStream();
+					response.getEntity().writeTo(out);
+
+					final String databaseCommands = out.toString();
+					out.close(); 
+
+					DatabaseHandler db_handler = new DatabaseHandler(context_login);
+					db_handler.execSQL(databaseCommands);
+
+				} else{
+					//Closes the connection.
+					response.getEntity().getContent().close();
+					System.out.println("status: " + response.getStatusLine().getStatusCode());
 					return null;
 				}
 			} catch (Exception e) {

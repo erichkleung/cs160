@@ -48,7 +48,7 @@ public class ConfirmReview extends Activity {
 		intent = getIntent();
 		
 		((TextView)findViewById(R.id.textViewRestaurant)).setText(intent.getStringExtra("restaurant"));
-		((TextView)findViewById(R.id.textViewDish)).setText(intent.getStringExtra("name"));
+		((TextView)findViewById(R.id.textViewDish)).setText(intent.getStringExtra("dish_name"));
 		
 		if (global.allergy_ids != null && global.allergy_ids.size() != 0) {
 			for (String allergyID : global.allergy_ids) {
@@ -111,15 +111,6 @@ public class ConfirmReview extends Activity {
 		
 	}
 
-	public void confirm2(int id) {
-		if (intent.getIntExtra("dishID", -1) != -1) {
-			addReview(intent.getIntExtra("dishID",-1));
-		} else {
-			AddDishTask addDish = new AddDishTask();
-			addDish.execute(intent.getStringExtra("name"), ""+id);
-		}
-	}
-
 	private class AddReviewTask extends AsyncTask<String, Void, Boolean> {
 
 		@Override
@@ -132,11 +123,13 @@ public class ConfirmReview extends Activity {
 			HttpPost post = new HttpPost(url);
 			try {
 				List<NameValuePair> postParameters = new ArrayList<NameValuePair>();
-				postParameters.add(new BasicNameValuePair("dish", params[0]));
+				postParameters.add(new BasicNameValuePair("restaurant", params[0]));
 				postParameters.add(new BasicNameValuePair("author", params[1]));
 				postParameters.add(new BasicNameValuePair("rating", params[2]));
 				postParameters.add(new BasicNameValuePair("comment", params[3]));
 				postParameters.add(new BasicNameValuePair("encodedImage", params[4]));
+				postParameters.add(new BasicNameValuePair("dish_name", params[5]));
+
 				
 				for (int i = 0; i < safe_allergies.size(); i++) {
 					postParameters.add(new BasicNameValuePair("not_present", safe_allergies.get(i)));
@@ -168,56 +161,6 @@ public class ConfirmReview extends Activity {
 			if (callsubmit) {
 				submitFinished();
 			}
-		}
-	}
-
-	private class AddDishTask extends AsyncTask<String, Void, Integer> {
-
-		//params: dish (id), user (id), rating, comment
-		@Override
-		protected Integer doInBackground(String... params) {
-			JSONObject result;
-			String url = "http://trydish.pythonanywhere.com/add_dish";
-			String responseString;
-
-			HttpClient httpclient = new DefaultHttpClient();
-
-			HttpPost post = new HttpPost(url);
-			try {
-				List<NameValuePair> postParameters = new ArrayList<NameValuePair>();
-				postParameters.add(new BasicNameValuePair("name", params[0]));
-				postParameters.add(new BasicNameValuePair("restaurant", params[1]));
-
-				UrlEncodedFormEntity entity = new UrlEncodedFormEntity(postParameters);
-				post.setEntity(entity);
-				HttpResponse response = httpclient.execute(post);
-
-				if(response.getStatusLine().getStatusCode() == HttpStatus.SC_OK){
-					ByteArrayOutputStream out = new ByteArrayOutputStream();
-					response.getEntity().writeTo(out);
-					out.close();
-					responseString = out.toString();
-					result = new JSONObject(responseString);
-				} else {
-					//Closes the connection.
-					System.out.println("Status: " + response.getStatusLine().getStatusCode());
-					response.getEntity().getContent().close();
-					return -1;
-				}
-			} catch (Exception e) {
-				return -1;
-			}
-
-			try {
-				return (Integer) result.get("id");
-			} catch (JSONException e) {
-				e.printStackTrace();
-				return -1;
-			}
-		}
-
-		protected void onPostExecute(Integer id) {
-			addReview(id);
 		}
 	}
 
@@ -276,7 +219,7 @@ public class ConfirmReview extends Activity {
 		}
 
 		protected void onPostExecute(Integer id) {
-			confirm2(id);
+			addReview(id);
 		}
 	}
 
@@ -295,7 +238,8 @@ public class ConfirmReview extends Activity {
 					   "" + global.userID,
 					   "" + (intent.getDoubleExtra("rating", 0)*2), 
 					   intent.getStringExtra("comments"),
-					   intent.getStringExtra("encodedImage"));
+					   intent.getStringExtra("encodedImage"),
+					   intent.getStringExtra("dish_name"));
 	}
 
 	private void submitFinished() {
