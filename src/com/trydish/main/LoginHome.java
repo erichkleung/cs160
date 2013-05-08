@@ -55,7 +55,7 @@ public class LoginHome extends Activity {
 	public void loginCheck(View view) {
 		if (nocheck) {
 			try {
-				checkLogin(new JSONObject("{\"status\": 1}"));
+				checkLogin(new JSONObject("{'status': 1}"));
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
@@ -92,6 +92,7 @@ public class LoginHome extends Activity {
 
 	private class LoginTask extends AsyncTask<String, Void, JSONObject> {
 
+		
 		@Override
 		protected JSONObject doInBackground(String... params) {
 			String url = "http://trydish.pythonanywhere.com/login";
@@ -121,6 +122,7 @@ public class LoginHome extends Activity {
 					return null;
 				}
 			} catch (Exception e) {
+				System.out.println(e);
 				return null;
 			}
 			return result;

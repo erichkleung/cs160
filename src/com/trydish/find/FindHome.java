@@ -7,9 +7,15 @@ import java.util.Locale;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
+import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
@@ -177,6 +183,9 @@ public class FindHome extends Fragment implements OnClickListener {
 //		dbTask.execute();
 	    
 		updateArray();
+		
+		getDishesTask dt = new getDishesTask();
+		dt.execute();
 		
 		return view;
 
@@ -424,6 +433,53 @@ public class FindHome extends Fragment implements OnClickListener {
 		textView.setThreshold(1);
 		textView.setAdapter(adapter);
 	}
+
 	
+	private class getDishesTask extends AsyncTask<String, Void, JSONArray> {
+
+		JSONArray jArray;
+		protected JSONArray doInBackground(String... params) {			
+			String url = "http://trydish.pythonanywhere.com/get_dishes_by_location/";
+
+			String responseString;
+			JSONObject result;
+
+			HttpClient httpclient = new DefaultHttpClient();
+
+			HttpPost post = new HttpPost(url);
+			try {
+				//List<NameValuePair> postParameters = new ArrayList<NameValuePair>();
+				//postParameters.add(new BasicNameValuePair("username", params[0]));
+				//postParameters.add(new BasicNameValuePair("password", global.hash_pw(params[1])));
+				//UrlEncodedFormEntity entity = new UrlEncodedFormEntity(postParameters);
+				//post.setEntity(entity);
+				HttpResponse response = httpclient.execute(post);
+
+				if(response.getStatusLine().getStatusCode() == HttpStatus.SC_OK){
+					ByteArrayOutputStream out = new ByteArrayOutputStream();
+					response.getEntity().writeTo(out);
+					out.close();
+					responseString = out.toString();
+					result = new JSONObject(responseString);
+					
+					jArray = result.getJSONArray("dish_list");
+				} else {
+					//Closes the connection.
+					response.getEntity().getContent().close();
+					System.out.println("connection closed!");
+					return null;
+				}
+			} catch (Exception e) {
+				System.out.println(e);
+				return null;
+			}
+			return jArray;
+		}
+		@Override
+		protected void onPostExecute(JSONArray result) {
+			//do whatever with dish_list
+			System.out.println(result);
+		}
+	}
 
 }

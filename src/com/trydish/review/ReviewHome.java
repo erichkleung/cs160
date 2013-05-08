@@ -192,10 +192,9 @@ public class ReviewHome extends Fragment implements OnClickListener, OnItemClick
 
 		Intent intent = new Intent(getActivity(), ConfirmReview.class);
 		intent.putExtra("restaurant", restaurant);
-		intent.putExtra("name", name);
 		intent.putExtra("comments", comments);
 		intent.putExtra("rating", rating);
-		intent.putExtra("dishID", -1);
+		intent.putExtra("dish_name", name);
 		intent.putExtra("restaurantID", 1);
 		intent.putExtra("encodedImage", encodedImage);
 
