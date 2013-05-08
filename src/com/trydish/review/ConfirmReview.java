@@ -50,11 +50,8 @@ public class ConfirmReview extends Activity {
 		((TextView)findViewById(R.id.textViewRestaurant)).setText(intent.getStringExtra("restaurant"));
 		((TextView)findViewById(R.id.textViewDish)).setText(intent.getStringExtra("name"));
 		
-		System.out.println("working");
-		
 		if (global.allergy_ids != null && global.allergy_ids.size() != 0) {
 			for (String allergyID : global.allergy_ids) {
-				System.out.println("allergyID: " + allergyID);
 				String allergyName = global.DatabaseHandler.getAllergyName(allergyID);
 				
 				LinearLayout allergiesList = (LinearLayout) findViewById(R.id.Layout);

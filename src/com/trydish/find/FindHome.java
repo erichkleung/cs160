@@ -107,7 +107,6 @@ public class FindHome extends Fragment implements OnClickListener {
 		distanceSpinner.setOnItemSelectedListener(listener);
 
 		//Grab the buttons and set their onClickListeners to be this Fragment
-		//		ImageButton ib = (ImageButton) view.findViewById(R.id.search);
 		Button b = (Button) view.findViewById(R.id.my_location);
 		b.setOnClickListener(this);
 
@@ -117,7 +116,6 @@ public class FindHome extends Fragment implements OnClickListener {
 		if (getSome != null) {
 			String str = getSome.getStringExtra("searchQuery");
 			if (str != null) {
-				System.out.println(str);
 				// start fragment for search in here...
 			} else {
 				GridView gridview = (GridView) view.findViewById(R.id.food_images);
@@ -163,7 +161,10 @@ public class FindHome extends Fragment implements OnClickListener {
 
 	public void setLocation() {
 		String providerName = manager.getBestProvider(new Criteria(), true);
+		if (providerName == null) {
+			System.out.println("provider is null");}
 		location = manager.getLastKnownLocation(providerName);
+		System.out.println("location object is: "+location);
 
 		Button location_button = (Button) myView.findViewById(R.id.my_location);
 		location_button.setText("My Location");
@@ -173,7 +174,6 @@ public class FindHome extends Fragment implements OnClickListener {
 		} else {
 			latitude = location.getLatitude();
 			longitude = location.getLongitude();
-			System.out.println("latitude and longitude is: " + latitude + " " + longitude);
 
 			try {
 				ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -269,11 +269,9 @@ public class FindHome extends Fragment implements OnClickListener {
 				Address location = address.get(0);
 
 				Log.d("trydish", "Address Latitude : "+ location.getLatitude() + "Address Longitude : "+ location.getLongitude());
-				System.out.println("latitude and longitude is: " + location.getLatitude() + " " + location.getLongitude());
+//				System.out.println("latitude and longitude is: " + location.getLatitude() + " " + location.getLongitude());
 
 				return location;
-
-
 			}
 			catch(Exception e)
 			{
