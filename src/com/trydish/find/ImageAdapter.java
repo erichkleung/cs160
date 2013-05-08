@@ -1,5 +1,8 @@
 package com.trydish.find;
 import java.lang.ref.WeakReference;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -59,7 +62,7 @@ public class ImageAdapter extends BaseAdapter {
 	    final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
 
 	    // Use 1/8th of the available memory for this memory cache.
-	    final int cacheSize = maxMemory / 8;
+	    final int cacheSize = maxMemory / 4;
 
 	    mMemoryCache = new LruCache<String, Bitmap>(cacheSize) {
 	        @Override
@@ -115,10 +118,9 @@ public class ImageAdapter extends BaseAdapter {
 			RelativeLayout.LayoutParams pParams = new RelativeLayout.LayoutParams(
 					RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
 			pParams.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
-			pb = new ProgressBar(mContext);
-			pb.setLayoutParams(pParams);
-			rLayout.addView(pb);
-			
+//			pb = new ProgressBar(mContext);
+//			pb.setLayoutParams(pParams);
+//			rLayout.addView(pb);
 			imageView = new ImageView(mContext);
 			imageView.setLayoutParams(new GridView.LayoutParams(screenWidth, imageDimension)); // 255, 200
 			imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
@@ -213,18 +215,22 @@ public class ImageAdapter extends BaseAdapter {
 				final AsyncDrawable asyncDrawable =
 						new AsyncDrawable(mContext.getResources(), mPlaceHolderBitmap, task);
 				imageView.setImageDrawable(asyncDrawable);
-				pb.setVisibility(ProgressBar.VISIBLE);
+//				pb.setVisibility(ProgressBar.VISIBLE);
 				task.execute(screenWidth, imageDimension);
+//				try {
+//					task.get(2000, TimeUnit.MILLISECONDS);
+//				} catch (InterruptedException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				} catch (ExecutionException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				} catch (TimeoutException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
 			}
 		}
-//		final String imageKey = encoding;
-//		final Bitmap bitmap = getBitmapFromMemCache(imageKey);
-//		if (bitmap != null) {
-//			imageView.setImageBitmap(bitmap);
-//		} else {
-//			BitmapWorkerTask task = new BitmapWorkerTask(encoding, imageView);
-//			task.execute(screenWidth, imageDimension);
-//		}
 	}
 
 	public boolean cancelPotentialWork(String encoding, ImageView imageView) {
@@ -363,7 +369,7 @@ public class ImageAdapter extends BaseAdapter {
 				final BitmapWorkerTask bitmapWorkerTask = getBitmapWorkerTask(imageView);
 				if (this == bitmapWorkerTask && imageView != null) {
 					imageView.setImageBitmap(bitmap);
-					pb.setVisibility(ProgressBar.INVISIBLE);
+//					pb.setVisibility(ProgressBar.INVISIBLE);
 				}
 			}
 		}
