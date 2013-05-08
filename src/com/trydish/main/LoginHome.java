@@ -34,7 +34,7 @@ import android.widget.Toast;
 
 public class LoginHome extends Activity {
 
-	boolean nocheck = true; 
+	boolean nocheck = false; 
 	Context context_login;
 
 	@Override
@@ -48,7 +48,7 @@ public class LoginHome extends Activity {
 
 		context_login = getBaseContext();
 
-		RestaurantDBTask allSync = new RestaurantDBTask();
+		RestaurantDBTask allSync = new RestaurantDBTask();	
 		allSync.execute();
 	}
 
