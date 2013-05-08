@@ -1,7 +1,18 @@
 package com.trydish.find;
 
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.w3c.dom.Document;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
@@ -15,6 +26,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -54,6 +66,8 @@ public class FindHome extends Fragment implements OnClickListener {
 	private static double latitude;
 	private static double longitude;
 	private PopupWindow pop;
+	private String changedLocation;
+	private static boolean myLocationChanged = false;
 
 
 	@Override
@@ -134,7 +148,10 @@ public class FindHome extends Fragment implements OnClickListener {
 
 		//
 		manager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-		setLocation();
+		if (myLocationChanged == false) {
+			setLocation();
+		}
+		
 		
 		// Setting up the SearchView widget
 		SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
@@ -198,7 +215,7 @@ public class FindHome extends Fragment implements OnClickListener {
 		Log.d("Find Home", "location clicked");
 		//Add the popup window
 		LayoutInflater inflater = LayoutInflater.from(context);
-		View popup_menu = inflater.inflate(R.layout.location_popup, (ViewGroup) myView.findViewById(R.id.location_popup));
+		final View popup_menu = inflater.inflate(R.layout.location_popup, (ViewGroup) myView.findViewById(R.id.location_popup));
 		pop = new PopupWindow(popup_menu, 700, 300, true);
 		pop.showAtLocation(popup_menu, Gravity.NO_GRAVITY, 50, 160);
 		//grab button and set onClickListener to be able to dismiss the window
@@ -206,9 +223,18 @@ public class FindHome extends Fragment implements OnClickListener {
 
 		//set b's OnClickListener to allow dismissing popup
 		b.setOnClickListener(new OnClickListener() {
-			@Override
+			@Override	
 			public void onClick(View v) {
 				//do something
+				EditText et = (EditText) popup_menu.findViewById(R.id.change_location_edit);
+				if (et == null) {
+					System.out.println("yo it is null dog");
+				}
+				changedLocation = et.getText().toString();
+				changeLocationTask clk = new changeLocationTask(); 
+				clk.execute(changedLocation);
+				myLocationChanged = true;
+				pop.dismiss();
 				}
 		});
 		
@@ -235,6 +261,7 @@ public class FindHome extends Fragment implements OnClickListener {
 //			searchClicked(arg0);
 //			break;
 			//my location button clicked
+		//uncomment next
 		case R.id.my_location:
 			myLocationClicked(arg0);
 			break;
@@ -245,6 +272,68 @@ public class FindHome extends Fragment implements OnClickListener {
 //	public void donePressed() {
 //		searchClicked(myView);
 //	}
+	
+	
+	
+	private class changeLocationTask extends AsyncTask<String, Void, Address> {
+
+		public Address doInBackground(String... params)
+		{
+			
+			//used reference: http://stackoverflow.com/questions/4873076/get-latitude-and-longitude-from-city-name
+			Geocoder coder = new Geocoder(context.getApplicationContext());
+		    List<Address> address;
+		    try 
+		    {
+		        address = coder.getFromLocationName(changedLocation,5);
+		        if (address == null) {
+		            Log.d("trydish", "############Address not correct #########");
+		        }
+		        Address location = address.get(0);
+
+		        Log.d("trydish", "Address Latitude : "+ location.getLatitude() + "Address Longitude : "+ location.getLongitude());
+		        
+		        return location;
+		        
+
+		    }
+		    catch(Exception e)
+		    {
+		    	System.out.println(e);
+		        Log.d("trydish", "MY_ERROR : ############Address Not Found");
+		        //return "no address";
+		        return null;
+		    }
+			
+	}
+
+	//@Override
+	protected void onPostExecute(Address results)
+	{       
+		if(results != null)
+			
+		{   
+			try {
+				changeLocation(results);
+			}
+			catch (Exception ex) {
+				//do something
+			}
+		}
+	}
+
+}
+	
+	public void changeLocation(Address a) {
+		Button location_button = (Button) myView.findViewById(R.id.my_location);
+		location_button.setText(changedLocation);
+		setLat(location.getLatitude());
+		setLong(location.getLongitude());
+		System.out.println("LOOK HERE:::::::::" + location.getLatitude());
+	}
+	
+	
+	
 	
 	public static Context getContext() {
 		return context;
@@ -260,6 +349,13 @@ public class FindHome extends Fragment implements OnClickListener {
 	
 	public static double getLong() {
 		return longitude;
+	}
+	public static void setLat(double lat) {
+		latitude = lat;
+	}
+	
+	public static void setLong(double lng) {
+		longitude = lng;
 	}
 	
 }

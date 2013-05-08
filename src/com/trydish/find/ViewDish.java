@@ -50,7 +50,7 @@ public class ViewDish extends Fragment implements OnClickListener {
 
 		((ImageButton)(view.findViewById(R.id.flagButton))).setOnClickListener(this);
 		
-		/*Button b = (Button) view.findViewById(R.id.mapButtonView);
+		Button b = (Button) view.findViewById(R.id.mapButtonView);
 		b.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -58,7 +58,7 @@ public class ViewDish extends Fragment implements OnClickListener {
 				Intent intent = new Intent(com.trydish.find.FindHome.getContext(), MapActivity.class);
 			    startActivity(intent); 
 			}
-		});*/
+		});
 		TextView text = (TextView) view.findViewById(R.id.dish_header_text);
 		text.setPadding(39, 10, 0, 10);
 		text.setTextColor(Color.WHITE);
