@@ -158,7 +158,10 @@ public class FindHome extends Fragment implements OnClickListener {
 
 	public void setLocation() {
 		String providerName = manager.getBestProvider(new Criteria(), true);
+		if (providerName == null) {
+			System.out.println("provider is null");}
 		location = manager.getLastKnownLocation(providerName);
+		System.out.println("location object is: "+location);
 
 		Button location_button = (Button) myView.findViewById(R.id.my_location);
 		location_button.setText("My Location");
