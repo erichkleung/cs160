@@ -15,15 +15,15 @@
     android:background="@drawable/bluebartopsolid"
     android:baselineAligned="false" >
         
-		<SearchView
+		<AutoCompleteTextView
             android:id="@+id/search_box"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
             android:maxWidth="250dp"
-            android:iconifiedByDefault="false"
             android:imeOptions="actionDone"
             android:singleLine="true"
             android:ems="10"
+            android:drawableLeft="@drawable/ic_search"
             android:layout_gravity="center"
             />
         

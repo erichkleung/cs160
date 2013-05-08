@@ -13,10 +13,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
-import android.app.SearchManager;
-import android.content.ComponentName;
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.location.Address;
@@ -30,23 +27,26 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.CursorAdapter;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.PopupWindow;
 import android.widget.SearchView;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.trydish.main.R;
 import com.trydish.main.global;
@@ -71,7 +71,7 @@ public class FindHome extends Fragment implements OnClickListener {
 	private String changedLocation;
 	private static boolean myLocationChanged = false;
 	private ArrayList<String> dishes;
-	private SearchView searchView;
+	private GridView gridView;
 
 
 	@Override
@@ -109,34 +109,24 @@ public class FindHome extends Fragment implements OnClickListener {
 		//Grab the buttons and set their onClickListeners to be this Fragment
 		Button b = (Button) view.findViewById(R.id.my_location);
 		b.setOnClickListener(this);
+		
+		gridView = (GridView) view.findViewById(R.id.food_images);
+		gridView.setAdapter(new ImageAdapter(view.getContext(), ImageAdapter.HALF));
 
-		// PROCESS SEARCH!
-		Intent getSome = getActivity().getIntent();
+		gridView.setOnItemClickListener(new OnItemClickListener() {
+			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+				InputMethodManager imm = (InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
+				AutoCompleteTextView et = (AutoCompleteTextView) myView.findViewById(R.id.search_box);
+				imm.hideSoftInputFromWindow(et.getWindowToken(), 0);
 
-		if (getSome != null) {
-			String str = getSome.getStringExtra("searchQuery");
-			if (str != null) {
-				// start fragment for search in here...
-			} else {
-				GridView gridview = (GridView) view.findViewById(R.id.food_images);
-				gridview.setAdapter(new ImageAdapter(view.getContext(), ImageAdapter.HALF));
+				Fragment view_dish = new ViewDish();
+				FragmentTransaction trans = getFragmentManager().beginTransaction();
 
-				gridview.setOnItemClickListener(new OnItemClickListener() {
-					public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-						InputMethodManager imm = (InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
-						SearchView et = (SearchView) myView.findViewById(R.id.search_box);
-						imm.hideSoftInputFromWindow(et.getWindowToken(), 0);
-
-						Fragment view_dish = new ViewDish();
-						FragmentTransaction trans = getFragmentManager().beginTransaction();
-
-						trans.replace(((ViewGroup) myView.getParent()).getId(), view_dish);
-						trans.addToBackStack(null);
-						trans.commit();
-					}
-				});
+				trans.replace(((ViewGroup) myView.getParent()).getId(), view_dish);
+				trans.addToBackStack(null);
+				trans.commit();
 			}
-		}
+		});
 
 		//Hide keyboard
 		getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
@@ -147,24 +137,65 @@ public class FindHome extends Fragment implements OnClickListener {
 		}
 
 		// Setting up the SearchView widget
-		SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
-		searchView = (SearchView) view.findViewById(R.id.search_box);
-		ComponentName cn = new ComponentName("com.trydish.main", "com.trydish.find.SearchableActivity");
-		searchView.setSearchableInfo(searchManager.getSearchableInfo(cn));
+//		SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
+//		searchView = (SearchView) view.findViewById(R.id.search_box);
+//		ComponentName cn = new ComponentName("com.trydish.main", "com.trydish.find.SearchableActivity");
+//		searchView.setSearchableInfo(searchManager.getSearchableInfo(cn));
+		
+		//define the behavior of the "DONE" key on the keyboard
+	    AutoCompleteTextView et = (AutoCompleteTextView) myView.findViewById(R.id.search_box);
+	    et.setOnEditorActionListener(new EditText.OnEditorActionListener() {
+	        @Override
+	        public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+	            if (actionId == EditorInfo.IME_ACTION_DONE){
+	                    //Do your stuff here
+	            		Log.d("FindHome","DONE pressed");
+	            		gridView = (GridView) myView.findViewById(R.id.food_images);
+	            		gridView.setAdapter(new ImageAdapter(myView.getContext(), ImageAdapter.HALF));
 
-//		DishDBTask dbTask = new DishDBTask();
-//		dbTask.execute();
+	            		gridView.setOnItemClickListener(new OnItemClickListener() {
+	            			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+	            				InputMethodManager imm = (InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
+	            				AutoCompleteTextView et = (AutoCompleteTextView) myView.findViewById(R.id.search_box);
+	            				imm.hideSoftInputFromWindow(et.getWindowToken(), 0);
+
+	            				Fragment view_dish = new ViewDish();
+	            				FragmentTransaction trans = getFragmentManager().beginTransaction();
+
+	            				trans.replace(((ViewGroup) myView.getParent()).getId(), view_dish);
+	            				trans.addToBackStack(null);
+	            				trans.commit();
+	            			}
+	            		});
+	            		return true;
+	                } else {
+	                	return false;
+	                }
+	            } }); 
+
+		DishDBTask dbTask = new DishDBTask();
+		dbTask.execute();
 		
 		return view;
 
 	}
+	
+	//  public void searchClicked(View v) {
+	//    //EditText et = (EditText) myView.findViewById(R.id.search_box);
+	//    //et.setLayoutParams(new TableLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, 1f));
+	//    //hideSoftKeyboard(myView);
+	//    Log.d("Find Home", "search clicked");
+	//    InputMethodManager imm = (InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
+	//    EditText et = (EditText) myView.findViewById(R.id.search_box);
+	//    imm.hideSoftInputFromWindow(et.getWindowToken(), 0);
+	//  }
 
 	public void setLocation() {
 		String providerName = manager.getBestProvider(new Criteria(), true);
-		if (providerName == null) {
-			System.out.println("provider is null");}
+//		if (providerName == null) {
+//			System.out.println("provider is null");}
 		location = manager.getLastKnownLocation(providerName);
-		System.out.println("location object is: "+location);
+//		System.out.println("location object is: "+location);
 
 		Button location_button = (Button) myView.findViewById(R.id.my_location);
 		location_button.setText("My Location");
@@ -234,6 +265,10 @@ public class FindHome extends Fragment implements OnClickListener {
 
 
 	}
+	
+//	  public void donePressed() {
+//	    searchClicked(myView);
+//	  }
 
 
 	//Decides which method to call based on which button is clicked. Again, this is needed because by default buttons 
@@ -242,7 +277,6 @@ public class FindHome extends Fragment implements OnClickListener {
 	public void onClick(View arg0) {
 		switch(arg0.getId()) {
 		//search button clicked
-
 		case R.id.my_location:
 			myLocationClicked(arg0);
 			break;
@@ -275,7 +309,7 @@ public class FindHome extends Fragment implements OnClickListener {
 			}
 			catch(Exception e)
 			{
-				System.out.println(e);
+//				System.out.println(e);
 				Log.d("trydish", "MY_ERROR : ############Address Not Found");
 				//return "no address";
 				return null;
@@ -374,16 +408,19 @@ public class FindHome extends Fragment implements OnClickListener {
 	
 	public void updateArray() {
 		dishes = new ArrayList<String>();
-		String query = "SELECT id as _id,name FROM dishes";
+		String query = "SELECT * FROM dishes";
 		DatabaseHandler dbHandler = new global.DatabaseHandler(getContext());
 		SQLiteDatabase db = dbHandler.getDB();
 		Cursor cs = db.rawQuery(query, null);
-		CursorAdapter cursor = null;
 		if (cs.moveToFirst()) {
 			do {
-				System.out.println(cs.getString(1));
+				dishes.add(cs.getString(1));
 			} while (cs.moveToNext());
 		}
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, dishes);
+		AutoCompleteTextView textView = (AutoCompleteTextView) myView.findViewById(R.id.search_box);
+		textView.setThreshold(1);
+		textView.setAdapter(adapter);
 	}
 	
 
