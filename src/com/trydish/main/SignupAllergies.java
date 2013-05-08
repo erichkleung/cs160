@@ -32,6 +32,7 @@ import android.widget.LinearLayout;
 public class SignupAllergies extends Activity {
 	
 	private int leftRight = 0;
+	private String user, pass;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +51,10 @@ public class SignupAllergies extends Activity {
 		
 		ActionBar actionBar = getActionBar();
 		actionBar.hide();
+		
+		Intent i = getIntent();
+		user = i.getStringExtra("user");
+		pass = i.getStringExtra("pass");
 		
 		AlertDialog dialog = builder.create();
 		dialog.show();
@@ -90,6 +95,10 @@ public class SignupAllergies extends Activity {
 		LinearLayout allergiesList = (LinearLayout) findViewById(R.id.left_check_boxes);
 		int childcount = allergiesList.getChildCount();
 		ArrayList<String> allergies = new ArrayList<String>();
+		
+		allergies.add(user);
+		allergies.add(pass);
+		
 		for (int i=0; i < childcount; i++){
 		      CheckBox v = (CheckBox)allergiesList.getChildAt(i);
 		      if (v.isChecked()) {
@@ -121,16 +130,47 @@ public class SignupAllergies extends Activity {
 
 		@Override
 		protected Void doInBackground(ArrayList<String>... params) {
-			String url = "http://trydish.pythonanywhere.com/add_user_allergies/" + global.userID;
+			String url = "http://trydish.pythonanywhere.com/add_user";
 			String responseString;
 			JSONObject result;
 
 			HttpClient httpclient = new DefaultHttpClient();
 			
 			HttpPost post = new HttpPost(url);
+			
 			try {
 				List<NameValuePair> postParameters = new ArrayList<NameValuePair>();
-				for (int i = 0; i < params[0].size(); i++) {
+				postParameters.add(new BasicNameValuePair("username", params[0].get(0)));
+				postParameters.add(new BasicNameValuePair("password", params[0].get(1)));
+				UrlEncodedFormEntity entity = new UrlEncodedFormEntity(postParameters);
+				post.setEntity(entity);
+	            HttpResponse response = httpclient.execute(post);
+	            
+	            if(response.getStatusLine().getStatusCode() == HttpStatus.SC_OK){
+	                ByteArrayOutputStream out = new ByteArrayOutputStream();
+	                response.getEntity().writeTo(out);
+	                out.close();
+	                responseString = out.toString();
+	                result = new JSONObject(responseString);
+	            } else {
+	                //Closes the connection.
+	                response.getEntity().getContent().close();
+	                return null;
+	            }
+	            
+	            global.userID = result.getInt("id");
+	        } catch (Exception e) {
+	        	return null;
+	        }
+			
+			
+			String url_allergies = "http://trydish.pythonanywhere.com/add_user_allergies/" + global.userID;
+
+			post = new HttpPost(url_allergies);
+
+			try {
+				List<NameValuePair> postParameters = new ArrayList<NameValuePair>();
+				for (int i = 2; i < params[0].size(); i++) {
 					postParameters.add(new BasicNameValuePair("allergy", params[0].get(i)));
 				}
 				UrlEncodedFormEntity entity = new UrlEncodedFormEntity(postParameters);
@@ -160,6 +200,7 @@ public class SignupAllergies extends Activity {
 	        } catch (Exception e) {
 	        	return null;
 	        }
+			
 			nextScreen();
 			return null;
     	}

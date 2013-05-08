@@ -208,6 +208,4 @@ public class LoginHome extends Activity {
 	private void storeDB(SQLiteDatabase db) {
 		global.allergyDB = db;
 	}
-
-
 }
