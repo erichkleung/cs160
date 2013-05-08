@@ -3,6 +3,7 @@ package com.trydish.find;
 import java.io.ByteArrayOutputStream;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -49,6 +50,9 @@ public class ViewDish extends Fragment implements OnClickListener {
 	
 	private static double latDoub;
 	private static double lngDoub;
+	private View myView;
+	private TextView text;
+	private int numReviews = 0;
 
 	private LruCache<String, Bitmap> mMemoryCache;
 	private int screenHeight;
@@ -62,7 +66,8 @@ public class ViewDish extends Fragment implements OnClickListener {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.activity_view_dish, container, false);
-
+		
+		myView = view;
 		((ImageButton)(view.findViewById(R.id.flagButton))).setOnClickListener(this);
 
 		Button b = (Button) view.findViewById(R.id.mapButtonView);
@@ -74,7 +79,7 @@ public class ViewDish extends Fragment implements OnClickListener {
 				startActivity(intent); 
 			}
 		});
-		TextView text = (TextView) view.findViewById(R.id.dish_header_text);
+		text = (TextView) view.findViewById(R.id.dish_header_text);
 		text.setPadding(39, 10, 0, 10);
 		text.setTextColor(Color.WHITE);
 		text.setTextSize(20);
@@ -82,7 +87,7 @@ public class ViewDish extends Fragment implements OnClickListener {
 		text.setTypeface(Typeface.SANS_SERIF);
 		text.setText(Html.fromHtml("<h2>Buffalo Wings</h2>" +
 				"<small>from</small> Buffalo Wild Wings<br />" + 
-				"10.5 <small>miles away</small>"));
+			"10.5 <small>miles away</small>"));
 
 		screenHeight = getResources().getDisplayMetrics().heightPixels;
 		screenWidth = getResources().getDisplayMetrics().widthPixels;
@@ -120,6 +125,9 @@ public class ViewDish extends Fragment implements OnClickListener {
 
 		getDishLocationTask dl = new getDishLocationTask();
 		dl.execute(dishID);
+		
+		getDishInformationTask di = new getDishInformationTask();
+		di.execute(dishID);
 
 		return view;
 
@@ -346,6 +354,87 @@ public class ViewDish extends Fragment implements OnClickListener {
 			}
 			return null;
 		}
+	}
+	
+	
+	private class getDishInformationTask extends AsyncTask<Integer, Void, String> {
+
+		String rest_name;
+		protected String doInBackground(Integer... dishID) {			
+			String url = "http://trydish.pythonanywhere.com/get_dish_info/" + dishID[0];
+
+			HttpResponse response;
+			HttpClient httpclient = new DefaultHttpClient();
+
+			try {
+				response = httpclient.execute(new HttpGet(url));
+				if(response.getStatusLine().getStatusCode() == HttpStatus.SC_OK){
+					ByteArrayOutputStream out = new ByteArrayOutputStream();
+					response.getEntity().writeTo(out);
+
+					String responseString = out.toString();
+					out.close(); 
+					JSONObject result = new JSONObject(responseString);
+
+					//JSONArray jArray = result.getJSONArray("id");
+					//JSONObject latAndLong = jArray.getJSONObject(0);
+					String avg_rating = result.getString("avg_rating");
+					String lng = result.getString("long");
+					String lat = result.getString("lat");
+					 rest_name = result.getString("rest_name");
+					String dish_name = result.getString("dish_name");
+					JSONObject reviewDict = result.getJSONObject("reviews");
+					
+					System.out.println(avg_rating);
+					System.out.println(lat);
+					System.out.println(lng);
+					System.out.println(rest_name);
+					System.out.println(dish_name);
+					//System.out.println(reviewDict);
+					
+					
+					
+					
+					
+					Iterator<?> keys = reviewDict.keys();
+			        while( keys.hasNext() ){
+			            String key = (String)keys.next();
+			            if( reviewDict.get(key) instanceof JSONObject ){
+			            	numReviews++;
+			            	System.out.println(reviewDict.get(key));
+			            }
+			        }
+					
+
+
+
+				} else{
+					//Closes the connection.
+					response.getEntity().getContent().close();
+					System.out.println("connection closed");
+					return null;
+				}
+			} catch (Exception e) {
+				return null;
+			}
+			return rest_name;
+		}
+		@Override
+		protected void onPostExecute(String rest_name) {
+			updateFields(rest_name);
+		}
+	}
+	
+	public void updateFields(String rest_name) {
+		System.out.println("getting here?" + " rest name is : " + rest_name);
+		//text = (TextView) myView.findViewById(R.id.dish_header_text);
+		System.out.println("part of  the way" + text);
+		text.setText(Html.fromHtml("<h2>" + rest_name + "</h2>" +
+				"<small>from</small> Buffalo Wild Wings<br />" + 
+				"10.5 <small>miles away</small>"));
+		//text.setText(rest_name);
+		//text.postInvalidate();
+		System.out.println("all the way");
 	}
 
 	public static double getLat() {
