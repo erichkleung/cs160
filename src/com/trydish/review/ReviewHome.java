@@ -95,44 +95,6 @@ public class ReviewHome extends Fragment implements OnClickListener, OnItemClick
 
 	}
 
-	public void done(View button) {
-		EditText rText = (EditText)(myView.findViewById(R.id.editTextRestaurant));
-		EditText nText = (EditText)(myView.findViewById(R.id.editTextName));
-		EditText cText = (EditText)(myView.findViewById(R.id.editTextComments));
-		RatingBar ratingBar = (RatingBar)(myView.findViewById(R.id.ratingBar));
-
-		String restaurant = rText.getText().toString();
-		String name = nText.getText().toString();
-		String comments = cText.getText().toString();
-		double rating = ratingBar.getRating();
-
-
-		if (restaurant.equals("")) {
-			Toast toast = Toast.makeText(getActivity(), "Please enter a restaurant.", Toast.LENGTH_SHORT);
-			toast.show();
-			return;
-		} else if (name.equals("")) {
-			Toast toast = Toast.makeText(getActivity(), "Please enter a dish name.", Toast.LENGTH_SHORT);
-			toast.show();
-			return;
-		} else if (rating == 0) {
-			Toast toast = Toast.makeText(getActivity(), "Please enter a rating.", Toast.LENGTH_SHORT);
-			toast.show();
-			return;
-		}
-
-		Intent intent = new Intent(getActivity(), ConfirmReview.class);
-		intent.putExtra("restaurant", restaurant);
-		intent.putExtra("name", name);
-		intent.putExtra("comments", comments);
-		intent.putExtra("rating", rating);
-		intent.putExtra("dishID", -1);
-		intent.putExtra("restaurantID", 1);
-		intent.putExtra("encodedImage", encodedImage);
-
-		startActivityForResult(intent, 1);
-	}
-
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		//added call to super for compatibility 
@@ -172,7 +134,7 @@ public class ReviewHome extends Fragment implements OnClickListener, OnItemClick
 
 
 					ByteArrayOutputStream stream = new ByteArrayOutputStream();
-					bitmapPreview.compress(Bitmap.CompressFormat.PNG, 100, stream);
+					bitmapPreview.compress(Bitmap.CompressFormat.JPEG, 80, stream);
 					byte[] array = stream.toByteArray();
 					encodedImage = Base64.encodeToString(array, Base64.DEFAULT);
 
@@ -184,6 +146,46 @@ public class ReviewHome extends Fragment implements OnClickListener, OnItemClick
 			//else do nothing
 		}
 
+	}
+	
+	public void done(View button) {
+		EditText rText = (EditText)(myView.findViewById(R.id.editTextRestaurant));
+		EditText nText = (EditText)(myView.findViewById(R.id.editTextName));
+		EditText cText = (EditText)(myView.findViewById(R.id.editTextComments));
+		RatingBar ratingBar = (RatingBar)(myView.findViewById(R.id.ratingBar));
+
+		String restaurant = rText.getText().toString();
+		String name = nText.getText().toString();
+		String comments = cText.getText().toString();
+		double rating = ratingBar.getRating();
+
+
+		if (restaurant.equals("")) {
+			Toast toast = Toast.makeText(getActivity(), "Please enter a restaurant.", Toast.LENGTH_SHORT);
+			toast.show();
+			return;
+		} else if (name.equals("")) {
+			Toast toast = Toast.makeText(getActivity(), "Please enter a dish name.", Toast.LENGTH_SHORT);
+			toast.show();
+			return;
+		} else if (rating == 0) {
+			Toast toast = Toast.makeText(getActivity(), "Please enter a rating.", Toast.LENGTH_SHORT);
+			toast.show();
+			return;
+		}
+
+		Intent intent = new Intent(getActivity(), ConfirmReview.class);
+		intent.putExtra("restaurant", restaurant);
+		intent.putExtra("name", name);
+		intent.putExtra("comments", comments);
+		intent.putExtra("rating", rating);
+		intent.putExtra("dishID", -1);
+		intent.putExtra("restaurantID", 1);
+		intent.putExtra("encodedImage", encodedImage);
+		
+		System.out.println(encodedImage);
+
+		startActivityForResult(intent, 1);
 	}
 
 	@Override
