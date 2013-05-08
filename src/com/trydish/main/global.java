@@ -55,7 +55,6 @@ public class global {
 		
 		public static String getAllergyName(String id) {
 			Cursor c = db.query("allergies", new String[] {"name"}, "id=?", new String[] { id }, null, null, null, null);
-			System.out.println("cursor: " + c);
 			c.moveToFirst();
 			return c.getString(0);
 		}
