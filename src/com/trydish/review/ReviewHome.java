@@ -72,8 +72,6 @@ public class ReviewHome extends Fragment implements OnClickListener, OnItemClick
 	private ArrayList<String> resultsFromPlaces;
 	private String encodedImage = "";
 
-	private boolean autocompleted = false;
-
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
 		View view = inflater.inflate(R.layout.activity_review_home,
@@ -197,8 +195,12 @@ public class ReviewHome extends Fragment implements OnClickListener, OnItemClick
 			Toast toast = Toast.makeText(getActivity(), "Please enter a rating.", Toast.LENGTH_SHORT);
 			toast.show();
 			return;
+		} else if (resultsFromPlaces == null) {
+			Toast toast = Toast.makeText(getActivity(), "Please use auto-complete for restauarant.", Toast.LENGTH_LONG);
+			toast.show();
+			return;
 		}
-
+			
 		Intent intent = new Intent(getActivity(), ConfirmReview.class);
 		intent.putExtra("restaurant", restaurant);
 		intent.putExtra("name", name);
@@ -305,7 +307,7 @@ public class ReviewHome extends Fragment implements OnClickListener, OnItemClick
 				JSONObject jsonObj = new JSONObject(jsonResults.toString());
 				JSONObject result = jsonObj.getJSONObject("result");
 
-				resultsFromPlaces = new ArrayList();
+				resultsFromPlaces = new ArrayList<String>();
 				
 				//use
 				String name = result.getString("name");
@@ -402,6 +404,7 @@ public class ReviewHome extends Fragment implements OnClickListener, OnItemClick
 				//	refList.add(predsJsonArray.getJSONObject(i).getString("id"));
 				//}
 			} catch (JSONException e) {
+				System.out.println("catch");
 				Log.e("trydish", "Cannot process JSON results", e);
 			}
 
@@ -449,6 +452,7 @@ private void updateClosest(Document doc) {
 
 	} catch (Exception ex) {
 		ex.printStackTrace();
+
 	}
 
 }
