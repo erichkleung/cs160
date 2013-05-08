@@ -15,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.AdapterView.OnItemClickListener;
 
+import com.trydish.main.PostLoginHome;
 import com.trydish.main.R;
 import com.trydish.main.Settings;
 import com.trydish.main.TabListener;
@@ -39,19 +40,12 @@ public class SearchableActivity extends Activity {
 	
 	protected void doMySearch(String query) {
 		
-		GridView gridview = (GridView) findViewById(R.id.search_food_images);
-		gridview.setAdapter(new ImageAdapter(this, ImageAdapter.HALF));
-
-		gridview.setOnItemClickListener(new OnItemClickListener() {
-			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-				Fragment view_dish = new ViewDish();
-				FragmentTransaction trans = getFragmentManager().beginTransaction();
-
-				trans.replace(R.id.search_results, view_dish);
-				trans.addToBackStack(null);
-				trans.commit();
-			}
-		});
+		Intent passQuery = new Intent(this, PostLoginHome.class);
+		passQuery.putExtra("searchQuery", query);
+		passQuery.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		startActivity(passQuery);
+		
+		finish();
 		
 	}
 

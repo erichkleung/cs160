@@ -46,8 +46,8 @@ public class ConfirmReview extends Activity {
 		setContentView(R.layout.activity_confirm_review);
 		intent = getIntent();
 
-		((TextView)findViewById(R.id.textViewRestaurant)).setText("Restaurant: " + intent.getStringExtra("restaurant"));
-		((TextView)findViewById(R.id.textViewName)).setText("Dish Name: " + (intent.getStringExtra("name")));
+		((TextView)findViewById(R.id.textViewRestaurant)).setText(intent.getStringExtra("restaurant"));
+		((TextView)findViewById(R.id.textViewDish)).setText(intent.getStringExtra("name"));
 	}
 
 	@Override

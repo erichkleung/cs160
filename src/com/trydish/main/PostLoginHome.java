@@ -3,18 +3,21 @@ package com.trydish.main;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.Activity;
-import android.app.SearchManager;
-import android.content.ComponentName;
-import android.content.Context;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
-import android.widget.SearchView;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.GridView;
 
+import com.trydish.find.ImageAdapter;
+import com.trydish.find.ViewDish;
 import com.trydish.review.MapActivity;
 
 public class PostLoginHome extends Activity {
@@ -28,7 +31,7 @@ public class PostLoginHome extends Activity {
 		actionBar.setDisplayShowHomeEnabled(false);
 		actionBar.setDisplayShowTitleEnabled(false);
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-//		actionBar.setBackgroundDrawable(bg);
+		actionBar.setStackedBackgroundDrawable(new ColorDrawable(Color.parseColor("#151515")));
 		
 		Tab tab = actionBar.newTab()
 				.setText(R.string.find)
@@ -48,21 +51,6 @@ public class PostLoginHome extends Activity {
 						this, "settings", Settings.class));
 		actionBar.addTab(tab);
 	}
-	
-//	public boolean onCreateOptionsMenu(Menu menu) {
-//	    // Inflate the options menu from XML
-//	    MenuInflater inflater = getMenuInflater();
-//	    inflater.inflate(R.menu.activity_post_login_home, menu);
-//	    
-//	    // Get the SearchView and set the searchable configuration
-//	    SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-//	    SearchView searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
-//		ComponentName cn = new ComponentName("com.trydish.main", "com.trydish.find.SearchableActivity");
-//		searchView.setSearchableInfo(searchManager.getSearchableInfo(cn));
-//	    searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
-//	    
-//	    return super.onCreateOptionsMenu(menu);
-//	}
 	
 	public void changeLocation(View v) {
 		Log.d("Find Home", "CHANGE location clicked");

@@ -22,7 +22,7 @@
         android:required="true" />
 
     <uses-sdk
-        android:minSdkVersion="13"
+        android:minSdkVersion="14"
         android:targetSdkVersion="17" />
 
     <application
@@ -51,7 +51,7 @@
             android:name="com.trydish.review.ReviewHome"
             android:label="@string/title_activity_review_home"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustPan" >
+            android:windowSoftInputMode="stateHidden" >
         </activity>
         <activity
             android:name="com.trydish.main.Settings"

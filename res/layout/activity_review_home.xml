@@ -1,21 +1,19 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/scrollView1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_below="@+id/ratingBar1"
-    android:layout_toRightOf="@+id/button2"
     android:background="@drawable/background_review_low"
-    android:overScrollMode="always" >
+    android:isScrollContainer="false"
+    tools:context=".ReviewHome" >
 
     <RelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/review_form"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
-        tools:context=".ReviewHome" >
+        android:paddingBottom="20dp" >
 
         <RelativeLayout
             android:id="@+id/innerRelative"
@@ -76,7 +74,7 @@
             android:layout_below="@+id/innerRelative"
             android:layout_centerHorizontal="true"
             android:layout_marginRight="30dp"
-            android:layout_marginTop="27dp"
+            android:layout_marginTop="30dp"
             android:adjustViewBounds="false"
             android:background="#ffffff"
             android:onClick="addImage"
@@ -89,7 +87,7 @@
             android:layout_below="@+id/imageView1"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
-            android:layout_marginTop="27dp"
+            android:layout_marginTop="30dp"
             android:background="@drawable/rounded_rect" >
 
             <RatingBar
@@ -129,6 +127,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignLeft="@+id/textView4"
                 android:layout_below="@+id/textView4"
+                android:layout_marginTop="20dp"
                 android:background="@drawable/textboxbg"
                 android:ems="10"
                 android:gravity="top"
@@ -142,10 +141,9 @@
             android:id="@+id/buttonDone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignRight="@+id/innerRelative2"
-            android:layout_alignLeft="@+id/innerRelative2"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="30dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
             android:layout_below="@+id/innerRelative2"
             android:background="@drawable/button_states"
             android:textColor="#000000"

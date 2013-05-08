@@ -98,19 +98,22 @@
             android:textColorHint="#333333"
             android:textColor="#000000" />
 
-        <Button
-            android:id="@+id/signup_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/signup_password_confirm"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dp"
-            android:onClick="signupNext"
-            android:text="@string/signup_next_button"
-            android:textSize="15sp"
-            android:background="@drawable/button_states"
-            android:textColor="#000000" />
     </RelativeLayout>
+    
+    <Button
+        android:id="@+id/signup_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/layout_group_signup"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="35dp"
+        android:background="@drawable/button_states"
+        android:onClick="signupNext"
+        android:text="@string/signup_next_button"
+        android:textColor="#000000"
+        android:textSize="15sp" />
     
     <ProgressBar android:indeterminate="true"
         android:id="@+id/login_progressbar"
