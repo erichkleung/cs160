@@ -283,7 +283,6 @@ public class ImageAdapter extends BaseAdapter {
 			width = params[1];
 			height = params[2];
 			final Bitmap bitmap = decodeSampledBitmapFromResource(resource, data, width, height);
-			addBitmapToMemoryCache(String.valueOf(params[0]), bitmap);
 			return bitmap;
 		}
 		
@@ -295,6 +294,7 @@ public class ImageAdapter extends BaseAdapter {
 			if (imageViewReference != null && bitmap != null) {
 				final ImageView imageView = imageViewReference.get();
 				final BitmapWorkerTask bitmapWorkerTask = getBitmapWorkerTask(imageView);
+				addBitmapToMemoryCache(String.valueOf(data), bitmap);
 				if (this == bitmapWorkerTask && imageView != null) {
 					imageView.setImageBitmap(bitmap);
 				}

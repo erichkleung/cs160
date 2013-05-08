@@ -1,18 +1,15 @@
 package com.trydish.find;
 
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.w3c.dom.Document;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
@@ -20,6 +17,8 @@ import android.app.SearchManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.location.Address;
 import android.location.Criteria;
 import android.location.Geocoder;
@@ -42,6 +41,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CursorAdapter;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.PopupWindow;
@@ -50,6 +50,7 @@ import android.widget.Spinner;
 
 import com.trydish.main.R;
 import com.trydish.main.global;
+import com.trydish.main.global.DatabaseHandler;
 
 
 
@@ -69,6 +70,8 @@ public class FindHome extends Fragment implements OnClickListener {
 	private PopupWindow pop;
 	private String changedLocation;
 	private static boolean myLocationChanged = false;
+	private ArrayList<String> dishes;
+	private SearchView searchView;
 
 
 	@Override
@@ -109,7 +112,7 @@ public class FindHome extends Fragment implements OnClickListener {
 
 		// PROCESS SEARCH!
 		Intent getSome = getActivity().getIntent();
-		
+
 		if (getSome != null) {
 			String str = getSome.getStringExtra("searchQuery");
 			if (str != null) {
@@ -137,19 +140,21 @@ public class FindHome extends Fragment implements OnClickListener {
 
 		//Hide keyboard
 		getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-		
+
 		manager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
 		if (myLocationChanged == false) {
 			setLocation();
 		}
-		
-		
+
 		// Setting up the SearchView widget
 		SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
-		SearchView searchView = (SearchView) view.findViewById(R.id.search_box);
+		searchView = (SearchView) view.findViewById(R.id.search_box);
 		ComponentName cn = new ComponentName("com.trydish.main", "com.trydish.find.SearchableActivity");
 		searchView.setSearchableInfo(searchManager.getSearchableInfo(cn));
 
+		DishDBTask dbTask = new DishDBTask();
+		dbTask.execute();
+		
 		return view;
 
 	}
@@ -174,7 +179,7 @@ public class FindHome extends Fragment implements OnClickListener {
 				ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 				NetworkInfo activeNetworkInfo = cm.getActiveNetworkInfo();
 				boolean isConnected = activeNetworkInfo != null && activeNetworkInfo.isConnected(); 
-				
+
 				if (isConnected) {
 					Geocoder myLocation = new Geocoder(context.getApplicationContext(), Locale.getDefault());
 					List<Address> myList = myLocation.getFromLocation(latitude, longitude, 1);
@@ -215,9 +220,9 @@ public class FindHome extends Fragment implements OnClickListener {
 				clk.execute(changedLocation);
 				myLocationChanged = true;
 				pop.dismiss();
-				}
+			}
 		});
-		
+
 		Button c = (Button) popup_menu.findViewById(R.id.cancel_change_my_location);
 		c.setOnClickListener(new OnClickListener() {
 			@Override
@@ -226,11 +231,11 @@ public class FindHome extends Fragment implements OnClickListener {
 				pop.dismiss();
 			}
 		});
-		
-		
+
+
 	}
 
-	
+
 	//Decides which method to call based on which button is clicked. Again, this is needed because by default buttons 
 	//onClickListener is not the Fragment
 	@Override
@@ -244,89 +249,142 @@ public class FindHome extends Fragment implements OnClickListener {
 		}
 
 	}
-	
-	
-	
+
+
+
 	private class changeLocationTask extends AsyncTask<String, Void, Address> {
 
 		public Address doInBackground(String... params)
 		{
-			
+
 			//used reference: http://stackoverflow.com/questions/4873076/get-latitude-and-longitude-from-city-name
 			Geocoder coder = new Geocoder(context.getApplicationContext());
-		    List<Address> address;
-		    try 
-		    {
-		        address = coder.getFromLocationName(changedLocation,5);
-		        if (address == null) {
-		            Log.d("trydish", "############Address not correct #########");
-		        }
-		        Address location = address.get(0);
+			List<Address> address;
+			try 
+			{
+				address = coder.getFromLocationName(changedLocation,5);
+				if (address == null) {
+					Log.d("trydish", "############Address not correct #########");
+				}
+				Address location = address.get(0);
 
-		        Log.d("trydish", "Address Latitude : "+ location.getLatitude() + "Address Longitude : "+ location.getLongitude());
-		        
-		        return location;
-		        
+				Log.d("trydish", "Address Latitude : "+ location.getLatitude() + "Address Longitude : "+ location.getLongitude());
+//				System.out.println("latitude and longitude is: " + location.getLatitude() + " " + location.getLongitude());
 
-		    }
-		    catch(Exception e)
-		    {
-		    	System.out.println(e);
-		        Log.d("trydish", "MY_ERROR : ############Address Not Found");
-		        //return "no address";
-		        return null;
-		    }
-			
-	}
-
-	//@Override
-	protected void onPostExecute(Address results)
-	{       
-		if(results != null)
-			
-		{   
-			try {
-				changeLocation(results);
+				return location;
 			}
-			catch (Exception ex) {
-				//do something
+			catch(Exception e)
+			{
+				System.out.println(e);
+				Log.d("trydish", "MY_ERROR : ############Address Not Found");
+				//return "no address";
+				return null;
+			}
+
+		}
+
+		//@Override
+		protected void onPostExecute(Address results)
+		{       
+			if(results != null)
+
+			{   
+				try {
+					changeLocation(results);
+				}
+				catch (Exception ex) {
+					//do something
+				}
 			}
 		}
+
 	}
 
-}
-	
 	public void changeLocation(Address a) {
 		Button location_button = (Button) myView.findViewById(R.id.my_location);
 		location_button.setText(changedLocation);
 		setLat(location.getLatitude());
 		setLong(location.getLongitude());
 	}
-	
-	
-	
-	
+
+
+
+
 	public static Context getContext() {
 		return context;
 	}
-	
+
 	public static String getRadius() {
 		return searchDistance;
 	}
-	
+
 	public static double getLat() {
 		return latitude;
 	}
-	
+
 	public static double getLong() {
 		return longitude;
 	}
 	public static void setLat(double lat) {
 		latitude = lat;
 	}
-	
+
 	public static void setLong(double lng) {
 		longitude = lng;
 	}
 	
+	private class DishDBTask extends AsyncTask<Void, Void, SQLiteDatabase> {
+
+		protected SQLiteDatabase doInBackground(Void...arg0) {			
+			String url = "http://trydish.pythonanywhere.com/sync_dishes";
+			SQLiteDatabase db = null;
+
+			HttpResponse response;
+			HttpClient httpclient = new DefaultHttpClient();
+
+			try {
+				response = httpclient.execute(new HttpGet(url));
+				if(response.getStatusLine().getStatusCode() == HttpStatus.SC_OK){
+					ByteArrayOutputStream out = new ByteArrayOutputStream();
+					response.getEntity().writeTo(out);
+
+					final String databaseCommands = out.toString();
+					out.close(); 
+
+					DatabaseHandler db_handler = new DatabaseHandler(context);
+					db_handler.execSQL(databaseCommands);
+
+				} else{
+					//Closes the connection.
+					response.getEntity().getContent().close();
+//					System.out.println("status: " + response.getStatusLine().getStatusCode());
+					return null;
+				}
+			} catch (Exception e) {
+				return null;
+			}
+			return db;
+		}
+
+		@Override
+		protected void onPostExecute(SQLiteDatabase db) {
+			updateArray();
+		}
+	}
+	
+	public void updateArray() {
+		dishes = new ArrayList<String>();
+		String query = "SELECT id as _id,name FROM dishes";
+		DatabaseHandler dbHandler = new global.DatabaseHandler(getContext());
+		SQLiteDatabase db = dbHandler.getDB();
+		Cursor cs = db.rawQuery(query, null);
+		CursorAdapter cursor = null;
+		if (cs.moveToFirst()) {
+			do {
+				System.out.println(cs.getString(1));
+			} while (cs.moveToNext());
+		}
+	}
+	
+
 }

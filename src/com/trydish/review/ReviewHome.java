@@ -54,6 +54,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -71,6 +72,7 @@ public class ReviewHome extends Fragment implements OnClickListener, OnItemClick
 	private static Context context;
 	private int intentId = 800;
 	private String reference;
+	private ArrayList<String> dishes;
 
 	private ArrayList<String> resultsFromPlaces;
 	private String encodedImage = "";
@@ -81,10 +83,11 @@ public class ReviewHome extends Fragment implements OnClickListener, OnItemClick
 				container, false);
 		myView = view;
 		context = view.getContext();
+		dishes = new ArrayList<String>();
 
 		((Button)(view.findViewById(R.id.buttonDone))).setOnClickListener(this);
 		((ImageButton)(view.findViewById(R.id.imageView1))).setOnClickListener(this);
-		
+
 		RestaurantDBTask task = new RestaurantDBTask();
 		task.execute();
 
@@ -144,12 +147,12 @@ public class ReviewHome extends Fragment implements OnClickListener, OnItemClick
 					Bitmap bitmapPreview = BitmapFactory.decodeFile(fileSrc); //load preview image
 					BitmapDrawable bmpDrawable = new BitmapDrawable(Resources.getSystem(), bitmapPreview);
 					((ImageButton)(myView.findViewById(R.id.imageView1))).setImageDrawable(bmpDrawable);
-					
+
 					ByteArrayOutputStream stream = new ByteArrayOutputStream();
 					bitmapPreview.compress(Bitmap.CompressFormat.JPEG, 80, stream);
 					byte[] array = stream.toByteArray();
 					encodedImage = Base64.encodeToString(array, Base64.DEFAULT);
-					
+
 				}
 			}
 			//else do nothing
@@ -186,7 +189,7 @@ public class ReviewHome extends Fragment implements OnClickListener, OnItemClick
 			toast.show();
 			return;
 		}
-			
+
 		Intent intent = new Intent(getActivity(), ConfirmReview.class);
 		intent.putExtra("restaurant", restaurant);
 		intent.putExtra("name", name);
@@ -195,7 +198,7 @@ public class ReviewHome extends Fragment implements OnClickListener, OnItemClick
 		intent.putExtra("dishID", -1);
 		intent.putExtra("restaurantID", 1);
 		intent.putExtra("encodedImage", encodedImage);
-		
+
 		intent.putStringArrayListExtra("results from Places autocomplete detail request", resultsFromPlaces);
 
 		startActivityForResult(intent, 1);
@@ -271,36 +274,36 @@ public class ReviewHome extends Fragment implements OnClickListener, OnItemClick
 					conn.disconnect();
 				}
 			}
-			
+
 			try {
 				// Create a JSON object hierarchy from the results
 				JSONObject jsonObj = new JSONObject(jsonResults.toString());
 				JSONObject result = jsonObj.getJSONObject("result");
 
-				resultsFromPlaces = new ArrayList<String>();
-				
+				resultList = new ArrayList<String>();
+
 				//use
 				String name = result.getString("name");
-				resultsFromPlaces.add(name);
-				
+				resultList.add(name);
+
 				JSONObject latLongJson = result.getJSONObject("geometry");
 				JSONObject latLong = latLongJson.getJSONObject("location");
 				String latitude = latLong.getString("lat");
 				String longitude = latLong.getString("lng");
-				resultsFromPlaces.add(latitude);
-				resultsFromPlaces.add(longitude);
-				
+				resultList.add(latitude);
+				resultList.add(longitude);
+
 				//use
 				Double latDouble =  Double.parseDouble(latitude);
 				Double lngDouble =  Double.parseDouble(longitude);
-				
+
 				JSONArray addressJsonArray = result.getJSONArray("address_components");
-				
+
 				//use
 				String cityName = "";
 				String stateName = "";
 				String zip = "";
-				
+
 				String temp;
 				for (int i = 0; i < addressJsonArray.length(); i++) {
 					temp = addressJsonArray.getJSONObject(i).getString("short_name");
@@ -311,9 +314,9 @@ public class ReviewHome extends Fragment implements OnClickListener, OnItemClick
 					} else if (i == 5) {
 						zip = temp;
 					}
-					
+
 				}
-				
+
 				String formatted_address = result.getString("formatted_address");
 				String[] separatedAddress = formatted_address.split(",");
 				//use
@@ -326,51 +329,56 @@ public class ReviewHome extends Fragment implements OnClickListener, OnItemClick
 				} catch (ArrayIndexOutOfBoundsException e) {
 					Log.d("trydish", "address in not expected format");
 				}
-				resultsFromPlaces.add(line1);
-				resultsFromPlaces.add(line2);
-				resultsFromPlaces.add(line3);
-				resultsFromPlaces.add(cityName);
-				resultsFromPlaces.add(stateName);
-				resultsFromPlaces.add(zip);
-				
-				
+				resultList.add(line1);
+				resultList.add(line2);
+				resultList.add(line3);
+				resultList.add(cityName);
+				resultList.add(stateName);
+				resultList.add(zip);
+
+
 				//use
 				String formatted_phone_number = result.getString("formatted_phone_number");
 				String id = result.getString("id");
-				resultsFromPlaces.add(formatted_phone_number);
-				resultsFromPlaces.add(id);
+				resultList.add(formatted_phone_number);
+				resultList.add(id);
 			} catch (JSONException e) {
 				System.out.println("catch");
 				Log.e("trydish", "Cannot process JSON results", e);
 			}
 
 			return resultList;
-			
+
+		}
+		
+		@Override
+		protected void onPostExecute(ArrayList<String> result) {
+			updateArray(result);
+		}
 	}
-}
 
 	private class RestaurantDBTask extends AsyncTask<Void, Void, SQLiteDatabase> {
-	
+
 		protected SQLiteDatabase doInBackground(Void...arg0) {			
 			String url = "http://trydish.pythonanywhere.com/sync_restaurants";
 			SQLiteDatabase db = null;
-	
+
 			HttpResponse response;
 			HttpClient httpclient = new DefaultHttpClient();
-	
+
 			try {
 				response = httpclient.execute(new HttpGet(url));
 				if(response.getStatusLine().getStatusCode() == HttpStatus.SC_OK){
 					ByteArrayOutputStream out = new ByteArrayOutputStream();
 					response.getEntity().writeTo(out);
-	
+
 					final String databaseCommands = out.toString();
 					out.close(); 
-	
+
 					DatabaseHandler db_handler = new DatabaseHandler(context);
 					db_handler.dropTables();
 					db_handler.execSQL(databaseCommands);
-	
+
 				} else{
 					//Closes the connection.
 					response.getEntity().getContent().close();
@@ -382,40 +390,40 @@ public class ReviewHome extends Fragment implements OnClickListener, OnItemClick
 			}
 			return db;
 		}
-	
+
 		@Override
 		protected void onPostExecute(SQLiteDatabase db) {
 			storeRestDB(db);
 		}
 	}
-	
-	
+
+
 	private void storeRestDB(SQLiteDatabase db) {		
 		DishDBTask task = new DishDBTask();
 		task.execute();
 	}
-	
+
 	private class DishDBTask extends AsyncTask<Void, Void, SQLiteDatabase> {
-		
+
 		protected SQLiteDatabase doInBackground(Void...arg0) {			
 			String url = "http://trydish.pythonanywhere.com/sync_dishes";
 			SQLiteDatabase db = null;
-	
+
 			HttpResponse response;
 			HttpClient httpclient = new DefaultHttpClient();
-	
+
 			try {
 				response = httpclient.execute(new HttpGet(url));
 				if(response.getStatusLine().getStatusCode() == HttpStatus.SC_OK){
 					ByteArrayOutputStream out = new ByteArrayOutputStream();
 					response.getEntity().writeTo(out);
-	
+
 					final String databaseCommands = out.toString();
 					out.close(); 
-	
+
 					DatabaseHandler db_handler = new DatabaseHandler(context);
 					db_handler.execSQL(databaseCommands);
-	
+
 				} else{
 					//Closes the connection.
 					response.getEntity().getContent().close();
@@ -427,14 +435,14 @@ public class ReviewHome extends Fragment implements OnClickListener, OnItemClick
 			}
 			return db;
 		}
-	
+
 		@Override
 		protected void onPostExecute(SQLiteDatabase db) {
 			storeDishDB(db);
 		}
 	}
-	
-	
+
+
 	private void storeDishDB(SQLiteDatabase db) {		
 		AllergyDBTask task = new AllergyDBTask();
 		task.execute();
@@ -477,6 +485,36 @@ public class ReviewHome extends Fragment implements OnClickListener, OnItemClick
 		@Override
 		protected void onPostExecute(SQLiteDatabase db) {
 		}
+	}
+
+	public void updateArray(ArrayList<String> results) {
+		this.resultsFromPlaces = results;
+		dishes = new ArrayList<String>();
+		String query = "SELECT * FROM restaurants WHERE google_id=" + '"' + resultsFromPlaces.get(10).toString() + '"';
+		String restID = null;
+		DatabaseHandler dbHandler = new global.DatabaseHandler(getContext());
+		SQLiteDatabase db = dbHandler.getDB();
+		Cursor cs = db.rawQuery(query, null);
+		if (cs.moveToFirst()) {
+			do {
+				//				System.out.println(cs.getString(1));
+				//				dishes.add(cs.getString(1));
+				restID = cs.getString(0);
+			} while (cs.moveToNext());
+		}
+		if (restID != null) {
+			query = "SELECT * FROM dishes WHERE restaurant=" + restID;
+			cs = db.rawQuery(query, null);
+			if (cs.moveToFirst()) {
+				do {
+					dishes.add(cs.getString(1));
+				} while (cs.moveToNext());
+			}
+		}
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, dishes);
+		AutoCompleteTextView textView = (AutoCompleteTextView) myView.findViewById(R.id.editTextName);
+		textView.setThreshold(1);
+		textView.setAdapter(adapter);
 	}
 
 }
