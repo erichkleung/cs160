@@ -176,6 +176,7 @@ public class FindHome extends Fragment implements OnClickListener {
 		} else {
 			latitude = location.getLatitude();
 			longitude = location.getLongitude();
+			System.out.println("latitude and longitude is: " + latitude + " " + longitude);
 
 			try {
 				ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -228,9 +229,6 @@ public class FindHome extends Fragment implements OnClickListener {
 			public void onClick(View v) {
 				//do something
 				EditText et = (EditText) popup_menu.findViewById(R.id.change_location_edit);
-				if (et == null) {
-					System.out.println("yo it is null dog");
-				}
 				changedLocation = et.getText().toString();
 				changeLocationTask clk = new changeLocationTask(); 
 				clk.execute(changedLocation);
@@ -293,6 +291,7 @@ public class FindHome extends Fragment implements OnClickListener {
 		        Address location = address.get(0);
 
 		        Log.d("trydish", "Address Latitude : "+ location.getLatitude() + "Address Longitude : "+ location.getLongitude());
+		        System.out.println("latitude and longitude is: " + location.getLatitude() + " " + location.getLongitude());
 		        
 		        return location;
 		        
@@ -330,7 +329,6 @@ public class FindHome extends Fragment implements OnClickListener {
 		location_button.setText(changedLocation);
 		setLat(location.getLatitude());
 		setLong(location.getLongitude());
-		System.out.println("LOOK HERE:::::::::" + location.getLatitude());
 	}
 	
 	

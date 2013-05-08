@@ -461,49 +461,7 @@ private void updateClosest(Document doc) {
 
 
 
-private class dishLocationTask extends AsyncTask<String, Void, SQLiteDatabase> {
 
-	protected SQLiteDatabase doInBackground(String... userID) {			
-		String url = "http://trydish.pythonanywhere.com/get_user_allergies/" + userID[0];
-		SQLiteDatabase db = null;
-
-		HttpResponse response;
-		HttpClient httpclient = new DefaultHttpClient();
-
-		try {
-			response = httpclient.execute(new HttpGet(url));
-			if(response.getStatusLine().getStatusCode() == HttpStatus.SC_OK){
-				ByteArrayOutputStream out = new ByteArrayOutputStream();
-				response.getEntity().writeTo(out);
-
-				String responseString = out.toString();
-				out.close(); 
-				JSONObject result = new JSONObject(responseString);
-				
-				ArrayList<String> list = new ArrayList<String>();
-                JSONArray jArray = result.getJSONArray("allergy_ids");
-                for(int i = 0 ; i < jArray.length() ; i++) {
-                    list.add(jArray.getString(i));
-                }
-                global.allergy_ids = list;
-                
-			} else{
-				//Closes the connection.
-				response.getEntity().getContent().close();
-				System.out.println("status: " + response.getStatusLine().getStatusCode());
-				return null;
-			}
-		} catch (Exception e) {
-			return null;
-		}
-		return db;
-	}
-
-	@Override
-	protected void onPostExecute(SQLiteDatabase db) {
-		//storeDB(db);
-	}
-}
 
 
 
