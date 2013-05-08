@@ -173,8 +173,10 @@ public class FindHome extends Fragment implements OnClickListener {
 	                }
 	            } }); 
 
-		DishDBTask dbTask = new DishDBTask();
-		dbTask.execute();
+//		DishDBTask dbTask = new DishDBTask();
+//		dbTask.execute();
+	    
+		updateArray();
 		
 		return view;
 
