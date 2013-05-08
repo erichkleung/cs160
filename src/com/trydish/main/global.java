@@ -20,6 +20,7 @@ public class global {
 		private static final String TABLE_ALLERGIES = "allergies";
 		private static final String TABLE_DISHES = "dishes";
 		private static final String TABLE_RESTAURANTS = "restaurants";
+		private static SQLiteDatabase db;
 
 		public DatabaseHandler(Context context) {
 			super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -52,14 +53,15 @@ public class global {
 			return this.getWritableDatabase();
 		}*/
 		
-		public String getAllergyName(int id) {
-			SQLiteDatabase db = this.getWritableDatabase();
-			Cursor c = db.query("allergies", new String[] {"name"}, "id=?", new String[] { String.valueOf(id) }, null, null, null, null);
+		public static String getAllergyName(String id) {
+			Cursor c = db.query("allergies", new String[] {"name"}, "id=?", new String[] { id }, null, null, null, null);
+			System.out.println("cursor: " + c);
+			c.moveToFirst();
 			return c.getString(0);
 		}
 
 		public void dropTables(){
-			SQLiteDatabase db = this.getWritableDatabase();
+			db = this.getWritableDatabase();
 			db.execSQL("DROP TABLE IF EXISTS allergies");
 			db.execSQL("DROP TABLE IF EXISTS dishes");
 			db.execSQL("DROP TABLE IF EXISTS restaurants");
