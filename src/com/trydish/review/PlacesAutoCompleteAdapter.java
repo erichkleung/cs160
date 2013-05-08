@@ -63,19 +63,19 @@ public class PlacesAutoCompleteAdapter extends ArrayAdapter<String> implements F
 				FilterResults filterResults = new FilterResults();
 				if (constraint != null) {
 					// Retrieve the autocomplete results.
-					System.out.println(constraint.toString());
+					//System.out.println(constraint.toString());
 					resultList = autocomplete(constraint.toString());
 
 					// Assign the data to the FilterResults
 					if (filterResults == null) {
 						System.out.println("filterResults is null");
 					} else {
-						System.out.println("filterResults is NOT null");
+						//System.out.println("filterResults is NOT null");
 					}
 					if (resultList == null) {
 						System.out.println("resultList is null");
 					} else {
-						System.out.println("resultList is NOT null");
+						//System.out.println("resultList is NOT null");
 					}
 					//Log.d("filterResults is:", filterResults.toString());
 					//Log.d("resultsList is:", resultList.toString());
@@ -113,7 +113,7 @@ public class PlacesAutoCompleteAdapter extends ArrayAdapter<String> implements F
 			String intermediate = com.trydish.find.FindHome.getRadius();
 			String[] inter = intermediate.split(" ");
 			userRadius = Integer.parseInt(inter[0])*1609;
-			System.out.println("This is the radius selected: " + Integer.toString(userRadius));
+			//System.out.println("This is the radius selected: " + Integer.toString(userRadius));
 			
 			StringBuilder sb = new StringBuilder(PLACES_API_BASE + TYPE_AUTOCOMPLETE + OUT_JSON);
 			sb.append("?sensor=true&key=" + API_KEY);
@@ -128,7 +128,7 @@ public class PlacesAutoCompleteAdapter extends ArrayAdapter<String> implements F
 			
 			
  
-			Log.d("key is:", sb.toString());
+			//Log.d("key is:", sb.toString());
 			
 			URL url = new URL(sb.toString());
 			//URL url = new URL("https://maps.googleapis.com/maps/api/place/autocomplete/json?input=Amoeba&types=establishment&location=37.76999,-122.44696&radius=500&sensor=true&key=AIzaSyBlB6PKsmromS6TfMDIcy7fGRhnusRZ3r8");
@@ -141,7 +141,7 @@ public class PlacesAutoCompleteAdapter extends ArrayAdapter<String> implements F
 			while ((read = in.read(buff)) != -1) {
 				jsonResults.append(buff, 0, read);
 			}
-			System.out.println("The results from the autocomplete were"+jsonResults.toString());
+			//System.out.println("The results from the autocomplete were"+jsonResults.toString());
 		} catch (MalformedURLException e) {
 			Log.e(LOG_TAG, "Error processing Places API URL", e);
 			return resultList;
@@ -158,7 +158,7 @@ public class PlacesAutoCompleteAdapter extends ArrayAdapter<String> implements F
 			// Create a JSON object hierarchy from the results
 			JSONObject jsonObj = new JSONObject(jsonResults.toString());
 			JSONArray predsJsonArray = jsonObj.getJSONArray("predictions");
-			Log.d("JSON results", jsonResults.toString());
+			//Log.d("JSON results", jsonResults.toString());
 
 			// Extract the Place descriptions from the results
 			resultList = new ArrayList<String>(predsJsonArray.length());
