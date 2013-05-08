@@ -12,10 +12,10 @@
     android:layout_marginTop="-1dp"
     tools:context=".HomeScreen"
     android:orientation="horizontal"
-    android:background="@drawable/bluebartop"
+    android:background="@drawable/bluebartopsolid"
     android:baselineAligned="false" >
         
-        <SearchView
+		<SearchView
             android:id="@+id/search_box"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
@@ -66,7 +66,7 @@
     	android:id="@+id/food_images"
     	android:layout_marginLeft="1dp"
     	android:layout_marginRight="1dp"
-    	android:layout_marginTop="1dp"
+    	android:layout_marginTop="0dp"
     	android:layout_marginBottom="0dp"
     	android:layout_width="fill_parent" 
     	android:layout_height="fill_parent"

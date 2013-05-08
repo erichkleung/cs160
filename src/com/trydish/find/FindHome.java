@@ -99,9 +99,9 @@ public class FindHome extends Fragment implements OnClickListener {
 
 		gridview.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-				InputMethodManager imm = (InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
-				SearchView et = (SearchView) myView.findViewById(R.id.search_box);
-				imm.hideSoftInputFromWindow(et.getWindowToken(), 0);
+//				InputMethodManager imm = (InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
+//				SearchView et = (SearchView) myView.findViewById(R.id.search_box);
+//				imm.hideSoftInputFromWindow(et.getWindowToken(), 0);
 				
 				Fragment view_dish = new ViewDish();
 				FragmentTransaction trans = getFragmentManager().beginTransaction();
