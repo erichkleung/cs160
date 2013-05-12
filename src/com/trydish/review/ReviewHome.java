@@ -112,8 +112,6 @@ public class ReviewHome extends Fragment implements OnClickListener, OnItemClick
 
 	}
 
-
-
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		//added call to super for compatibility 
@@ -349,7 +347,7 @@ public class ReviewHome extends Fragment implements OnClickListener, OnItemClick
 			return resultList;
 
 		}
-		
+
 		@Override
 		protected void onPostExecute(ArrayList<String> result) {
 			updateArray(result);

@@ -34,7 +34,7 @@ import android.widget.Toast;
 
 public class LoginHome extends Activity {
 
-	boolean nocheck = false; 
+	boolean nocheck = true; 
 	Context context_login;
 
 	@Override
