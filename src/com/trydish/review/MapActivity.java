@@ -2,6 +2,7 @@ package com.trydish.review;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Intent;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
@@ -16,6 +17,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import com.trydish.main.R;
 
@@ -25,6 +27,8 @@ public class MapActivity extends Activity {
 	private double latitude;
 	private double longitude;
 	
+	private String restaurant_name;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -32,6 +36,9 @@ public class MapActivity extends Activity {
 		
 		latitude = com.trydish.find.ViewDish.getLat();
 		longitude = com.trydish.find.ViewDish.getLong();
+		
+		Intent intent = getIntent();
+		restaurant_name  = intent.getStringExtra("name");
 		
 		//following code based off of http://wptrafficanalyzer.in/blog/showing-current-location-in-google-maps-using-api-v2-with-supportmapfragment/
 		// and http://stackoverflow.com/questions/14074129/google-maps-v2-set-both-my-location-and-zoom-in
@@ -59,7 +66,13 @@ public class MapActivity extends Activity {
 			    CameraUpdate zoom=CameraUpdateFactory.zoomTo(18);
 
 			    googleMap.moveCamera(center);
-			    googleMap.animateCamera(zoom);}
+			    googleMap.animateCamera(zoom);
+			    //googleMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
+			    
+			    googleMap.addMarker(new MarkerOptions()
+			            .position(new LatLng(latitude, longitude))
+			            .title(restaurant_name));
+			    }
 
 	}
 

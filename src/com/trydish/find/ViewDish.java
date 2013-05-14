@@ -59,6 +59,8 @@ public class ViewDish extends Fragment implements OnClickListener {
 	private View myView;
 	private TextView text;
 	private int numReviews = 0;
+	
+	private String restaurant_name = "";
 
 	Context context;
 
@@ -87,6 +89,7 @@ public class ViewDish extends Fragment implements OnClickListener {
 			public void onClick(View v) {
 				//get rid of popup window
 				Intent intent = new Intent(com.trydish.find.FindHome.getContext(), MapActivity.class);
+				intent.putExtra("name", restaurant_name);
 				startActivity(intent); 
 			}
 		});
@@ -466,6 +469,7 @@ public class ViewDish extends Fragment implements OnClickListener {
 					lng = result.getString("long");
 					lat = result.getString("lat");
 					rest_name = result.getString("rest_name");
+					restaurant_name = rest_name;
 					dish_name = result.getString("dish_name");
 					JSONObject reviewDict = result.getJSONObject("reviews");
 					
