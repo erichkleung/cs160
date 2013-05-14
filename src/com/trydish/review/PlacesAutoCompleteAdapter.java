@@ -96,7 +96,6 @@ public class PlacesAutoCompleteAdapter extends ArrayAdapter<String> implements F
 			String intermediate = com.trydish.find.FindHome.getRadius();
 			String[] inter = intermediate.split(" ");
 			userRadius = Integer.parseInt(inter[0])*1609;
-			//System.out.println("This is the radius selected: " + Integer.toString(userRadius));
 			
 			StringBuilder sb = new StringBuilder(PLACES_API_BASE + TYPE_AUTOCOMPLETE + OUT_JSON);
 			sb.append("?sensor=true&key=" + global.API_KEY);

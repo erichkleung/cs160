@@ -74,7 +74,6 @@ public class SignupAllergies extends Activity {
 		Cursor cs = db.rawQuery(query, null);
 		if (cs.moveToFirst()) {
 			do {
-//				System.out.println(cs.getString(1));
 				allergies.add(cs.getString(1));
 			} while (cs.moveToNext());
 		}

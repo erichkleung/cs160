@@ -58,7 +58,6 @@ public class ViewDish extends Fragment implements OnClickListener {
 	private static double lngDoub;
 	private View myView;
 	private TextView text;
-	private int numReviews = 0;
 	
 	private String restaurant_name = "";
 
@@ -99,9 +98,6 @@ public class ViewDish extends Fragment implements OnClickListener {
 		text.setTextSize(20);
 		text.setShadowLayer(1, 0, 0, Color.WHITE);
 		text.setTypeface(Typeface.SANS_SERIF);
-//		text.setText(Html.fromHtml("<h2>Buffalo Wings</h2>" +
-//				"<small>from</small> Buffalo Wild Wings<br />" + 
-//				"10.5 <small>miles away</small>"));
 
 		screenHeight = getResources().getDisplayMetrics().heightPixels;
 		screenWidth = getResources().getDisplayMetrics().widthPixels;
@@ -232,7 +228,6 @@ public class ViewDish extends Fragment implements OnClickListener {
 
 	class BitmapWorkerTask extends AsyncTask<Integer, Void, Bitmap> {
 		private final WeakReference<ImageView> imageViewReference;
-//		private int data = 0;
 		private int width = 0;
 		private int height = 0;
 		private String encoding;
@@ -353,14 +348,11 @@ public class ViewDish extends Fragment implements OnClickListener {
 					lngDoub = Double.parseDouble(lng);
 					double distLat = com.trydish.find.FindHome.getLat();
 					double distLng = com.trydish.find.FindHome.getLong();
-//					System.out.println("current lat/long is :" + distLat + " " + distLng);
-//					System.out.println("other lat/long is :" + latDoub + " " + lngDoub);
 					float[] results = new float[3];
 					android.location.Location.distanceBetween(distLat, distLng, latDoub, lngDoub, results);
 					float distance = results[0];
 					float toMiles = distance * (float)0.000621371;
 					float formattedNumber = Float.parseFloat(new DecimalFormat("#.##").format(toMiles));
-//					System.out.println("distance in miles is:" +toMiles);
 					toReturn = Float.toString(formattedNumber);
 
 
@@ -403,56 +395,17 @@ public class ViewDish extends Fragment implements OnClickListener {
 			try {
 				response = httpclient.execute(new HttpGet(url));
 				if(response.getStatusLine().getStatusCode() == HttpStatus.SC_OK){
-//					System.out.println("response was ok");
 					ByteArrayOutputStream out = new ByteArrayOutputStream();
 					response.getEntity().writeTo(out);
 
 
 					String responseString = out.toString();
 					out.close();
-//					System.out.println(responseString);
 					result = new JSONObject(responseString);
-//					System.out.println("object is " + result);
-
-					//JSONArray jArray = result.getJSONArray("id");
-					//JSONObject latAndLong = jArray.getJSONObject(0);
-
-					/*
-					avg_rating = result.getString("avg_rating");
-					lng = result.getString("long");
-					lat = result.getString("lat");
-					rest_name = result.getString("rest_name");
-					dish_name = result.getString("dish_name");
-					JSONObject reviewDict = result.getJSONObject("reviews");
-
-					System.out.println(avg_rating);
-					System.out.println(lat);
-					System.out.println(lng);
-					System.out.println(rest_name);
-					System.out.println(dish_name);
-					//System.out.println(reviewDict);
-
-
-
-
-					View currentSetBelow = (TextView) myView.findViewById(R.id.comment_text);
-					Iterator<?> keys = reviewDict.keys();
-			        while( keys.hasNext() ){
-			            String key = (String)keys.next();
-			            if( reviewDict.get(key) instanceof JSONObject ){
-			            	numReviews++;
-			            	System.out.println(reviewDict.get(key));
-			            	//RelativeLayout relativeLayout = new RelativeLayout(getApplicationContext());
-			            }
-			        }
-
-
-					 */
 
 				} else{
 					//Closes the connection.
 					response.getEntity().getContent().close();
-//					System.out.println("connection closed");
 					return null;
 				}
 			} catch (Exception e) {
@@ -483,13 +436,6 @@ public class ViewDish extends Fragment implements OnClickListener {
 					// Now we call the method to actually display images
 					displayImages();
 					
-					System.out.println(avg_rating);
-					System.out.println(lat);
-					System.out.println(lng);
-					System.out.println(rest_name);
-					System.out.println(dish_name);
-					//System.out.println(reviewDict);
-					
 					RatingBar rb = (RatingBar) myView.findViewById(R.id.ratingBar2);
 					rb.setRating((float) (Float.parseFloat(avg_rating)/2.0));
 					
@@ -507,15 +453,12 @@ public class ViewDish extends Fragment implements OnClickListener {
 			            String key = (String)keys.next();
 			            
 			            if( reviewDict.get(key) instanceof JSONObject ){
-			            	numReviews++;
-			            	System.out.println("this is a review: " + reviewDict.get(key));
 			            	temp = (JSONObject) reviewDict.get(key);
 			            	username = temp.getString("username");
 			            	comment = temp.getString("comment");
 			            	rating  = temp.getInt("rating");
 			            
 			            	addViews(username, comment, rating);
-			            	//RelativeLayout relativeLayout = new RelativeLayout(getApplicationContext());
 			            }
 			        }
 

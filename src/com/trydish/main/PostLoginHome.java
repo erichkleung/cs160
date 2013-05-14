@@ -26,8 +26,6 @@ import com.trydish.main.global.DatabaseHandler;
 import com.trydish.review.MapActivity;
 
 public class PostLoginHome extends Activity {
-	
-	private static Context context;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
