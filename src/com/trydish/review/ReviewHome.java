@@ -121,13 +121,27 @@ public class ReviewHome extends Fragment implements OnClickListener, OnItemClick
 				Toast toast = Toast.makeText(getActivity(), "Review submitted.", Toast.LENGTH_SHORT);
 				toast.show();
 
-				ViewGroup viewGroup = (ViewGroup)myView.findViewById(R.id.review_form);
+				ViewGroup viewGroup = (ViewGroup)myView.findViewById(R.id.innerRelative);
 				for (int i = 0; i < viewGroup.getChildCount(); i++) {
 					View view = viewGroup.getChildAt(i);
 					if (view instanceof EditText) {
 						((EditText) view).setText("");
 					} else if (view instanceof RatingBar) {
 						((RatingBar) view).setRating(0);
+					} else if (view instanceof AutoCompleteTextView) {
+						((AutoCompleteTextView) view).setText("");
+					}
+				}
+				
+				viewGroup = (ViewGroup)myView.findViewById(R.id.innerRelative2);
+				for (int i = 0; i < viewGroup.getChildCount(); i++) {
+					View view = viewGroup.getChildAt(i);
+					if (view instanceof EditText) {
+						((EditText) view).setText("");
+					} else if (view instanceof RatingBar) {
+						((RatingBar) view).setRating(0);
+					} else if (view instanceof AutoCompleteTextView) {
+						((AutoCompleteTextView) view).setText("");
 					}
 				}
 				FragmentManager manager = getActivity().getFragmentManager();
