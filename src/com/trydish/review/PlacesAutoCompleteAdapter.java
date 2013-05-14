@@ -12,6 +12,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.trydish.main.global;
+
 import android.content.Context;
 import android.util.Log;
 import android.view.View;
@@ -32,10 +34,6 @@ public class PlacesAutoCompleteAdapter extends ArrayAdapter<String> implements F
 	private static final String PLACES_API_BASE = "https://maps.googleapis.com/maps/api/place";
 	private static final String TYPE_AUTOCOMPLETE = "/autocomplete";
 	private static final String OUT_JSON = "/json";
-	//?input=Vict&types=geocode&language=fr&sensor=true&key=AddYourOwnKeyHere
-
-	//Should probably change this, shouldn't be stored on device, recommended to store on secure server
-	private static final String API_KEY = "AIzaSyBlB6PKsmromS6TfMDIcy7fGRhnusRZ3r8";
 	
 	private double userLat;
 	private double userLong;
@@ -101,7 +99,7 @@ public class PlacesAutoCompleteAdapter extends ArrayAdapter<String> implements F
 			//System.out.println("This is the radius selected: " + Integer.toString(userRadius));
 			
 			StringBuilder sb = new StringBuilder(PLACES_API_BASE + TYPE_AUTOCOMPLETE + OUT_JSON);
-			sb.append("?sensor=true&key=" + API_KEY);
+			sb.append("?sensor=true&key=" + global.API_KEY);
 			sb.append("&components=country:us");
 			sb.append("&input=" + URLEncoder.encode(input, "utf8"));
 			//check for user location being null - should actually check for
