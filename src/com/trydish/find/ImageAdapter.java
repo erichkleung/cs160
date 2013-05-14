@@ -37,7 +37,7 @@ import com.trydish.main.R;
 public class ImageAdapter extends BaseAdapter {
 	public final static double REGULAR = 1.0;
 	public final static double HALF = 0.5;
-	
+
 	private Context mContext;
 	private int screenWidth;
 	private int screenHeight;
@@ -55,33 +55,33 @@ public class ImageAdapter extends BaseAdapter {
 		Bitmap.Config conf = Bitmap.Config.ARGB_8888;
 		mPlaceHolderBitmap = Bitmap.createBitmap(screenWidth, imageDimension, conf);
 		this.jArray = jArray;
-		
-	    // Get max available VM memory, exceeding this amount will throw an
-	    // OutOfMemory exception. Stored in kilobytes as LruCache takes an
-	    // int in its constructor.
-	    final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
 
-	    // Use 1/8th of the available memory for this memory cache.
-	    final int cacheSize = maxMemory / 4;
+		// Get max available VM memory, exceeding this amount will throw an
+		// OutOfMemory exception. Stored in kilobytes as LruCache takes an
+		// int in its constructor.
+		final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
 
-	    mMemoryCache = new LruCache<String, Bitmap>(cacheSize) {
-	        @Override
-	        protected int sizeOf(String key, Bitmap bitmap) {
-	            // The cache size will be measured in kilobytes rather than
-	            // number of items.
-	            return bitmap.getByteCount() / 1024;
-	        }
-	    };
+		// Use 1/8th of the available memory for this memory cache.
+		final int cacheSize = maxMemory / 4;
+
+		mMemoryCache = new LruCache<String, Bitmap>(cacheSize) {
+			@Override
+			protected int sizeOf(String key, Bitmap bitmap) {
+				// The cache size will be measured in kilobytes rather than
+				// number of items.
+				return bitmap.getByteCount() / 1024;
+			}
+		};
 	}
-	
+
 	public void addBitmapToMemoryCache(String key, Bitmap bitmap) {
-	    if (getBitmapFromMemCache(key) == null) {
-	        mMemoryCache.put(key, bitmap);
-	    }
+		if (getBitmapFromMemCache(key) == null) {
+			mMemoryCache.put(key, bitmap);
+		}
 	}
 
 	public Bitmap getBitmapFromMemCache(String key) {
-	    return mMemoryCache.get(key);
+		return mMemoryCache.get(key);
 	}
 
 	public int getCount() {
@@ -99,7 +99,7 @@ public class ImageAdapter extends BaseAdapter {
 	// create a new ImageView for each item referenced by the Adapter
 	// snippet from :
 	// http://stackoverflow.com/questions/7706913/overlay-text-over-imageview-in-framelayout-progrmatically-android
-	
+
 	@SuppressLint("NewApi")
 	public View getView(int position, View convertView, ViewGroup parent) {
 		RelativeLayout rLayout = null;
@@ -118,23 +118,21 @@ public class ImageAdapter extends BaseAdapter {
 			RelativeLayout.LayoutParams pParams = new RelativeLayout.LayoutParams(
 					RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
 			pParams.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
-//			pb = new ProgressBar(mContext);
-//			pb.setLayoutParams(pParams);
-//			rLayout.addView(pb);
 			imageView = new ImageView(mContext);
 			imageView.setLayoutParams(new GridView.LayoutParams(screenWidth, imageDimension)); // 255, 200
 			imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
 			JSONArray jPhotos = obj.getJSONArray("photos");
 			if (jPhotos.getString(0) != null) {
 				loadBitmap(jPhotos.getString(0), imageView);
+			} else {
+				imageView.setImageResource(R.drawable.nophoto);
 			}
-
 			// Adding everything to the RelativeLayout
 			rLayout.addView(imageView);
 			rLayout.addView(foodNameText(obj.getString("name"), obj.getString("rest_name")));
 			rLayout.addView(getRatingBar(obj.getString("avg_rating")));
 			rLayout.addView(distanceText(obj.getString("distance")));
-			
+
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -142,7 +140,7 @@ public class ImageAdapter extends BaseAdapter {
 
 		return rLayout;
 	}
-	
+
 	@SuppressLint("NewApi")
 	public TextView distanceText(String location) {
 		// Setting the RelativeLayout parameters for the Food Name TextView
@@ -161,10 +159,10 @@ public class ImageAdapter extends BaseAdapter {
 		text.setTextColor(Color.WHITE);                            
 		text.setTypeface(Typeface.DEFAULT_BOLD);
 		text.setTextSize(20);
-		
+
 		return text;
 	}
-	
+
 	@SuppressLint("NewApi")
 	public TextView foodNameText(String foodName, String restaurant) {
 		// Setting the RelativeLayout parameters for the Food Name TextView
@@ -185,10 +183,10 @@ public class ImageAdapter extends BaseAdapter {
 		text.setTextColor(Color.WHITE);                            
 		text.setTypeface(Typeface.DEFAULT_BOLD);
 		text.setTextSize(25);
-		
+
 		return text;
 	}
-	
+
 	public RatingBar getRatingBar(String avg_rating) {
 		RatingBar ratingBar = new RatingBar(mContext, null, android.R.attr.ratingBarStyleIndicator);
 		RelativeLayout.LayoutParams tParams = new RelativeLayout.LayoutParams
@@ -200,10 +198,10 @@ public class ImageAdapter extends BaseAdapter {
 		ratingBar.setRating((float) (Float.parseFloat(avg_rating) / 2.0));
 		ratingBar.setBackgroundColor(Color.argb(100, 0, 0, 0));
 		ratingBar.setPadding(0, 0, 0, 5);
-		
+
 		return ratingBar;
 	}
-	
+
 	public void loadBitmap(String encoding, ImageView imageView) {
 		if (cancelPotentialWork(encoding, imageView)) {
 			final String imageKey = encoding;
@@ -215,20 +213,7 @@ public class ImageAdapter extends BaseAdapter {
 				final AsyncDrawable asyncDrawable =
 						new AsyncDrawable(mContext.getResources(), mPlaceHolderBitmap, task);
 				imageView.setImageDrawable(asyncDrawable);
-//				pb.setVisibility(ProgressBar.VISIBLE);
 				task.execute(screenWidth, imageDimension);
-//				try {
-//					task.get(2000, TimeUnit.MILLISECONDS);
-//				} catch (InterruptedException e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				} catch (ExecutionException e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				} catch (TimeoutException e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				}
 			}
 		}
 	}
@@ -261,82 +246,10 @@ public class ImageAdapter extends BaseAdapter {
 		}
 		return null;
 	}
-	
-//	class BitmapWorkerTask extends AsyncTask<Integer, Void, Bitmap> {
-//	    private final WeakReference<ImageView> imageViewReference;
-//		private int width = 0;
-//		private int height = 0;
-//		private String encoding;
-//
-//		public BitmapWorkerTask(String encoding, ImageView imageView) {
-//			// user WeakReference to ensure the ImageView can be garbage collected
-//			this.encoding = encoding;
-//			imageViewReference = new WeakReference<ImageView>(imageView);
-//		}
-//
-//		// Decode image in background
-//		@Override
-//		protected Bitmap doInBackground(Integer... params) {
-////			data = params[0];
-//			width = params[0];
-//			height = params[1];
-//			final Bitmap bitmap = decodeSampledBitmapFromResource(imageViewReference.get().getContext().getResources(),
-//					encoding, width, height);
-//			addBitmapToMemoryCache(encoding, bitmap);
-//			return bitmap;
-//		}
-//
-//		@Override
-//		protected void onPostExecute(Bitmap bitmap) {
-//	        if (imageViewReference != null && bitmap != null) {
-//	            final ImageView imageView = imageViewReference.get();
-//	            if (imageView != null) {
-//	                imageView.setImageBitmap(bitmap);
-//	            }
-//	        }
-//		}
-//		
-//		public int calculateInSampleSize(BitmapFactory.Options options, 
-//				int reqWidth, int reqHeight) {
-//
-//			// setting raw width and raw heights
-//			final int rawWidth = options.outWidth;
-//			final int rawHeight = options.outHeight;
-//			int sampleSize = 1;
-//			if (reqWidth < rawWidth || reqHeight < reqHeight) {
-//				// Calculate ratios of height and width to requested height and width
-//				final int widthRatio = Math.round((float) rawWidth / (float) reqWidth);
-//				final int heightRatio = Math.round((float) rawHeight / (float) reqHeight);
-//				// Choose the smallest ratio as inSampleSize value, this will guarantee
-//				// a final image with both dimensions larger than or equal to the
-//				// requested height and width.
-//				sampleSize = heightRatio < widthRatio ? heightRatio : widthRatio;
-//			}
-//			return sampleSize;
-//		}
-//
-//		public Bitmap decodeSampledBitmapFromResource(Resources res, String encoding, 
-//				int reqWidth, int reqHeight) {
-//
-//			// First decode with inJustDecodeBounds=true to check dimensions
-//			final BitmapFactory.Options options = new BitmapFactory.Options();
-////			options.inJustDecodeBounds = true;
-////			BitmapFactory.decodeResource(res, resId, options);
-//			byte[] decodedByte = Base64.decode(encoding, 0);
-//		    Bitmap bm = BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.length, options);
-//
-//			// Calculate inSampleSize
-//			options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
-//
-//			// Decode bitmap with inSampleSize set
-//			options.inJustDecodeBounds = false;
-//			return BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.length, options);
-//		}
-//	}
 
 	class BitmapWorkerTask extends AsyncTask<Integer, Void, Bitmap> {
 		private final WeakReference<ImageView> imageViewReference;
-//		private int data = 0;
+		//		private int data = 0;
 		private int width = 0;
 		private int height = 0;
 		private String encoding;
@@ -350,7 +263,7 @@ public class ImageAdapter extends BaseAdapter {
 		// Decode image in background
 		@Override
 		protected Bitmap doInBackground(Integer... params) {
-//			data = params[0];
+			//			data = params[0];
 			width = params[0];
 			height = params[1];
 			final Bitmap bitmap = decodeSampledBitmapFromResource(imageViewReference.get().getContext().getResources(),
@@ -361,15 +274,15 @@ public class ImageAdapter extends BaseAdapter {
 
 		@Override
 		protected void onPostExecute(Bitmap bitmap) {
-//			if (isCancelled()) {
-//				bitmap = null;
-//			}
+			//			if (isCancelled()) {
+			//				bitmap = null;
+			//			}
 			if (imageViewReference != null && bitmap != null) {
 				final ImageView imageView = imageViewReference.get();
 				final BitmapWorkerTask bitmapWorkerTask = getBitmapWorkerTask(imageView);
 				if (this == bitmapWorkerTask && imageView != null) {
 					imageView.setImageBitmap(bitmap);
-//					pb.setVisibility(ProgressBar.INVISIBLE);
+					//					pb.setVisibility(ProgressBar.INVISIBLE);
 				}
 			}
 		}
@@ -402,10 +315,10 @@ public class ImageAdapter extends BaseAdapter {
 
 			// First decode with inJustDecodeBounds=true to check dimensions
 			final BitmapFactory.Options options = new BitmapFactory.Options();
-//			options.inJustDecodeBounds = true;
-//			BitmapFactory.decodeResource(res, resId, options);
+			//			options.inJustDecodeBounds = true;
+			//			BitmapFactory.decodeResource(res, resId, options);
 			byte[] decodedByte = Base64.decode(encoding, 0);
-		    Bitmap bm = BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.length, options);
+			Bitmap bm = BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.length, options);
 
 			// Calculate inSampleSize
 			options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
@@ -430,45 +343,5 @@ public class ImageAdapter extends BaseAdapter {
 			return bitmapWorkerTaskReference.get();
 		}
 	}
-	
-	// references to our images
-	private Integer[] mThumbIds = {
-			R.drawable.food, R.drawable.wings,
-			R.drawable.dimsum, R.drawable.burger,
-			R.drawable.food, R.drawable.wings,
-			R.drawable.dimsum, R.drawable.burger,
-	};
-	
-	private String[] titles = {
-			"Super Awesome Spaghetti",
-			"Fried Chicken Wings",
-			"Amazingly Asian Dimsum",
-			"Super Fatty Hamburger",
-			"Super Awesome Spaghetti",
-			"Fried Chicken Wings",
-			"Amazingly Asian Dimsum",
-			"Super Fatty Hamburger",
-	};
-	
-	private String[] restaurants = {
-			"Spaghetti Me",
-			"Wing Go",
-			"The Chinese",
-			"Heartattack Grill",
-			"Spaghetti Me",
-			"Wing Go",
-			"The Chinese",
-			"Heartattack Grill",
-	};
-	
-	private String[] distances = {
-			"0.4",
-			"0.6",
-			"1.2",
-			"1.5",
-			"0.4",
-			"0.6",
-			"1.2",
-			"1.5",
-	};
+
 }
