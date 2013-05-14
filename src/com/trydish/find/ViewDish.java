@@ -529,6 +529,15 @@ public class ViewDish extends Fragment implements OnClickListener {
 	private void displayImages() {
 		LinearLayout imageHolder = (LinearLayout) myView.findViewById(R.id.image_linear);
 
+		if (encodedImages.size() == 0) {
+			ImageView imageView = new ImageView(imageHolder.getContext());
+			imageView.setLayoutParams(new LinearLayout.LayoutParams(screenWidth, imageDimension)); // 255, 200
+			imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+			imageView.setPadding(1, 0, 0, 0);
+			imageView.setImageResource(R.drawable.nophoto);
+			imageHolder.addView(imageView, 0);
+		}
+		
 		for (int i = 0; i < encodedImages.size(); i++) {
 			String encoding = encodedImages.get(i);
 			ImageView imageView = new ImageView(imageHolder.getContext());
