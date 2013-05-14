@@ -244,8 +244,7 @@ public class ReviewHome extends Fragment implements OnClickListener, OnItemClick
 		HttpURLConnection conn = null;
 		StringBuilder jsonResults = new StringBuilder();
 
-		private final String API_KEY = "AIzaSyBlB6PKsmromS6TfMDIcy7fGRhnusRZ3r8";
-		private final String endPoint = "https://maps.googleapis.com/maps/api/place/details/json?reference=" + reference + "&sensor=true&key=" + API_KEY;
+		private final String endPoint = "https://maps.googleapis.com/maps/api/place/details/json?reference=" + reference + "&sensor=true&key=" + global.API_KEY;
 
 		public ArrayList<String> doInBackground(Void... params)
 		{

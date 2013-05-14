@@ -16,6 +16,7 @@ public class global {
 	public static int userID = -1;
 	public static String username = "";
 	public static ArrayList<String> allergy_ids;
+	public static final String API_KEY = "AIzaSyBlB6PKsmromS6TfMDIcy7fGRhnusRZ3r8";
 	
 	public static class DatabaseHandler extends SQLiteOpenHelper {
 		private static final int DATABASE_VERSION = 1;
